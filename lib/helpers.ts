@@ -69,19 +69,19 @@ export async function sendSlackMessage(post: any) {
             type: "section",
             text: {
               type: "mrkdwn",
-              text: `New ${post.type}: https://news.ycombinator.com/item?id=${post.id}`,
+              text: `https://news.ycombinator.com/item?id=${post.id}`,
             },
           },
         ],
         attachments: [
           {
+            mrkdwn_in: ["author_name", "text", "footer"],
             fallback: `https://news.ycombinator.com/item?id=${post.id}`,
             color: "#ff6600",
-            author_name: `${post.by}`,
-            author_link: `https://news.ycombinator.com/user?id=${post.by}`,
+            author_name: `New <https://news.ycombinator.com/item?id=${post.id}|${post.type}> from <https://news.ycombinator.com/user?id=${post.by}|${post.by}>`,
             author_icon: `https://ui-avatars.com/api/?name=${post.by}`,
             text: processedMessage,
-            footer: "Hacker News",
+            footer: `<https://news.ycombinator.com/item?id=${post.id}|Hacker News>`,
             footer_icon:
               "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Y_Combinator_logo.svg/1024px-Y_Combinator_logo.svg.png",
             ts: post.time,
