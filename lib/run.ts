@@ -1,4 +1,3 @@
-import { Sema } from "async-sema";
 import {
   getLatestPost,
   getPost,
@@ -9,10 +8,6 @@ import {
 
 const NUM_THREADS = 5;
 
-const sema = new Sema(
-  NUM_THREADS // Allow 5 concurrent async calls
-);
-
 export async function run() {
   const lastCheckedId = await getLastCheckedId(); // get last checked post id from redis
   const latestPostId = await getLatestPost(); // get latest post id from hacker news
@@ -22,7 +17,6 @@ export async function run() {
   let errorPosts: any[] = [];
   await Promise.all(
     Array.from(Array(NUM_THREADS).keys()).map(async (i) => {
-      await sema.acquire();
       const start = lastCheckedId + i * threadSize; // get start id for thread
       const end = Math.min(lastCheckedId + (i + 1) * threadSize, latestPostId); // get end id for thread
       console.log(start, end);
@@ -45,7 +39,6 @@ export async function run() {
           errorPosts.push(j);
         }
       }
-      sema.release();
     })
   );
   await setLastCheckedId(latestPostId);
