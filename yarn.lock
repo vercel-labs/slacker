@@ -89,15 +89,6 @@
   "resolved" "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.1.4.tgz"
   "version" "1.1.4"
 
-"@slaterjs/next@^0.2.1":
-  "integrity" "sha512-1SUdIjuq+E3ZGwfRvA4JfA+ZQRrRvzHisjAvCMAbh1aG05RGmhIY4c/zus/d2Vm6ETkWOt85txCOPM1lHjGanw=="
-  "resolved" "https://registry.npmjs.org/@slaterjs/next/-/next-0.2.1.tgz"
-  "version" "0.2.1"
-  dependencies:
-    "@types/slug" "^5.0.3"
-    "imurmurhash" "^0.1.4"
-    "slug" "^5.1.0"
-
 "@swc/helpers@0.4.2":
   "integrity" "sha512-556Az0VX7WR6UdoTn4htt/l3zPQ7bsQWK+HqdG4swV7beUCxo/BqmvbOpUkTIm/9ih86LIf1qsUnywNL3obGHw=="
   "resolved" "https://registry.npmjs.org/@swc/helpers/-/helpers-0.4.2.tgz"
@@ -140,11 +131,6 @@
   "integrity" "sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew=="
   "resolved" "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
   "version" "0.16.2"
-
-"@types/slug@^5.0.3":
-  "integrity" "sha512-yPX0bb1SvrpaGlHuSiz6EicgRI4VBE+LO7IANlZagQwtaoKjLLcZc8y6s13vKp41mYvMCSzjtObxvU7/0JRPaA=="
-  "resolved" "https://registry.npmjs.org/@types/slug/-/slug-5.0.3.tgz"
-  "version" "5.0.3"
 
 "@types/turndown@^5.0.1":
   "integrity" "sha512-N8Ad4e3oJxh9n9BiZx9cbe/0M3kqDpOTm2wzj13wdDUxDPjfjloWIJaquZzWE1cYTAHpjOH3rcTnXQdpEfS/SQ=="
@@ -1192,7 +1178,7 @@
   "resolved" "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   "version" "1.4.0"
 
-"next@^10.0.0 || ^11.0.0 || ^12.0.0", "next@12.2.2":
+"next@12.2.2":
   "integrity" "sha512-zAYFY45aBry/PlKONqtlloRFqU/We3zWYdn2NoGvDZkoYUYQSJC8WMcalS5C19MxbCZLUVCX7D7a6gTGgl2yLg=="
   "resolved" "https://registry.npmjs.org/next/-/next-12.2.2.tgz"
   "version" "12.2.2"
@@ -1516,11 +1502,6 @@
   "integrity" "sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q=="
   "resolved" "https://registry.npmjs.org/slash/-/slash-3.0.0.tgz"
   "version" "3.0.0"
-
-"slug@^5.1.0":
-  "integrity" "sha512-h7yD2UDVyMcQRv/WLSjq7HDH6ToO/22MB381zfx6/ebtdWUlGcyxpJNVHl6WFvKjIMHf5ZxANFp/srsy4mfT/w=="
-  "resolved" "https://registry.npmjs.org/slug/-/slug-5.3.0.tgz"
-  "version" "5.3.0"
 
 "source-map-js@^1.0.1":
   "integrity" "sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw=="

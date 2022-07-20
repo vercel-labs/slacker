@@ -2,7 +2,7 @@ import { decode } from "html-entities";
 import TurndownService from "turndown";
 const turndownService = new TurndownService();
 
-const keywords = ["vercel", "nextjs", "next.js", "are"];
+const keywords = ["vercel", "nextjs", "next.js"];
 
 const SLACK_HOOK = process.env.SLACK_HOOK as string;
 if (SLACK_HOOK === undefined) {
@@ -25,9 +25,11 @@ export async function getPost(id: number) {
   return json;
 }
 
-export async function processPost(post: any) {
+export async function processPost(
+  post: any
+): Promise<{ status: "present" | "absent" | "deleted" | "error" }> {
   if (post.deleted) {
-    return;
+    return { status: "deleted" };
   }
   let text = "";
   if (post.url) {
@@ -42,10 +44,15 @@ export async function processPost(post: any) {
   for (let i = 0; i < keywords.length; i++) {
     const keyword = keywords[i];
     if (text.toLowerCase().includes(keyword)) {
-      await sendSlackMessage(post);
-      return;
+      try {
+        await sendSlackMessage(post);
+        return { status: "present" };
+      } catch (err) {
+        return { status: "error" };
+      }
     }
   }
+  return { status: "absent" };
 }
 
 export async function sendSlackMessage(post: any) {
