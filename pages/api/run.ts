@@ -8,9 +8,10 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const { authorization } = req.headers;
-
-      if (authorization === `Bearer ${process.env.API_SECRET_KEY}`) {
+      console.log(authorization);
+      if (authorization === `Bearer ${process.env.GH_ACTIONS_KEY}`) {
         const response = await run();
+        console.log(response);
         res.status(200).json(response);
       } else {
         res.status(401).json({ success: false });
