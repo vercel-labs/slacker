@@ -49,13 +49,8 @@ export async function getPost(id: number) {
   return json;
 }
 
-export async function processPost(
-  post: any
-): Promise<{ status: "present" | "absent" | "deleted" | "error" }> {
-  /* Process post to determine if it contains our keywords */
-  if (post.deleted) {
-    return { status: "deleted" };
-  }
+export function combineText(post: any) {
+  /* combine text from post's title, text, and url */
   let text = "";
   if (post.url) {
     text += `${post.url}\n`;
@@ -66,6 +61,17 @@ export async function processPost(
   if (post.text) {
     text += `${post.text}\n`;
   }
+  return text;
+}
+
+export async function processPost(
+  post: any
+): Promise<{ status: "present" | "absent" | "deleted" | "error" }> {
+  /* Process post to determine if it contains our keywords */
+  if (post.deleted) {
+    return { status: "deleted" };
+  }
+  const text = combineText(post);
   const keywords = await getKeywords();
   for (let i = 0; i < keywords.length; i++) {
     const keyword = keywords[i];
@@ -111,9 +117,9 @@ export async function unfurlPost(
 ) {
   /* Unfurl a hacker news post to Slack using Slack's Attachments API: https://api.slack.com/messaging/composing/layouts#attachments */
   const keywords = await getKeywords();
-
+  const text = combineText(post);
   const mentionedTerms = keywords.filter((keyword) => {
-    return post.text.toLowerCase().includes(keyword);
+    return text.toLowerCase().includes(keyword);
   });
 
   const processedPost = mrkdwn(decode(post.text)).text;
