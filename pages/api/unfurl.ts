@@ -5,6 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  if (req.body.challenge) return res.status(200).json(req.body); // unique case for Slack challenge
   const channel = req.body.event.channel; // channel the message was sent in
   const ts = req.body.event.message_ts; // message timestamp
   const url = req.body.event.links[0].url; // url that was shared
