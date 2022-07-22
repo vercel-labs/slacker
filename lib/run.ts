@@ -1,4 +1,5 @@
 import {
+  getKeywords,
   getLatestPost,
   getPost,
   getLastCheckedId,
@@ -9,6 +10,7 @@ import {
 const NUM_THREADS = 5;
 
 export async function run() {
+  const keywords = await getKeywords();
   const lastCheckedId = await getLastCheckedId(); // get last checked post id from redis
   const latestPostId = await getLatestPost(); // get latest post id from hacker news
   const threadSize = Math.ceil((latestPostId - lastCheckedId) / NUM_THREADS); // get thread size (number of posts to check for each thread)
@@ -24,7 +26,7 @@ export async function run() {
         // iterate over posts in thread
         try {
           const post = await getPost(j); // get post from hacker news
-          const res = await processPost(post); // process post
+          const res = await processPost(post, keywords); // process post
           console.log(res);
           if (res.status === "present") {
             mentionedPosts.push(post);

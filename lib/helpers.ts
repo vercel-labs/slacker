@@ -65,14 +65,14 @@ export function combineText(post: any) {
 }
 
 export async function processPost(
-  post: any
+  post: any,
+  keywords: string[] = []
 ): Promise<{ status: "present" | "absent" | "deleted" | "error" }> {
   /* Process post to determine if it contains our keywords */
   if (post.deleted) {
     return { status: "deleted" };
   }
   const text = combineText(post);
-  const keywords = await getKeywords();
   for (let i = 0; i < keywords.length; i++) {
     const keyword = keywords[i];
     if (text.toLowerCase().includes(keyword)) {
