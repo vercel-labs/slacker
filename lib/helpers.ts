@@ -116,7 +116,7 @@ export async function unfurlPost(
     return post.text.toLowerCase().includes(keyword);
   });
 
-  const processedPost = mrkdwn(decode(post.text));
+  const processedPost = mrkdwn(decode(post.text)).text;
 
   return await fetch("https://slack.com/api/chat.unfurl", {
     // unfurl the hacker news post using the Slack API
