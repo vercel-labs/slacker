@@ -8,8 +8,7 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const { authorization } = req.headers;
-      console.log(authorization);
-      if (authorization === `Bearer ${process.env.GH_ACTIONS_KEY}`) {
+      if (authorization === `Bearer ${process.env.CRON_JOB_OAUTH_TOKEN}`) {
         const response = await run();
         res.status(200).json(response);
       } else {
