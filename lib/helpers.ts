@@ -185,33 +185,3 @@ export async function setLastCheckedId(id: number) {
   const json = await res.json();
   return json as number;
 }
-
-export function unfurlPostEdge(post: any, keywords: string[]) {
-  /* Unfurl a hacker news post to Slack using Slack's Attachments API: https://api.slack.com/messaging/composing/layouts#attachments */
-  const mentionedTerms = keywords.filter((keyword) => {
-    return post.text.toLowerCase().includes(keyword);
-  });
-  return {
-    mrkdwn_in: ["author_name", "text", "footer"],
-    fallback: `https://news.ycombinator.com/item?id=${post.id}`,
-    author_name: `New <https://news.ycombinator.com/item?id=${post.id}|${post.type}> from <https://news.ycombinator.com/user?id=${post.by}|${post.by}>`,
-    author_icon: `https://ui-avatars.com/api/?name=${post.by}&background=random`,
-    text: decode(post.text),
-    ...(mentionedTerms.length > 0 && {
-      fields: [
-        {
-          title: "Mentioned Terms",
-          value: mentionedTerms.join(", "),
-          short: false,
-        },
-      ],
-    }),
-    footer: `<https://news.ycombinator.com/item?id=${
-      post.id
-    }|Hacker News> | <!date^${
-      post.time
-    }^{date_short_pretty} at {time}^${`https://news.ycombinator.com/item?id=${post.id}`}|Just Now>`,
-    footer_icon:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Y_Combinator_logo.svg/1024px-Y_Combinator_logo.svg.png",
-  };
-}
