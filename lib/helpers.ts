@@ -99,7 +99,7 @@ export async function sendSlackMessage(id: number) {
       },
       body: JSON.stringify({
         text: `https://news.ycombinator.com/item?id=${id}`,
-        channel: "C03QV0M5GNL",
+        channel: process.env.SLACK_CHANNEL_ID,
         unfurl_links: true,
       }),
     });

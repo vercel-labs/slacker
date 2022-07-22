@@ -5,7 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id } = req.query;
+  const { id } = req.query as { id?: string };
   if (!id) {
     return res.status(400).json({ message: "No id found" });
   }
