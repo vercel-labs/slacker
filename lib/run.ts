@@ -10,7 +10,7 @@ import {
 const NUM_THREADS = 5;
 
 export async function run() {
-  const keywords = await getKeywords();
+  const keywords = await getKeywords(); // get keywords from redis once for the whole operation
   const lastCheckedId = await getLastCheckedId(); // get last checked post id from redis
   const latestPostId = await getLatestPost(); // get latest post id from hacker news
   const threadSize = Math.ceil((latestPostId - lastCheckedId) / NUM_THREADS); // get thread size (number of posts to check for each thread)
