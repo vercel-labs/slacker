@@ -73,9 +73,19 @@ export async function processPost(
     return { status: "deleted" };
   }
   const text = combineText(post);
+
   for (let i = 0; i < keywords.length; i++) {
     const keyword = keywords[i];
-    if (text.toLowerCase().includes(keyword)) {
+
+    /* 
+      This regex matches all instances of a keyword that are not preceded or proceeded by alphabets
+      e.g. keyword = `vite`:
+      - ...the Vite framework is... => matches
+      - ...we use vite. It is pretty... => matches
+      - ...my app is at https://vite.vercel.app/ => matches
+      - ...please send me an invite for... => does not match
+    */
+    if (RegExp(`(?<![A-Za-z])${keyword}(?![A-Za-z]+)`, "gmi").test(text)) {
       try {
         await sendSlackMessage(post.id);
         return { status: "present" };
@@ -119,7 +129,8 @@ export async function unfurlPost(
   const keywords = await getKeywords();
   const text = combineText(post);
   const mentionedTerms = keywords.filter((keyword) => {
-    return text.toLowerCase().includes(keyword);
+    // similar regex as the one in `processPost()`
+    return RegExp(`(?<![A-Za-z])${keyword}(?![A-Za-z]+)`, "gmi").test(text);
   });
 
   const processedPost = mrkdwn(decode(post.text)).text;
