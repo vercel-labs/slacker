@@ -20,7 +20,9 @@
 
 A bot that monitors Hacker News for mentions of certain keywords and sends it to a Slack channel. 
 
-It also shows preview links for `news.ycombinator.com` links sent in Slack.
+It also unfurls & shows previews for `news.ycombinator.com` links sent in Slack.
+
+![CleanShot 2022-07-24 at 17 49 52](https://user-images.githubusercontent.com/28986134/180668999-5ce216d7-00ef-4e9d-93cb-d24c3e532034.png)
 
 ## How it works
 
