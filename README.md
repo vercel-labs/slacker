@@ -10,16 +10,24 @@
 <div align="center">
   <a href="https://slack.com/oauth/v2/authorize?client_id=12364000946.3845028209600&scope=chat:write,commands,links:read&user_scope=links:read"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
 </div>
-<br/>
 
 <p align="center">
-  <a href="#introduction"><strong>Introduction</strong></a> ·
-  <a href="#deploy+your+own"><strong>Deploy Your Own</strong></a> ·
+  <a href="#deploy-your-own"><strong><i>or deploy your own</i></strong></a>
 </p>
 <br/>
 
 ## Introduction
 
-A bot that monitors Hacker News for mentions of certain keywords and sends it to a Slack channel.
+A bot that monitors Hacker News for mentions of certain keywords and sends it to a Slack channel. 
+
+It also shows preview links for `news.ycombinator.com` links sent in Slack.
+
+## How it works
+
+1. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L42-L66) and [unfurling](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L68-L130) messages
+2. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/hn.ts)
+3. [Upstash](https://upstash.com/) for [key-value storage](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/upstash.ts)
+4. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/unfurl.ts)
+5. [Zeplo](https://www.zeplo.io/) for cron scheduling
 
 ## Deploy your own
