@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import Image from "next/image";
+import slackGif from "../public/slackanimation.gif";
 
 const Home: NextPage = () => {
   const [clicked, setClicked] = useState(false);
@@ -30,11 +31,10 @@ const Home: NextPage = () => {
         >
           <div className="group-hover:block hidden relative w-10 h-10 -ml-2.5 mr-0.5">
             <Image
-              src="/slackanimation.gif"
+              src={slackGif}
               alt="Slack logo animated"
-              width={36}
-              height={36}
               layout="fill"
+              priority
             />
           </div>
           <svg
