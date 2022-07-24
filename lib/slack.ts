@@ -1,10 +1,16 @@
-import { NextApiRequest } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
 import { decode } from "html-entities";
 // @ts-ignore - no type info for this module
 import mrkdwn from "html-to-mrkdwn";
 import { combineText } from "./helpers";
-import { getAccessToken, getChannel, getKeywords } from "./upstash";
+import {
+  clearDataForTeam,
+  getAccessToken,
+  getChannel,
+  getKeywords,
+} from "./upstash";
+import { getPost } from "@/lib/hn";
 
 export function verifyRequest(req: NextApiRequest) {
   const {
@@ -65,20 +71,30 @@ export async function sendSlackMessage(postId: number, teamId: string) {
   }
 }
 
-export async function unfurlPost(
-  teamId: string,
-  post: any,
-  url: string,
-  channel: string,
-  ts: string
-) {
+export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
   /* Unfurl a hacker news post to Slack using Slack's Attachments API: https://api.slack.com/messaging/composing/layouts#attachments */
 
-  const accessToken = await getAccessToken(teamId); // get access token from upstash
+  const { team_id } = req.body;
+  if (!team_id) {
+    return res.status(400).json({ message: "No team_id found" });
+  }
+  const channel = req.body.event.channel; // channel the message was sent in
+  const ts = req.body.event.message_ts; // message timestamp
+  const url = req.body.event.links[0].url; // url that was shared
+  const newUrl = new URL(url);
+  const id = newUrl.searchParams.get("id"); // get hacker news post id
+  if (!id) {
+    return res.status(400).json({ message: "No id found" });
+  }
 
-  const keywords: string[] = await getKeywords(teamId); // get keywords from upstash
+  const post = await getPost(parseInt(id)); // get post data from hacker news API
+
+  const accessToken = await getAccessToken(team_id); // get access token from upstash
+
+  const keywords: string[] = await getKeywords(team_id); // get keywords from upstash
 
   const text = combineText(post);
+
   const mentionedTerms = keywords.filter((keyword) => {
     // similar regex as the one in `processPost()`
     return RegExp(`(?<![A-Za-z])${keyword}(?![A-Za-z]+)`, "gmi").test(text);
@@ -86,7 +102,7 @@ export async function unfurlPost(
 
   const processedPost = mrkdwn(decode(post.text)).text;
 
-  return await fetch("https://slack.com/api/chat.unfurl", {
+  const response = await fetch("https://slack.com/api/chat.unfurl", {
     // unfurl the hacker news post using the Slack API
     method: "POST",
     headers: {
@@ -127,4 +143,25 @@ export async function unfurlPost(
       },
     }),
   });
+  return res.status(200).json(response);
+}
+
+export function verifyRequestWithToken(req: NextApiRequest) {
+  const { token } = req.body;
+  return token === process.env.SLACK_VERIFICATION_TOKEN;
+}
+
+export async function handleUninstall(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (!verifyRequestWithToken(req))
+    // verify that the request is coming from the correct Slack team
+    // here we use the verification token because for some reason signing secret doesn't work
+    return res.status(403).json({
+      message: "Nice try buddy. Slack signature mismatch.",
+    });
+  const { team_id } = req.body;
+  const response = await clearDataForTeam(team_id);
+  return res.status(200).json(response);
 }

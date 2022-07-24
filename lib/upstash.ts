@@ -151,3 +151,42 @@ export async function getTeamsAndKeywords() {
     })
   );
 }
+
+export async function clearDataForTeam(teamId: string) {
+  /* Clear all data for a team */
+  const resKey = await fetch(
+    `${process.env.UPSTASH_REDIS_REST_URL}/del/${teamId}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
+      },
+    }
+  );
+  const delKey = await resKey.json();
+  const resChannel = await fetch(
+    `${process.env.UPSTASH_REDIS_REST_URL}/del/${teamId}_channel`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
+      },
+    }
+  );
+  const delChannel = await resChannel.json();
+  const resKeywords = await fetch(
+    `${process.env.UPSTASH_REDIS_REST_URL}/del/${teamId}_keywords`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
+      },
+    }
+  );
+  const delKeywords = await resKeywords.json();
+  return {
+    delKey,
+    delChannel,
+    delKeywords,
+  };
+}
