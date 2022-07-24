@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  A bot that monitors Hacker News for mentions of certain keywords and sends it to a Slack channel.
+  A bot that monitors Hacker News for mentions of certain keywords and sends it to Slack.
 </p>
 
 <div align="center">
@@ -18,7 +18,7 @@
 
 ## Introduction
 
-A bot that monitors Hacker News for mentions of certain keywords and sends it to a Slack channel. 
+A bot that monitors Hacker News for mentions of certain keywords related to your company/product and sends it to a Slack channel. 
 
 It also unfurls & shows previews for `news.ycombinator.com` links sent in Slack.
 
@@ -31,5 +31,9 @@ It also unfurls & shows previews for `news.ycombinator.com` links sent in Slack.
 3. [Upstash](https://upstash.com/) for [key-value storage](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/upstash.ts)
 4. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/unfurl.ts)
 5. [Zeplo](https://www.zeplo.io/) for cron scheduling
+
+## Installing in Slack
+
+You can click the button above 
 
 ## Deploy your own
