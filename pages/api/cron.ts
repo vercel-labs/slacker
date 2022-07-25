@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { cron } from "@/lib/cron";
+import crypto from "crypto";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,7 +9,13 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const { authorization } = req.headers;
-      if (authorization === `Bearer ${process.env.CRON_JOB_OAUTH_TOKEN}`) {
+      if (
+        authorization &&
+        crypto.timingSafeEqual(
+          Buffer.from(authorization),
+          Buffer.from(`Bearer ${process.env.CRON_JOB_OAUTH_TOKEN}`)
+        )
+      ) {
         const response = await cron();
         res.status(200).json(response);
       } else {
