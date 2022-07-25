@@ -8,7 +8,7 @@ export default async function handler(
   const { code } = req.query; // get code from request posted to redirect_uri from Slack
   try {
     const response = await fetch(
-      `https://slack.com/api/oauth.v2.access?client_id=12364000946.3845028209600&client_secret=${process.env.SLACK_CLIENT_SECRET}&code=${code}`
+      `https://slack.com/api/oauth.v2.access?client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}&client_secret=${process.env.SLACK_CLIENT_SECRET}&code=${code}`
     );
     const json = await response.json();
     const { access_token, team } = json;

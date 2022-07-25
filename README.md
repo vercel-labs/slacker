@@ -30,7 +30,7 @@ It also unfurls & shows previews for `news.ycombinator.com` links sent in Slack.
 2. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/event.ts)
 3. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/hn.ts)
 4. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L48) and [unfurling]
-(https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L74) messages
+   (https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L74) messages
 5. [Upstash](https://upstash.com/) for [key-value storage](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/upstash.ts)
 
 ## How It Works
@@ -50,25 +50,27 @@ You can click the button below to install the bot directly into your desired Sla
 <a href="https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands&client_id=12364000946.3845028209600"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
 
 Once it's installed, here are a few [slash commands](https://api.slack.com/interactivity/slash-commands) you can use to set up the bot:
+
 - `/channel`: Set the desired channel for the bot to send notifications in. You can also check the currently set channel with `/channel`.
-   ![CleanShot 2022-07-25 at 00 44 18](https://user-images.githubusercontent.com/28986134/180706428-6052778f-2fba-4e8f-9a78-5035388544cc.png)
-   ![CleanShot 2022-07-25 at 00 45 42](https://user-images.githubusercontent.com/28986134/180706608-b8bcfc2d-f060-4912-bb84-4093302a804f.png)
+  ![CleanShot 2022-07-25 at 00 44 18](https://user-images.githubusercontent.com/28986134/180706428-6052778f-2fba-4e8f-9a78-5035388544cc.png)
+  ![CleanShot 2022-07-25 at 00 45 42](https://user-images.githubusercontent.com/28986134/180706608-b8bcfc2d-f060-4912-bb84-4093302a804f.png)
 - `/list`: Show the current list of `keywords` that are being tracked
-   ![CleanShot 2022-07-25 at 00 52 01](https://user-images.githubusercontent.com/28986134/180707350-82d7b7b2-03a0-4c08-94a6-d57e6faa3ba0.png)
+  ![CleanShot 2022-07-25 at 00 52 01](https://user-images.githubusercontent.com/28986134/180707350-82d7b7b2-03a0-4c08-94a6-d57e6faa3ba0.png)
 - `/track`: Add a keyword to track
-   ![CleanShot 2022-07-25 at 00 49 40](https://user-images.githubusercontent.com/28986134/180707031-139de70e-43ac-434a-8ab4-bc26bbb2f1bf.png)
+  ![CleanShot 2022-07-25 at 00 49 40](https://user-images.githubusercontent.com/28986134/180707031-139de70e-43ac-434a-8ab4-bc26bbb2f1bf.png)
 - `/untrack`: Remove a keyword to track
-   ![CleanShot 2022-07-25 at 00 50 16](https://user-images.githubusercontent.com/28986134/180707134-98ddac64-e83c-4de1-8411-d0338e14f152.png)
+  ![CleanShot 2022-07-25 at 00 50 16](https://user-images.githubusercontent.com/28986134/180707134-98ddac64-e83c-4de1-8411-d0338e14f152.png)
 
 ## Deploy Your Own
 
 You can also deploy your own version of this bot using Zeplo, Vercel, and Upstash.
 
 ### Step 1: Create Slack App + Securing Env Vars
+
 1. Navigate to [api.slack.com/apps](https://api.slack.com/apps) and click on "Create New App".
 2. Select "From scratch" and input `Hacker News Bot` as the name of your app.
 3. Voilà! You've just created your Slack app. Here, you'll receive 3 values that will be used for your Vercel deployment in the next step:
-   - **Client ID*: This is your App's unique public-facing ID that will be the value for the `NEXT_PULBIC_SLACK_CLIENT_ID` env var.
+   - **Client ID**: This is your App's unique public-facing ID that will be the value for the `NEXT_PUBLIC_SLACK_CLIENT_ID` env var.
    - **Signing Secret**: This is the signing secret used to validate that requests are genuinely coming from Slack. It will be the value for the `SLACK_SIGNING_SECRET` env var.
    - **Verification Token**: This is the verification token used to validate that requests are genuinely coming from Slack. It will be the value for the `SLACK_VERIFICATION_TOKEN` env var.
 
@@ -80,7 +82,7 @@ For added security, we recommmend you set up a `CRON_JOB_OAUTH_TOKEN` to secure 
 
 You can deploy your bot to Vercel with one-click:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot&project-name=hacker-news-slack-bot&repository-name=hacker-news-slack-bot&env=NEXT_PULBIC_SLACK_CLIENT_ID,SLACK_SIGNING_SECRET,SLACK_VERIFICATION_TOKEN,CRON_JOB_OAUTH_TOKEN&envDescription=Read%20more%20about%20the%20required%20env%20vars%20here%3A&envLink=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot%23deploy-your-own&demo-title=Hacker%20News%20Slack%20Bot&demo-description=A%20bot%20that%20monitors%20Hacker%20News%20for%20mentions%20of%20certain%20keywords%20and%20sends%20it%20to%20a%20Slack%20channel.&demo-url=https%3A%2F%2Fhn-bot.vercel.app%2F&demo-image=https%3A%2F%2Fhn-bot.vercel.app%2Fthumbnail.png&integration-ids=oac_V3R1GIpkoJorr6fqyiwdhl17)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot&project-name=hacker-news-slack-bot&repository-name=hacker-news-slack-bot&env=NEXT_PUBLIC_SLACK_CLIENT_ID,SLACK_SIGNING_SECRET,SLACK_VERIFICATION_TOKEN,CRON_JOB_OAUTH_TOKEN&envDescription=Read%20more%20about%20the%20required%20env%20vars%20here%3A&envLink=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot%23deploy-your-own&demo-title=Hacker%20News%20Slack%20Bot&demo-description=A%20bot%20that%20monitors%20Hacker%20News%20for%20mentions%20of%20certain%20keywords%20and%20sends%20it%20to%20a%20Slack%20channel.&demo-url=https%3A%2F%2Fhn-bot.vercel.app%2F&demo-image=https%3A%2F%2Fhn-bot.vercel.app%2Fthumbnail.png&integration-ids=oac_V3R1GIpkoJorr6fqyiwdhl17)
 
 Be sure to include all 3 of the env vars above in your deployment.
 
@@ -91,49 +93,53 @@ When the project finishes deploying, get the deployed URL for the project (e.g. 
 For your Slack app to be able to send/unfurl messages in your Slack workspace, we will need to configure a few things:
 
 #### Step 3A: Configuring OAuth Scopes
+
 1. From your Slack app home screen, select "OAuth & Permissions" from the sidebar (under "Features").
 2. Scroll down to "Scopes", and add the following scopes under "Bot Token Scopes":
+
    - `chat:write`
    - `chat:write.public`
    - `links:read`
    - `links:write`
-   
+
    ![CleanShot 2022-07-25 at 13 49 18](https://user-images.githubusercontent.com/28986134/180852042-653ed883-1cb6-45fd-bb6b-1969fb3ea705.png)
 
 #### Step 3B: Configuring Event Subscriptions
+
 1. Now, select "Event Subscriptions" from the sidebar (under "Features").
 2. Toggle "Enable Events" to "ON".
 3. For the "Request URL" field, input the deployment URL you got from Vercel and append `/api/event` to it. The final URL should look something like `https://hacker-news-slack-bot-zeta.vercel.app/api/event`.
-4. Scroll down to "Subscribe to bot events". Add the `link_shared` bot user event. 
+4. Scroll down to "Subscribe to bot events". Add the `link_shared` bot user event.
 5. Do the same for `Subscribe to events on behalf of users".
    ![Slack app configurations (1)](https://user-images.githubusercontent.com/28986134/180888217-911be4f9-be58-4f1c-a0bf-db915bbcb006.png)
-6. Under "App unfurl domains", add `news.ycombinator.com`. 
+6. Under "App unfurl domains", add `news.ycombinator.com`.
    ![Slack app configurations (2)](https://user-images.githubusercontent.com/28986134/180888572-5c682596-acab-447c-a150-8f69e922507b.png)
 7. Click on "Save Changes".
 
 #### Step 3C: Configure Slash Commands
 
 Select "Slash Commands" from the sidebar (under "Features"). Create the following commmands with their respective Request URLs (based on your deploy URL:
+
 1. Channel
-    - Command: `/channel`
-    - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/channel`
-    - Short Description: Set the desired channel for the bot to send notifications in.
+   - Command: `/channel`
+   - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/channel`
+   - Short Description: Set the desired channel for the bot to send notifications in.
 2. List
-    - Command: `/list`
-    - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/list`
-    - Short Description: Show the current list of keywords that are being tracked
+   - Command: `/list`
+   - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/list`
+   - Short Description: Show the current list of keywords that are being tracked
 3. Track
-    - Command: `/track`
-    - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/track`
-    - Short Description: Add a keyword to track
+   - Command: `/track`
+   - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/track`
+   - Short Description: Add a keyword to track
 4. Untrack
-    - Command: `/untrack`
-    - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/untrack`
-    - Short Description: Remove a keyword to track
+   - Command: `/untrack`
+   - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/untrack`
+   - Short Description: Remove a keyword to track
 
 #### Step 3D: Install App to Slack Workspace + Get OAuth token
 
-1. Go back to "Basic Information" (under "Settings"). 
+1. Go back to "Basic Information" (under "Settings").
 2. Under "Install your app", click opn "Install to Workspace".
 3. You should receive a notification that your app has been installed in your Slack workspace.
 4. Go to "OAuth & Permissions" under "Features". Copy the value of "Bot User OAuth Token".

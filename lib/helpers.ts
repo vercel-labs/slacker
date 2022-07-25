@@ -113,7 +113,7 @@ export function regexOperations(post: any, keywords: string[]) {
   const processedPost = marked.replace(decorateRegex, (match, term) => {
     // If we have a term, then it's something like "Vercel" and we can decorate it.
     if (term) {
-      return `:sparkles: *${term}* :sparkles:`;
+      return "`*" + term + "*`";
     }
 
     // Else, we matched a link's href and we do not want to decorate.

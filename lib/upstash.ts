@@ -1,4 +1,7 @@
 export async function getAccessToken(teamId: string) {
+  // If you are self hosting this app & have set a SLACK_OAUTH_TOKEN env var, you can just return it here.
+  if (process.env.SLACK_OAUTH_TOKEN) return process.env.SLACK_OAUTH_TOKEN;
+
   /* Get the access token for a Slack team in redis */
   const res = await fetch(
     `${process.env.UPSTASH_REDIS_REST_URL}/get/${teamId}`,
