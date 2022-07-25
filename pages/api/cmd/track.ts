@@ -1,6 +1,7 @@
 import { addKeyword } from "@/lib/upstash";
 import { verifyRequest } from "@/lib/slack";
 import { NextApiRequest, NextApiResponse } from "next";
+import { commonWords } from "manifest";
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,7 +22,7 @@ export default async function handler(
     });
   }
 
-  const text = rawText.toLowerCase(); // convert text to lowercase
+  const text = rawText.toLowerCase().trim(); // convert text to lowercase and remove leading and trailing whitespace
 
   if (command !== "/track")
     // probably won't happen but by the off chance it does, we'll handle it
@@ -34,6 +35,12 @@ export default async function handler(
     return res.status(200).json({
       response_type: "ephemeral",
       text: "No keyword included. You need to include a keyword to track: `/track <keyword>`",
+    });
+  }
+  if (commonWords.includes(text)) {
+    return res.status(200).json({
+      response_type: "ephemeral",
+      text: "That keyword is too common. Try a different one.",
     });
   }
   const response = await addKeyword(team_id, text);

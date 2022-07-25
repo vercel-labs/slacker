@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
 import Image from "next/image";
+import GithubCorner from "@/components/github-corner";
 import slackGif from "../public/slackanimation.gif";
 
 const Home: NextPage = () => {
@@ -10,6 +10,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Hacker News Slack Bot</title>
       </Head>
+      <GithubCorner url="https://github.com/vercel/hacker-news-slack-bot" />
 
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
         <h1 className="text-3xl font-bold mb-5">Hacker News Bot</h1>
