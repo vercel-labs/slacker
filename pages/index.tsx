@@ -5,23 +5,16 @@ import Image from "next/image";
 import slackGif from "../public/slackanimation.gif";
 
 const Home: NextPage = () => {
-  const [clicked, setClicked] = useState(false);
   return (
     <div>
       <Head>
         <title>Hacker News Slack Bot</title>
-        <meta
-          name="description"
-          content="A bot that monitors Hacker News for mentions of certain keywords and sends it to a Slack channel."
-        />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
         <h1 className="text-3xl font-bold mb-5">Hacker News Bot</h1>
         <a
           href="https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands&client_id=12364000946.3845028209600"
-          onClick={() => setClicked(true)}
           style={{
             fontFamily: "Lato, sans-serif",
             fontSize: "16px",

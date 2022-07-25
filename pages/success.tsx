@@ -6,11 +6,6 @@ const Success: NextPage = () => {
     <div>
       <Head>
         <title>Installation Successful</title>
-        <meta
-          name="description"
-          content="A bot that monitors Hacker News for mentions of certain keywords and sends it to a Slack channel."
-        />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
