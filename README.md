@@ -8,7 +8,7 @@
 </p>
 
 <div align="center">
-  <a href="https://slack.com/oauth/v2/authorize?client_id=12364000946.3845028209600&scope=chat:write,commands,links:read&user_scope=links:read"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
+  <a href="https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands&client_id=12364000946.3845028209600"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
 </div>
 
 <p align="center">
@@ -18,7 +18,7 @@
 
 ## Introduction
 
-A bot that monitors Hacker News for mentions of certain keywords related to your company/product and sends it to a Slack channel. 
+A bot that monitors Hacker News for mentions of certain keywords related to your company/product and sends it to a Slack channel.
 
 It also unfurls & shows previews for `news.ycombinator.com` links sent in Slack.
 
@@ -34,6 +34,6 @@ It also unfurls & shows previews for `news.ycombinator.com` links sent in Slack.
 
 ## Installing in Slack
 
-You can click the button above 
+You can click the button above
 
 ## Deploy your own
