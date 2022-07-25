@@ -20,7 +20,7 @@ const Home: NextPage = () => {
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
         <h1 className="text-3xl font-bold mb-5">Hacker News Bot</h1>
         <a
-          href="https://slack.com/oauth/v2/authorize?scope=chat:write,links:read,links:write,commands&user_scope=links:read&client_id=12364000946.3845028209600"
+          href="https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands&user_scope=links:read&client_id=12364000946.3845028209600"
           onClick={() => setClicked(true)}
           style={{
             fontFamily: "Lato, sans-serif",
