@@ -64,10 +64,20 @@ Once it's installed, here are a few [slash commands](https://api.slack.com/inter
 
 You can also deploy your own version of this bot using Zeplo, Vercel, and Upstash.
 
+### Step 1: Create Slack App + Env Vars
+1. Navigate to [api.slack.com/apps](https://api.slack.com/apps) and click on "Create New App".
+2. Select "From scratch" and input `Hacker News Bot` as the name of your app.
+3. ...and, voilà! There you have it:
+
+![CleanShot 2022-07-25 at 02 16 31](https://user-images.githubusercontent.com/28986134/180720201-816f985d-774b-41fe-8cf5-b87f730d77d2.png)
+
+Here you'll receive two env vars – `SLACK_SIGNING_SECRET` and `SLACK_VERIFICATION_TOKEN` – both of which will be used to verify requests from Slack.
+
+For added security, we recommmend you set up a `CRON_JOB_OAUTH_TOKEN` to secure your cron requests from Zeplo. You can generate a random token [here](https://generate-secret.vercel.app/).
+
+### Step 2: Deploy to Vercel
+
+You can deploy your bot to Vercel with one-click:
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot&env=CRON_JOB_OAUTH_TOKEN,SLACK_SIGNING_SECRET,SLACK_VERIFICATION_TOKEN&envDescription=Read%20more%20about%20the%20required%20env%20vars%20here%3A&envLink=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot%23deploy-your-own&demo-title=Hacker%20News%20Slack%20Bot&demo-description=A%20bot%20that%20monitors%20Hacker%20News%20for%20mentions%20of%20certain%20keywords%20and%20sends%20it%20to%20a%20Slack%20channel.&demo-url=https%3A%2F%2Fhn-bot.vercel.app%2F&demo-image=https%3A%2F%2Fhn-bot.vercel.app%2Fthumbnail.png&integration-ids=oac_V3R1GIpkoJorr6fqyiwdhl17)
 
-While the Upstash integration is pretty seamless, you'll still need to configure a few environment variables for Slack:
-- `SLACK_SIGNING_SECRET`: 
-- `SLACK_VERIFICATION_TOKEN`
-
-For added security, we recommmend you set up a `CRON_JOB_OAUTH_TOKEN` to secure your cron requests from Zeplo. You can generate a secret [here](https://generate-secret.vercel.app/) and set it as the value for `CRON_JOB_OAUTH_TOKEN`. 
