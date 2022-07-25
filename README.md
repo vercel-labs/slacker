@@ -61,3 +61,13 @@ Once it's installed, here are a few [slash commands](https://api.slack.com/inter
    ![CleanShot 2022-07-25 at 00 50 16](https://user-images.githubusercontent.com/28986134/180707134-98ddac64-e83c-4de1-8411-d0338e14f152.png)
 
 ## Deploy your own
+
+You can also deploy your own version of this bot using Zeplo, Vercel, and Upstash.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot&env=CRON_JOB_OAUTH_TOKEN,SLACK_SIGNING_SECRET,SLACK_VERIFICATION_TOKEN&envDescription=Read%20more%20about%20the%20required%20env%20vars%20here%3A&envLink=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot%23deploy-your-own&demo-title=Hacker%20News%20Slack%20Bot&demo-description=A%20bot%20that%20monitors%20Hacker%20News%20for%20mentions%20of%20certain%20keywords%20and%20sends%20it%20to%20a%20Slack%20channel.&demo-url=https%3A%2F%2Fhn-bot.vercel.app%2F&demo-image=https%3A%2F%2Fuser-images.githubusercontent.com%2F28986134%2F180705583-a52c3578-5df3-4576-8362-6d6e0b287ef2.png&integration-ids=oac_V3R1GIpkoJorr6fqyiwdhl17)
+
+While the Upstash integration is pretty seamless, you'll still need to configure a few environment variables for Slack:
+- `SLACK_SIGNING_SECRET`: 
+- `SLACK_VERIFICATION_TOKEN`
+
+For added security, we recommmend you set up a `CRON_JOB_OAUTH_TOKEN` to secure your cron requests from Zeplo. You can generate a secret [here](https://generate-secret.vercel.app/) and set it as the value for `CRON_JOB_OAUTH_TOKEN`. 
