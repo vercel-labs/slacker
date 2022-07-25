@@ -64,14 +64,14 @@ Once it's installed, here are a few [slash commands](https://api.slack.com/inter
 
 You can also deploy your own version of this bot using Zeplo, Vercel, and Upstash.
 
-### Step 1: Create Slack App + Env Vars
+### Step 1: Create Slack App + Securing Env Vars
 1. Navigate to [api.slack.com/apps](https://api.slack.com/apps) and click on "Create New App".
 2. Select "From scratch" and input `Hacker News Bot` as the name of your app.
-3. ...and, voilà! There you have it:
+3. Voilà! You've just created your Slack app. Here, you'll receive two env vars that will be used in the code to verify requests from Slack:
+   - `SLACK_SIGNING_SECRET`: this is the value of "Signing Secret" in the screenshot below
+   - `SLACK_VERIFICATION_TOKEN`: this is the value of "Verification Token" in the screenshot below
 
 ![CleanShot 2022-07-25 at 02 16 31](https://user-images.githubusercontent.com/28986134/180720201-816f985d-774b-41fe-8cf5-b87f730d77d2.png)
-
-Here you'll receive two env vars – `SLACK_SIGNING_SECRET` and `SLACK_VERIFICATION_TOKEN` – both of which will be used to verify requests from Slack.
 
 For added security, we recommmend you set up a `CRON_JOB_OAUTH_TOKEN` to secure your cron requests from Zeplo. You can generate a random token [here](https://generate-secret.vercel.app/).
 
@@ -81,3 +81,25 @@ You can deploy your bot to Vercel with one-click:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot&env=CRON_JOB_OAUTH_TOKEN,SLACK_SIGNING_SECRET,SLACK_VERIFICATION_TOKEN&envDescription=Read%20more%20about%20the%20required%20env%20vars%20here%3A&envLink=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot%23deploy-your-own&demo-title=Hacker%20News%20Slack%20Bot&demo-description=A%20bot%20that%20monitors%20Hacker%20News%20for%20mentions%20of%20certain%20keywords%20and%20sends%20it%20to%20a%20Slack%20channel.&demo-url=https%3A%2F%2Fhn-bot.vercel.app%2F&demo-image=https%3A%2F%2Fhn-bot.vercel.app%2Fthumbnail.png&integration-ids=oac_V3R1GIpkoJorr6fqyiwdhl17)
 
+Be sure to include all 3 of the env vars above in your deployment.
+
+### Step 3: Configuring Slack app
+
+For your Slack app to be able to send/unfurl messages in your Slack workspace, we will need to configure a few things:
+
+#### Step 3A: Configuring OAuth Scopes
+1. From your Slack app home screen, select "OAuth & Permissions" from the sidebar (under "Features").
+2. Scroll down to "Scopes", and add the following scopes under "Bot Token Scopes":
+   - `chat:write`
+   - `chat:write.public`
+   - `links:read`
+   - `links:write`
+   
+   ![CleanShot 2022-07-25 at 13 49 18](https://user-images.githubusercontent.com/28986134/180852042-653ed883-1cb6-45fd-bb6b-1969fb3ea705.png)
+
+#### Step 3B: Configuring Event Subscriptions
+1. Now, select "Event Subscriptions" from the sidebar (under "Features").
+
+### Step 4: Delete Unnecessary Code
+
+### Step 5: Set Up Cron Processes on Zeplo
