@@ -103,14 +103,21 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
   // link text first, so that we may ignore it when decorating, and the
   // keywords second, so that we can decorate.
   // This regex will be of the form:
-  //   const termsRegex = /http[^|]*|\b(vercel|nextjs)\b/gi
-  const termsRegex = new RegExp(`<http[^|]*|\\b(${keywords.join('|')})\\b`, 'gi');
+  //   const termsRegex = /http[^|]*|(\bvercel\b)|(\bnextjs\b))\b/gi
+  const termsRegex = new RegExp(`<http[^|]*|(\\b${keywords.join('\\\\b)|(\\\\b')}\\b)`, 'gi');
 
-  const processedPost = mrkdwn(decode(post.text)).text.replace(termsRegex, (match, term) => {
-    // If term matched, then we have "Vercel" or similar, and we can decorate it.
-    if (term) {
-      mentionedTerms.add(term);
-      return `*${term}*`;
+  const processedPost = mrkdwn(decode(post.text)).text.replace(termsRegex, (match, ...terms) => {
+    // In order to preserve the case-sensitivity of the keywords, we do a bit of meta-programming.
+    // We generated N regex capture groups, and we want to see if any of them matched. The index
+    // of the capture group matches the index of the keyword, so we can then decorate the actual
+    // text in the post, and know which keyword matched.
+    for (let i = 0; i < keywords.length; i++) {
+      const term = terms[i];
+      // If term matched, then we have "Vercel" or similar, and we can decorate it.
+      if (term !== undefined) {
+        mentionedTerms.add(keywords[i]);
+        return `*${term}*`;
+      }
     }
 
     // Else, we matched a link's href and we do not want to decorate.
