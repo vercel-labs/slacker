@@ -40,7 +40,7 @@ export default async function handler(
   if (commonWords.includes(text)) {
     return res.status(200).json({
       response_type: "ephemeral",
-      text: "That keyword is too common. Try a different one.",
+      text: "The keyword `" + text + "` is too common. Try a different one.",
     });
   }
   const response = await addKeyword(team_id, text);
