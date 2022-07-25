@@ -65,8 +65,8 @@ export function truncateString(str: string, num: number) {
 export function regexOperations(post: any, keywords: string[]) {
   const mentionedTerms = new Set();
 
-  // This transforms each keyword into the string to generate a regex capture
-  // group in a dynamically constructed regex. Eg,
+  // This transforms each keyword into the string to explicitly match the
+  // keyword in a dynamically constructed regex. Eg,
   // ["Vercel", "NextJS"] -> ["\bVercel\b", "\bNextJS"\b"]
   const keywordWordBoundary = keywords.map(
     (keyword) => `\\b${regexEscape(keyword)}\\b`
@@ -98,13 +98,15 @@ export function regexOperations(post: any, keywords: string[]) {
 
   // This regex searches for formatted links, and for our keywords. "Vercel"
   // may appear in the link href (eg, "<https://vercel.com|Vercel> is
-  // awesome!"), and we only want to decorate the link's text. We match the
-  // link href first, so that we may ignore it when decorating, and the link
+  // awesome!"), and we only want to decorate the link's text. We match:
+  // - the `<https://vercel.com` link href first, so that we may ignore it when decorating.
+  // - the `|https://vercel.com` href (where the link has no explicit text) second, so we can again ignore.
+  // - the term "Vercel" word that doesn't appear inside either of those.
   // text second, so that we can decorate.
   // This regex will be of the form:
-  //   const decorateRegex = /<http[^|]*|(\bVercel\b|\bNextJS\b)/gi
+  //   const decorateRegex = /<http[^|]*|\|http[^>]*|(\bVercel\b|\bNextJS\b)/gi
   const decorateRegex = new RegExp(
-    `<http[^|]*|(${keywordWordBoundary.join("|")})`,
+    `<http[^|]*|\|http[^>|(${keywordWordBoundary.join("|")})`,
     "gi"
   );
 
