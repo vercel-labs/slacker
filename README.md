@@ -22,18 +22,26 @@ A bot that monitors Hacker News for mentions of certain keywords related to your
 
 It also unfurls & shows previews for `news.ycombinator.com` links sent in Slack.
 
-![CleanShot 2022-07-24 at 17 49 52](https://user-images.githubusercontent.com/28986134/180668999-5ce216d7-00ef-4e9d-93cb-d24c3e532034.png)
+![Hacker News Slack Bot Demo](https://user-images.githubusercontent.com/28986134/180668999-5ce216d7-00ef-4e9d-93cb-d24c3e532034.png)
 
-## How it works
+## Stack
 
-1. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L48) and [unfurling](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L74) messages
-2. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/hn.ts)
-3. [Upstash](https://upstash.com/) for [key-value storage](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/upstash.ts)
-4. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/event.ts)
-5. [Zeplo](https://www.zeplo.io/) for cron scheduling
+1. [Zeplo](https://www.zeplo.io/) for cron scheduling
+2. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/event.ts)
+3. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/hn.ts)
+4. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L48) and [unfurling]
+(https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L74) messages
+5. [Upstash](https://upstash.com/) for [key-value storage](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/upstash.ts)
 
-## Installing in Slack
+## How It Works
 
-You can click the button above
+![Hacker News Slack Bot Overview](https://user-images.githubusercontent.com/28986134/180704583-a079dc95-d3c1-4cec-b375-67fefed86bb1.png)
+
+1. Set up a cron in Zeplo that pings our [`/api/cron` endpoint](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) once every 60 seconds.
+2. 
+
+## One-Click Install
+
+You can click the button above to install the 
 
 ## Deploy your own
