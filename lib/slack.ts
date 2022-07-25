@@ -95,12 +95,27 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
 
   const text = combineText(post);
 
-  const mentionedTerms = keywords.filter((keyword) => {
-    // similar regex as the one in `processPost()`
-    return RegExp(`(?<![A-Za-z])${keyword}(?![A-Za-z]+)`, "gmi").test(text);
-  });
+  const mentionedTerms = new Set();
 
-  const processedPost = mrkdwn(decode(post.text)).text;
+  // This regex searches for formatted links, and for our keywords. "Vercel"
+  // may appear in the link href (eg, "<https://vercel.com|Vercel> is
+  // awesome!"), and we only want to decorate the link's text. We match the
+  // link text first, so that we may ignore it when decorating, and the
+  // keywords second, so that we can decorate.
+  // This regex will be of the form:
+  //   const termsRegex = /http[^|]*|\b(vercel|nextjs)\b/gi
+  const termsRegex = new RegExp(`<http[^|]*|\\b(${keywords.join('|')})\\b`, 'gi');
+
+  const processedPost = mrkdwn(decode(post.text)).text.replace(termsRegex, (match, term) => {
+    // If term matched, then we have "Vercel" or similar, and we can decorate it.
+    if (term) {
+      mentionedTerms.add(term);
+      return `*${term}*`;
+    }
+
+    // Else, we matched a link's href and we do not want to decorate.
+    return match;
+  });
 
   const originalPost = post.parent ? await getParent(post) : null; // if post is a comment, get title of original post
 
@@ -125,11 +140,11 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
             title_link: `https://news.ycombinator.com/item?id=${post.id}`,
           }),
           text: processedPost,
-          ...(mentionedTerms.length > 0 && {
+          ...(mentionedTerms.size > 0 && {
             fields: [
               {
                 title: "Mentioned Terms",
-                value: mentionedTerms.join(", "),
+                value: [...mentionedTerms].join(", "),
                 short: false,
               },
             ],
