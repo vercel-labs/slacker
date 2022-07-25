@@ -73,7 +73,7 @@ You can also deploy your own version of this bot using Zeplo, Vercel, and Upstas
 
 Here you'll receive two env vars – `SLACK_SIGNING_SECRET` and `SLACK_VERIFICATION_TOKEN` – both of which will be used to verify requests from Slack.
 
-For added security, we recommmend you set up a `CRON_JOB_OAUTH_TOKEN` to secure your cron requests from Zeplo. You can generate a secret [here](https://generate-secret.vercel.app/) and set it as the value for `CRON_JOB_OAUTH_TOKEN`. 
+For added security, we recommmend you set up a `CRON_JOB_OAUTH_TOKEN` to secure your cron requests from Zeplo. You can generate a random token [here](https://generate-secret.vercel.app/).
 
 ### Step 2: Deploy to Vercel
 
