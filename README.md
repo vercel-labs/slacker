@@ -50,20 +50,14 @@ You can click the button below to install the bot directly into your desired Sla
 <a href="https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands&client_id=12364000946.3845028209600"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
 
 Once it's installed, here are a few [slash commands](https://api.slack.com/interactivity/slash-commands) you can use to set up the bot:
-- `/channel`
-    - Set the desired channel for the bot to send notifications in
-    - E.g. `/channel C03QQED1SG2` will set the channel to the channel with the channel ID `C03QQED1SG2`
-      ![CleanShot 2022-07-25 at 00 44 18](https://user-images.githubusercontent.com/28986134/180706428-6052778f-2fba-4e8f-9a78-5035388544cc.png)
-    - You can check the currently set channel with `/channel` (without any channel ID)
-      ![CleanShot 2022-07-25 at 00 45 42](https://user-images.githubusercontent.com/28986134/180706608-b8bcfc2d-f060-4912-bb84-4093302a804f.png)
-- `/list`
-    - Show the current list of `keywords` that are being tracked
-      ![CleanShot 2022-07-25 at 00 47 40](https://user-images.githubusercontent.com/28986134/180706800-84a09c88-64eb-45b6-8327-0ca7d39325f2.png)
-- `/track`:
-    - Add a keyword to track
-      ![CleanShot 2022-07-25 at 00 49 40](https://user-images.githubusercontent.com/28986134/180707031-139de70e-43ac-434a-8ab4-bc26bbb2f1bf.png)
-- `/untrack`:
-    - Remove a keyword to track
-      ![CleanShot 2022-07-25 at 00 50 16](https://user-images.githubusercontent.com/28986134/180707134-98ddac64-e83c-4de1-8411-d0338e14f152.png)
+- `/channel`: Set the desired channel for the bot to send notifications in. You can also check the currently set channel with `/channel`.
+   ![CleanShot 2022-07-25 at 00 44 18](https://user-images.githubusercontent.com/28986134/180706428-6052778f-2fba-4e8f-9a78-5035388544cc.png)
+   ![CleanShot 2022-07-25 at 00 45 42](https://user-images.githubusercontent.com/28986134/180706608-b8bcfc2d-f060-4912-bb84-4093302a804f.png)
+- `/list`: Show the current list of `keywords` that are being tracked
+   ![CleanShot 2022-07-25 at 00 52 01](https://user-images.githubusercontent.com/28986134/180707350-82d7b7b2-03a0-4c08-94a6-d57e6faa3ba0.png)
+- `/track`: Add a keyword to track
+   ![CleanShot 2022-07-25 at 00 49 40](https://user-images.githubusercontent.com/28986134/180707031-139de70e-43ac-434a-8ab4-bc26bbb2f1bf.png)
+- `/untrack`: Remove a keyword to track
+   ![CleanShot 2022-07-25 at 00 50 16](https://user-images.githubusercontent.com/28986134/180707134-98ddac64-e83c-4de1-8411-d0338e14f152.png)
 
 ## Deploy your own
