@@ -83,6 +83,8 @@ You can deploy your bot to Vercel with one-click:
 
 Be sure to include all 3 of the env vars above in your deployment.
 
+When the project finishes deploying, get the deployed URL for the project (e.g. `https://hacker-news-slack-bot-zeta.vercel.app/`). You'll need it for the next step.
+
 ### Step 3: Configuring Slack app
 
 For your Slack app to be able to send/unfurl messages in your Slack workspace, we will need to configure a few things:
@@ -99,6 +101,14 @@ For your Slack app to be able to send/unfurl messages in your Slack workspace, w
 
 #### Step 3B: Configuring Event Subscriptions
 1. Now, select "Event Subscriptions" from the sidebar (under "Features").
+2. Toggle "Enable Events" to "ON".
+3. For the "Request URL" field, input the deployment URL you got from Vercel and append `/api/event` to it. The final URL should look something like `https://hacker-news-slack-bot-zeta.vercel.app/api/event`.
+4. Scroll down to "Subscribe to bot events". Add the `link_shared` bot user event. 
+5. Do the same for `Subscribe to events on behalf of users".
+   ![Slack app configurations (1)](https://user-images.githubusercontent.com/28986134/180888217-911be4f9-be58-4f1c-a0bf-db915bbcb006.png)
+6. Under "App unfurl domains", add `news.ycombinator.com`. 
+   ![CleanShot 2022-07-25 at 17 58 14](https://user-images.githubusercontent.com/28986134/180888280-64586171-5587-443a-9ece-41889f424a28.png)
+
 
 ### Step 4: Delete Unnecessary Code
 
