@@ -16,7 +16,7 @@
 </p>
 <br/>
 
-# Introduction
+## Introduction
 
 A bot that monitors Hacker News for mentions of certain keywords related to your company/product and sends it to a Slack channel.
 
@@ -24,7 +24,7 @@ It also unfurls & shows previews for `news.ycombinator.com` links sent in Slack.
 
 ![Hacker News Slack Bot Demo](https://user-images.githubusercontent.com/28986134/180668999-5ce216d7-00ef-4e9d-93cb-d24c3e532034.png)
 
-# Stack
+## Stack
 
 1. [Zeplo](https://www.zeplo.io/) for cron scheduling
 2. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/event.ts)
@@ -33,7 +33,7 @@ It also unfurls & shows previews for `news.ycombinator.com` links sent in Slack.
 (https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L74) messages
 5. [Upstash](https://upstash.com/) for [key-value storage](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/upstash.ts)
 
-# How It Works
+## How It Works
 
 ![Hacker News Slack Bot Overview](https://user-images.githubusercontent.com/28986134/180705583-a52c3578-5df3-4576-8362-6d6e0b287ef2.png)
 
@@ -43,7 +43,7 @@ It also unfurls & shows previews for `news.ycombinator.com` links sent in Slack.
 4. For each positive post, send its link to Slack using the [`chat.postMessage` method](https://api.slack.com/methods/chat.postMessage).
 5. Listed to the [`link_shared` event](https://api.slack.com/events/link_shared) at our `/api/event` endpoint. Once an event occurs, send a POST request to Slack to unfurl the link using the [chat.unfurl method](https://api.slack.com/methods/chat.unfurl).
 
-# One-Click Install
+## One-Click Install
 
 You can click the button below to install the bot directly into your desired Slack workspace:
 
@@ -60,11 +60,11 @@ Once it's installed, here are a few [slash commands](https://api.slack.com/inter
 - `/untrack`: Remove a keyword to track
    ![CleanShot 2022-07-25 at 00 50 16](https://user-images.githubusercontent.com/28986134/180707134-98ddac64-e83c-4de1-8411-d0338e14f152.png)
 
-# Deploy your own
+## Deploy your own
 
 You can also deploy your own version of this bot using Zeplo, Vercel, and Upstash.
 
-## Step 1: Create Slack App + Securing Env Vars
+### Step 1: Create Slack App + Securing Env Vars
 1. Navigate to [api.slack.com/apps](https://api.slack.com/apps) and click on "Create New App".
 2. Select "From scratch" and input `Hacker News Bot` as the name of your app.
 3. Voilà! You've just created your Slack app. Here, you'll receive two env vars that will be used in the code to verify requests from Slack:
@@ -75,7 +75,7 @@ You can also deploy your own version of this bot using Zeplo, Vercel, and Upstas
 
 For added security, we recommmend you set up a `CRON_JOB_OAUTH_TOKEN` to secure your cron requests from Zeplo. You can generate a random token [here](https://generate-secret.vercel.app/).
 
-## Step 2: Deploy to Vercel
+### Step 2: Deploy to Vercel
 
 You can deploy your bot to Vercel with one-click:
 
@@ -85,11 +85,11 @@ Be sure to include all 3 of the env vars above in your deployment.
 
 When the project finishes deploying, get the deployed URL for the project (e.g. `https://hacker-news-slack-bot-zeta.vercel.app/`). You'll need it for the next step.
 
-## Step 3: Configuring Slack app
+### Step 3: Configuring Slack app
 
 For your Slack app to be able to send/unfurl messages in your Slack workspace, we will need to configure a few things:
 
-### Step 3A: Configuring OAuth Scopes
+#### Step 3A: Configuring OAuth Scopes
 1. From your Slack app home screen, select "OAuth & Permissions" from the sidebar (under "Features").
 2. Scroll down to "Scopes", and add the following scopes under "Bot Token Scopes":
    - `chat:write`
@@ -99,7 +99,7 @@ For your Slack app to be able to send/unfurl messages in your Slack workspace, w
    
    ![CleanShot 2022-07-25 at 13 49 18](https://user-images.githubusercontent.com/28986134/180852042-653ed883-1cb6-45fd-bb6b-1969fb3ea705.png)
 
-### Step 3B: Configuring Event Subscriptions
+#### Step 3B: Configuring Event Subscriptions
 1. Now, select "Event Subscriptions" from the sidebar (under "Features").
 2. Toggle "Enable Events" to "ON".
 3. For the "Request URL" field, input the deployment URL you got from Vercel and append `/api/event` to it. The final URL should look something like `https://hacker-news-slack-bot-zeta.vercel.app/api/event`.
@@ -110,7 +110,7 @@ For your Slack app to be able to send/unfurl messages in your Slack workspace, w
    ![Slack app configurations (2)](https://user-images.githubusercontent.com/28986134/180888572-5c682596-acab-447c-a150-8f69e922507b.png)
 7. Click on "Save Changes".
 
-### Step 3C: Configure Slash Commands
+#### Step 3C: Configure Slash Commands
 
 Select "Slash Commands" from the sidebar (under "Features"). Create the following commmands with their respective Request URLs (based on your deploy URL:
 1. Channel
@@ -130,6 +130,6 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
     - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/untrack`
     - Short Description: Remove a keyword to track
 
-## Step 4: Delete Unnecessary Code
+### Step 4: Delete Unnecessary Code
 
-## Step 5: Set Up Cron Processes on Zeplo
+### Step 5: Set Up Cron Processes on Zeplo
