@@ -3,6 +3,7 @@ import crypto from "crypto";
 import { decode } from "html-entities";
 // @ts-ignore - no type info for this module
 import mrkdwn from "html-to-mrkdwn";
+import regexEscape from 'escape-string-regexp';
 import { combineText, truncateString } from "./helpers";
 import {
   clearDataForTeam,
@@ -93,31 +94,50 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
 
   const keywords: string[] = await getKeywords(team_id); // get keywords from upstash
 
-  const text = combineText(post);
+  const mentionedTerms = new Set();
 
-  // This regex searches for formatted links, and for our keywords. "Vercel"
-  // may appear in the link href (eg, "<https://vercel.com|Vercel> is
-  // awesome!"), and we only want to decorate the link's text. We match the
-  // link text first, so that we may ignore it when decorating, and the
-  // keywords second, so that we can decorate.
+  // This transforms each keyword into the string to generate a regex capture
+  // group in a dynamically constructed regex. Eg,
+  // ["Vercel", "NextJS"] -> ["\bVercel\b", "\bNextJS"\b"]
+  const keywordWordBoundary = keywords.map(keyword => `\\b${regexEscape(keyword)}\\b`);
+
   // This regex will be of the form:
-  //   const termsRegex = /http[^|]*|(\bvercel\b)|(\bnextjs\b))\b/gi
-  const termsRegex = new RegExp(`<http[^|]*|(\\b${keywords.join('\\\\b)|(\\\\b')}\\b)`, 'gi');
+  //   const termsRegex = /(\bVercel\b)|(\bNextJS\b))\b/gi
+  const termsRegex = new RegExp(`(${keywordWordBoundary.join(')|(')})`, 'gi');
 
-  const mentionedTerms = new Set(post.title?.match(termsRegex));
+  const marked: string = mrkdwn(decode(post.text)).text;
 
-  const processedPost = mrkdwn(decode(post.text)).text.replace(termsRegex, (match, ...terms) => {
+  // We use String.replace here so that we can know which capture group is
+  // actually matched, so that we can extract the appropriate keyword.
+  combineText(post).replace(termsRegex, (_, ...terms: string[]) => {
     // In order to preserve the case-sensitivity of the keywords, we do a bit of meta-programming.
     // We generated N regex capture groups, and we want to see if any of them matched. The index
     // of the capture group matches the index of the keyword, so we can then decorate the actual
     // text in the post, and know which keyword matched.
     for (let i = 0; i < keywords.length; i++) {
-      const term = terms[i];
-      // If term matched, then we have "Vercel" or similar, and we can decorate it.
-      if (term !== undefined) {
+      if (terms[i] !== undefined) {
         mentionedTerms.add(keywords[i]);
-        return `*${term}*`;
       }
+    }
+
+    // We don't actually care about the replaced text, we're just using this
+    // for the side-effects.
+    return '';
+  });
+
+  // This regex searches for formatted links, and for our keywords. "Vercel"
+  // may appear in the link href (eg, "<https://vercel.com|Vercel> is
+  // awesome!"), and we only want to decorate the link's text. We match the
+  // link href first, so that we may ignore it when decorating, and the link
+  // text second, so that we can decorate.
+  // This regex will be of the form:
+  //   const decorateRegex = /<http[^|]*|(\bVercel\b|\bNextJS\b)/gi
+  const decorateRegex = new RegExp(`<http[^|]*|(${keywordWordBoundary.join('|')})`, 'gi');
+
+  const processedPost = marked.replace(decorateRegex, (match, term) => {
+    // If we have a term, then it's something like "Vercel" and we can decorate it.
+    if (term) {
+      return `*${term}*`;
     }
 
     // Else, we matched a link's href and we do not want to decorate.
