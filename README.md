@@ -140,6 +140,7 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 5. Set it as the `SLACK_OAUTH_TOKEN` env var in your Vercel project. Here's a [guide](https://vercel.com/docs/concepts/projects/environment-variables) on how to do that.
    ![CleanShot 2022-07-25 at 18 33 05](https://user-images.githubusercontent.com/28986134/180892017-510b87b6-5bc9-4262-ab10-32e5f7887ef9.png)
 6. Redeploy your Vercel project for the changes to take effect.
+7. To verify that this worked, go to any channel on your Slack workspace and send a Hacker News link. The link should now unfurl and show a nice preview (like the one above).
 
 ### Step 4: Set Up Cron Processes on Zeplo
 
