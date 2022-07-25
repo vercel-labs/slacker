@@ -95,8 +95,6 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
 
   const text = combineText(post);
 
-  const mentionedTerms = new Set();
-
   // This regex searches for formatted links, and for our keywords. "Vercel"
   // may appear in the link href (eg, "<https://vercel.com|Vercel> is
   // awesome!"), and we only want to decorate the link's text. We match the
@@ -105,6 +103,8 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
   // This regex will be of the form:
   //   const termsRegex = /http[^|]*|(\bvercel\b)|(\bnextjs\b))\b/gi
   const termsRegex = new RegExp(`<http[^|]*|(\\b${keywords.join('\\\\b)|(\\\\b')}\\b)`, 'gi');
+
+  const mentionedTerms = new Set(post.title?.match(termsRegex));
 
   const processedPost = mrkdwn(decode(post.text)).text.replace(termsRegex, (match, ...terms) => {
     // In order to preserve the case-sensitivity of the keywords, we do a bit of meta-programming.
