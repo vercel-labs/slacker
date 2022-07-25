@@ -1,9 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
-import { decode } from "html-entities";
-// @ts-ignore - no type info for this module
-import mrkdwn from "html-to-mrkdwn";
-import { combineText, truncateString } from "./helpers";
+import { truncateString, regexOperations } from "./helpers";
 import {
   clearDataForTeam,
   getAccessToken,
@@ -93,14 +90,7 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
 
   const keywords: string[] = await getKeywords(team_id); // get keywords from upstash
 
-  const text = combineText(post);
-
-  const mentionedTerms = keywords.filter((keyword) => {
-    // similar regex as the one in `processPost()`
-    return RegExp(`(?<![A-Za-z])${keyword}(?![A-Za-z]+)`, "gmi").test(text);
-  });
-
-  const processedPost = mrkdwn(decode(post.text)).text;
+  const { processedPost, mentionedTerms } = regexOperations(post, keywords); // get post data with keywords highlighted
 
   const originalPost = post.parent ? await getParent(post) : null; // if post is a comment, get title of original post
 
@@ -125,11 +115,11 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
             title_link: `https://news.ycombinator.com/item?id=${post.id}`,
           }),
           text: processedPost,
-          ...(mentionedTerms.length > 0 && {
+          ...(mentionedTerms.size > 0 && {
             fields: [
               {
                 title: "Mentioned Terms",
-                value: mentionedTerms.join(", "),
+                value: Array.from(mentionedTerms).join(", "),
                 short: false,
               },
             ],
