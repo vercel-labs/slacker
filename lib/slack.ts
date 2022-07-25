@@ -3,14 +3,14 @@ import crypto from "crypto";
 import { decode } from "html-entities";
 // @ts-ignore - no type info for this module
 import mrkdwn from "html-to-mrkdwn";
-import { combineText } from "./helpers";
+import { combineText, truncateString } from "./helpers";
 import {
   clearDataForTeam,
   getAccessToken,
   getChannel,
   getKeywords,
 } from "./upstash";
-import { getPost } from "@/lib/hn";
+import { getPost, getParent } from "@/lib/hn";
 
 export function verifyRequest(req: NextApiRequest) {
   const {
@@ -102,6 +102,8 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
 
   const processedPost = mrkdwn(decode(post.text)).text;
 
+  const originalPost = post.parent ? await getParent(post) : null; // if post is a comment, get title of original post
+
   const response = await fetch("https://slack.com/api/chat.unfurl", {
     // unfurl the hacker news post using the Slack API
     method: "POST",
@@ -133,8 +135,12 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
             ],
           }),
           footer: `<https://news.ycombinator.com/item?id=${
-            post.id
-          }|Hacker News> | <!date^${
+            originalPost ? originalPost.id : post.id
+          }|${
+            originalPost // if original post exists, add a footer with the link to it
+              ? `on: ${truncateString(originalPost.title, 40)}` // truncate the title to max 40 chars
+              : "Hacker News"
+          }> | <!date^${
             post.time
           }^{date_short_pretty} at {time}^${`https://news.ycombinator.com/item?id=${post.id}`}|Just Now>`,
           footer_icon:

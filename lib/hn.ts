@@ -15,3 +15,13 @@ export async function getPost(id: number) {
   const json = await res.json();
   return json;
 }
+
+export async function getParent(post: any): Promise<any> {
+  /* recursively get parent of post */
+  if (!post.parent) {
+    return post;
+  } else {
+    const parent = await getPost(post.parent);
+    return await getParent(parent);
+  }
+}
