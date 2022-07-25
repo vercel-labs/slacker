@@ -106,7 +106,7 @@ export function regexOperations(post: any, keywords: string[]) {
   // This regex will be of the form:
   //   const decorateRegex = /<http[^|]*|\|http[^>]*|(\bVercel\b|\bNextJS\b)/gi
   const decorateRegex = new RegExp(
-    `<http[^|]*|\|http[^>|(${keywordWordBoundary.join("|")})`,
+    `<http[^|]*|\|http[^>]*|(${keywordWordBoundary.join("|")})`,
     "gi"
   );
 
