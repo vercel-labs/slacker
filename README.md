@@ -76,7 +76,7 @@ You can deploy your bot to Vercel with one-click:
 
 Be sure to include all 4 of the env vars above in your deployment.
 
-When the project finishes deploying, get the deployed URL for the project (e.g. `https://hacker-news-slack-bot-zeta.vercel.app/`). You'll need it for the next step.
+When the project finishes deploying, get your project's domain (e.g. `https://hacker-news-slack-bot-eight.vercel.app/`). You'll need it for the next step.
 
 ### Step 3: Configuring Slack app
 
@@ -98,7 +98,7 @@ For your Slack app to be able to send/unfurl messages in your Slack workspace, w
 
 1. Now, select "Event Subscriptions" from the sidebar (under "Features").
 2. Toggle "Enable Events" to "ON".
-3. For the "Request URL" field, input the deployment URL you got from Vercel and append `/api/event` to it. The final URL should look something like `https://hacker-news-slack-bot-zeta.vercel.app/api/event`.
+3. For the "Request URL" field, input your Vercel project's domain and append `/api/event` to it. The final URL should look something like `https://hacker-news-slack-bot-eight.vercel.app//api/event`.
 4. Scroll down to "Subscribe to bot events". Add the `link_shared` bot user event.
 5. Do the same for `Subscribe to events on behalf of users".
    ![Slack app configurations (1)](https://user-images.githubusercontent.com/28986134/180888217-911be4f9-be58-4f1c-a0bf-db915bbcb006.png)
@@ -108,23 +108,23 @@ For your Slack app to be able to send/unfurl messages in your Slack workspace, w
 
 #### Step 3C: Configure Slash Commands
 
-Select "Slash Commands" from the sidebar (under "Features"). Create the following commmands with their respective Request URLs (based on your deploy URL:
+Select "Slash Commands" from the sidebar (under "Features"). Create the following commmands with their respective Request URLs (based on your Vercel project's domain):
 
 1. Channel
    - Command: `/channel`
-   - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/channel`
+   - Request URL: `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cmd/channel`
    - Short Description: Set the desired channel for the bot to send notifications in.
 2. List
    - Command: `/list`
-   - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/list`
+   - Request URL: `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cmd/list`
    - Short Description: Show the current list of keywords that are being tracked
 3. Track
    - Command: `/track`
-   - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/track`
+   - Request URL: `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cmd/track`
    - Short Description: Add a keyword to track
 4. Untrack
    - Command: `/untrack`
-   - Request URL: `https://[YOUR_DEPLOY_URL]/api/cmd/untrack`
+   - Request URL: `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cmd/untrack`
    - Short Description: Remove a keyword to track
 
 #### Step 3D: Install App to Slack Workspace + Get OAuth token
@@ -141,4 +141,10 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 
 ### Step 4: Set Up Cron Processes on Zeplo
 
-### Step 5: Delete Unnecessary Code
+1. Create an account on [Zeplo](https://www.zeplo.io/). 
+2. Go to "Schedules", and click on "Create Schedule".
+3. Configure the URL as `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cron`.
+4. Select the POST method.
+5. Under "Headers", click "Add new header", and input `Authorization`: `Bearer [CRON_JOB_OAUTH_TOKEN]` where the `CRON_JOB_OAUTH_TOKEN` is the one you got from Step 1.
+6. Click "Schedule".
+7. You should now start receiving notifications whenever your keywords are mentioned on Hacker News.
