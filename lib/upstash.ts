@@ -172,7 +172,7 @@ export async function getTeamsAndKeywords() {
 export async function clearDataForTeam(teamId: string) {
   /* Clear all data for a team */
   const resKey = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/del/${teamId}`,
+    `${process.env.UPSTASH_REDIS_REST_URL}/del/${teamId}_token`,
     {
       method: "POST",
       headers: {
