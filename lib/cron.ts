@@ -22,11 +22,12 @@ export async function cron() {
   let results: {
     [postId: string]: string[]; // for each post, store the teams that it was sent to
   } = {};
+  let errors: any[] = [];
 
   for (let i = lastCheckedId + 1; i <= latestPostId; i++) {
     const post = await getPost(i); // get post from hacker news
     if (!post) {
-      console.error(`Post ${i} not found`); // by the off chance that the post fails to fetch/doesn't exist, log it
+      console.log(`Hacker News post not found. Post number: ${i}`); // by the off chance that the post fails to fetch/doesn't exist, log it
       continue;
     }
     if (post.deleted) {
@@ -39,7 +40,18 @@ export async function cron() {
       await Promise.all(
         interestedTeams.map(async (teamId) => {
           console.log("sending post to team", teamId);
-          await sendSlackMessage(i, teamId);
+          try {
+            await sendSlackMessage(i, teamId); // send post to team
+          } catch (e) {
+            console.log(
+              `Error sending post ${i} to team ${teamId}. Cause of error: ${e}`
+            );
+            errors.push({
+              error: e,
+              postId: i,
+              teamId: teamId,
+            }); // if there's an error, add it to errors
+          }
         })
       );
     }
@@ -51,5 +63,6 @@ export async function cron() {
       latestPostId - lastCheckedId
     } posts)`,
     results,
+    errors,
   };
 }
