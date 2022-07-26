@@ -207,3 +207,31 @@ export async function clearDataForTeam(teamId: string) {
     delKeywords,
   };
 }
+
+export async function trackUnfurls(teamId: string) {
+  /* Track unfurls for a team */
+  const res = await fetch(
+    `${process.env.UPSTASH_REDIS_REST_URL}/incr/${teamId}_unfurls`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
+      },
+    }
+  );
+  return await res.json();
+}
+
+export async function trackBotUsage(teamId: string) {
+  /* Track unfurls for a team */
+  const res = await fetch(
+    `${process.env.UPSTASH_REDIS_REST_URL}/incr/${teamId}_notifications`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
+      },
+    }
+  );
+  return await res.json();
+}

@@ -6,6 +6,8 @@ import {
   getAccessToken,
   getChannel,
   getKeywords,
+  trackBotUsage,
+  trackUnfurls,
 } from "./upstash";
 import { getPost, getParent } from "@/lib/hn";
 
@@ -49,23 +51,23 @@ export async function sendSlackMessage(postId: number, teamId: string) {
   console.log(
     `Sending message to team ${teamId} in channel ${channelId} for post ${postId}`
   );
-  try {
-    await fetch("https://slack.com/api/chat.postMessage", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        text: `https://news.ycombinator.com/item?id=${postId}`,
-        channel: channelId,
-        unfurl_links: true,
-      }),
-    });
-  } catch (e) {
-    console.log(e);
-    throw e;
-  }
+  const response = await fetch("https://slack.com/api/chat.postMessage", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({
+      text: `https://news.ycombinator.com/item?id=${postId}`,
+      channel: channelId,
+      unfurl_links: true,
+    }),
+  });
+  const trackResponse = await trackBotUsage(teamId); // track bot usage for a team
+  return {
+    response,
+    trackResponse,
+  };
 }
 
 export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
@@ -139,7 +141,12 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
       },
     }),
   });
-  return res.status(200).json(response);
+  const trackResponse = await trackUnfurls(team_id); // track unfurl usage for a team
+
+  return res.status(200).json({
+    response,
+    trackResponse,
+  });
 }
 
 export function verifyRequestWithToken(req: NextApiRequest) {
