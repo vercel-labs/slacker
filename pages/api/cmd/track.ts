@@ -7,11 +7,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (!verifyRequest(req))
+  const verification = verifyRequest(req);
+  if (!verification.status)
     // verify that the request is coming from the correct Slack team
     return res.status(200).json({
       response_type: "ephemeral",
-      text: "Nice try buddy. Slack signature mismatch.",
+      text: verification.message,
     });
 
   const { team_id, command, text: rawText } = req.body;

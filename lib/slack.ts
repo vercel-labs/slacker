@@ -18,16 +18,25 @@ export function verifyRequest(req: NextApiRequest) {
   } = req.headers as { [key: string]: string };
 
   if (!slack_signature || !timestamp) {
-    return false; // no signature or timestamp found
+    return {
+      status: false,
+      message: "No slack signature or timestamp found in request headers.",
+    };
   }
   if (process.env.SLACK_SIGNING_SECRET === undefined) {
-    return false; // no signing secret found
+    return {
+      status: false,
+      message: "`SLACK_SIGNING_SECRET` env var is not defined.",
+    };
   }
   if (
     Math.abs(Math.floor(new Date().getTime() / 1000) - parseInt(timestamp)) >
     60 * 5
   ) {
-    return false; // request timestamp differs from current timestamp by more than 5 minutes
+    return {
+      status: false,
+      message: "Nice try buddy. Slack signature mismatch.",
+    };
   }
   const req_body = new URLSearchParams(req.body).toString(); // convert body to URL search params
   const sig_basestring = "v0:" + timestamp + ":" + req_body; // create base string
@@ -38,10 +47,22 @@ export function verifyRequest(req: NextApiRequest) {
       .update(sig_basestring)
       .digest("hex");
 
-  return crypto.timingSafeEqual(
-    Buffer.from(slack_signature),
-    Buffer.from(my_signature)
-  );
+  if (
+    crypto.timingSafeEqual(
+      Buffer.from(slack_signature),
+      Buffer.from(my_signature)
+    )
+  ) {
+    return {
+      status: true,
+      message: "Verified Request.",
+    };
+  } else {
+    return {
+      status: false,
+      message: "Nice try buddy. Slack signature mismatch.",
+    };
+  }
 }
 
 export async function sendSlackMessage(postId: number, teamId: string) {
