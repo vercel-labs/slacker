@@ -129,7 +129,7 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 
 #### Step 3D: Install App to Slack Workspace + Get OAuth token
 
-1. Go back to "Basic Information" (under "Settings").
+1. Go to "Basic Information" (under "Settings").
 2. Under "Install your app", click opn "Install to Workspace".
 3. You should receive a notification that your app has been installed in your Slack workspace.
 4. Go back to "OAuth & Permissions". Copy the value of "Bot User OAuth Token".
