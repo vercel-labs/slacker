@@ -173,7 +173,7 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 
 ## Authors
 
-This project was originally created by [Steven Tey](https://twitter.com/steventey) at [Vercel](https://vercel.com/), with contributions from:
+This project was originally created by [Steven Tey](https://twitter.com/steventey) at [Vercel](https://vercel.com/), with contributions/feedback from:
 
 - Guillermo Rauch ([@rauchg](https://twitter.com/rauchg)) – [Vercel](https://vercel.com)
 - Justin Ridgewell ([@jridgewell](https://github.com/jridgewell)) – [Vercel](https://vercel.com)
