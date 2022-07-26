@@ -166,9 +166,10 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 
 ---
 
-## Author
+## Authors
 
 - Steven Tey ([@steventey](https://twitter.com/steventey))
+- Justin Ridgewell ([@jridgewell](https://github.com/jridgewell))
 
 ## License
 
