@@ -31,6 +31,8 @@
 4. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L48) and [unfurling](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L74) messages
 5. [Upstash](https://upstash.com/) for [key-value storage](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/upstash.ts)
 
+<br/>
+
 ## How It Works
 
 1. Set up a cron in Zeplo that pings our [`/api/cron` endpoint](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) once every 60 seconds.
@@ -164,18 +166,21 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 6. Click "Schedule".
 7. You should now start receiving notifications whenever your keywords are mentioned on Hacker News.
 
----
+<br/>
 
 ## Authors
 
-- Steven Tey ([@steventey](https://twitter.com/steventey))
-- Justin Ridgewell ([@jridgewell](https://github.com/jridgewell))
+This project was originally created by [Steven Tey](https://twitter.com/steventey) at [Vercel](https://vercel.com/), with contributions from:
+- Guillermo Rauch ([@rauchg](https://twitter.com/rauchg)) – [Vercel](https://vercel.com)
+- Justin Ridgewell ([@jridgewell](https://github.com/jridgewell)) – [Vercel](https://vercel.com)
+
+<br/>
 
 ## License
 
 The MIT License.
 
----
+<br/>
 
 <a aria-label="Vercel logo" href="https://vercel.com">
   <img src="https://badgen.net/badge/icon/Made%20by%20Vercel?icon=zeit&label&color=black&labelColor=black">
