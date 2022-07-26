@@ -163,3 +163,19 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 5. Under "Headers", click "Add new header", and input `Authorization`: `Bearer [CRON_JOB_OAUTH_TOKEN]` where the `CRON_JOB_OAUTH_TOKEN` is the one you got from Step 1.
 6. Click "Schedule".
 7. You should now start receiving notifications whenever your keywords are mentioned on Hacker News.
+
+---
+
+## Author
+
+- Steven Tey ([@steventey](https://twitter.com/steventey))
+
+## License
+
+The MIT License.
+
+---
+
+<a aria-label="Vercel logo" href="https://vercel.com">
+  <img src="https://badgen.net/badge/icon/Made%20by%20Vercel?icon=zeit&label&color=black&labelColor=black">
+</a>
