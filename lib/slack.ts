@@ -12,6 +12,7 @@ import {
 import { getPost, getParent } from "@/lib/hn";
 
 export function verifyRequest(req: NextApiRequest) {
+  /* Verify that requests are genuinely coming from Slack and not a forgery */
   const {
     "x-slack-signature": slack_signature,
     "x-slack-request-timestamp": timestamp,

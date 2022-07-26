@@ -45,7 +45,7 @@ export default async function handler(
   const selfHosted = process.env.SLACK_OAUTH_TOKEN;
 
   if (!selfHosted) {
-    // define some abuse prevention measures for hosted service (https://hn-bot.vercel.app)
+    // define some abuse prevention measures for hosted service (https://hn-slack-bot.vercel.app)
     if (commonWords.includes(text)) {
       // if the keyword too common, we'll reject it
       return res.status(200).json({

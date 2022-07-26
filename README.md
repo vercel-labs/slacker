@@ -25,17 +25,17 @@
 ## Built With
 
 1. [Zeplo](https://www.zeplo.io/) for cron scheduling
-2. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/event.ts)
-3. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/hn.ts)
-4. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L47) and [unfurling](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/slack.ts#L73) messages
-5. [Upstash](https://upstash.com/) for [key-value storage](https://github.com/vercel/hacker-news-slack-bot/blob/main/lib/upstash.ts)
+2. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/event.ts)
+3. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/hn.ts)
+4. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L47) and [unfurling](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L73) messages
+5. [Upstash](https://upstash.com/) for [key-value storage](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/upstash.ts)
 
 <br/>
 
 ## How It Works
 
-1. Set up a cron in Zeplo that pings our [`/api/cron` endpoint](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) once every 60 seconds.
-2. Get the last checked HN post ID ([`lastCheckedId`](https://github.com/vercel/hacker-news-slack-bot/blob/5c72371a8dca779f99b14d7b82fdb86e53fb49b6/lib/cron.ts#L10)) and the list of `keywords` to check against from Upstash.
+1. Set up a cron in Zeplo that pings our [`/api/cron` endpoint](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/cron.ts) once every 60 seconds.
+2. Get the last checked HN post ID ([`lastCheckedId`](https://github.com/steven-tey/hacker-news-slack-bot/blob/5c72371a8dca779f99b14d7b82fdb86e53fb49b6/lib/cron.ts#L10)) and the list of `keywords` to check against from Upstash.
 3. Get the `latestPostId` using HN API's [`maxitem`](https://github.com/HackerNews/API#max-item-id) endpoint. Then, perform checks against each post between `lastCheckedId` and `latestPostId` to see if they contain any of the delineated `keywords`.
 4. For each positive post, send its link to Slack using the [`chat.postMessage` method](https://api.slack.com/methods/chat.postMessage).
 5. Listed to the [`link_shared` event](https://api.slack.com/events/link_shared) at our `/api/event` endpoint. Once an event occurs, send a POST request to Slack to unfurl the link using the [chat.unfurl method](https://api.slack.com/methods/chat.unfurl).
@@ -88,7 +88,7 @@ Go to [console.upstash.com](https://console.upstash.com/login) and create an acc
 
 You can deploy your bot to Vercel with one-click:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot&project-name=hacker-news-slack-bot&repository-name=hacker-news-slack-bot&env=NEXT_PUBLIC_SLACK_CLIENT_ID,SLACK_SIGNING_SECRET,SLACK_VERIFICATION_TOKEN,CRON_JOB_OAUTH_TOKEN&envDescription=Read%20more%20about%20the%20required%20env%20vars%20here%3A&envLink=https%3A%2F%2Fgithub.com%2Fvercel%2Fhacker-news-slack-bot%23deploy-your-own&demo-title=Hacker%20News%20Slack%20Bot&demo-description=A%20bot%20that%20monitors%20Hacker%20News%20for%20mentions%20of%20certain%20keywords%20and%20sends%20it%20to%20a%20Slack%20channel.&demo-url=https%3A%2F%2Fhn-bot.vercel.app%2F&demo-image=https%3A%2F%2Fhn-bot.vercel.app%2Fthumbnail.png&integration-ids=oac_V3R1GIpkoJorr6fqyiwdhl17)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsteven-tey%2Fhacker-news-slack-bot&project-name=hacker-news-slack-bot&repository-name=hacker-news-slack-bot&env=NEXT_PUBLIC_SLACK_CLIENT_ID,SLACK_SIGNING_SECRET,SLACK_VERIFICATION_TOKEN,CRON_JOB_OAUTH_TOKEN&envDescription=Read%20more%20about%20the%20required%20env%20vars%20here%3A&envLink=https%3A%2F%2Fgithub.com%2F%2Fhacker-news-slack-bot%23deploy-your-own&demo-title=Hacker%20News%20Slack%20Bot&demo-description=A%20bot%20that%20monitors%20Hacker%20News%20for%20mentions%20of%20certain%20keywords%20and%20sends%20it%20to%20a%20Slack%20channel.&demo-url=https%3A%2F%2Fhn-slack-bot.vercel.app%2F&demo-image=https%3A%2F%2Fhn-slack-bot.vercel.app%2Fthumbnail.png&integration-ids=oac_V3R1GIpkoJorr6fqyiwdhl17)
 
 Be sure to include all 4 of the env vars above in your deployment.
 
