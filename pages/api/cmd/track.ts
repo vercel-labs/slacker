@@ -1,4 +1,4 @@
-import { addKeyword } from "@/lib/upstash";
+import { addKeyword, countKeywords } from "@/lib/upstash";
 import { verifyRequest } from "@/lib/slack";
 import { NextApiRequest, NextApiResponse } from "next";
 import { commonWords } from "manifest";
@@ -37,12 +37,35 @@ export default async function handler(
       text: "No keyword included. You need to include a keyword to track: `/track <keyword>`",
     });
   }
-  if (commonWords.includes(text)) {
-    return res.status(200).json({
-      response_type: "ephemeral",
-      text: "The keyword `" + text + "` is too common. Try a different one.",
-    });
+
+  const selfHosted = process.env.SLACK_OAUTH_TOKEN;
+
+  if (!selfHosted) {
+    // define some abuse prevention measures for hosted service (https://hn-bot.vercel.app)
+    if (commonWords.includes(text)) {
+      // if the keyword too common, we'll reject it
+      return res.status(200).json({
+        response_type: "ephemeral",
+        text: "The keyword `" + text + "` is too common. Try a different one.",
+      });
+    }
+    if (text.length > 30) {
+      // if the keyword is too long, we'll reject it
+      return res.status(200).json({
+        response_type: "ephemeral",
+        text: "The keyword `" + text + "` is too long. Try a different one.",
+      });
+    }
+    const keywordsCount = await countKeywords(team_id);
+    if (keywordsCount >= 15) {
+      // if the team has too many keywords, we'll reject it
+      return res.status(200).json({
+        response_type: "ephemeral",
+        text: "You are tracking too many keywords (max 15). Try deleting some before adding more.",
+      });
+    }
   }
+
   const response = await addKeyword(team_id, text);
   // response.result is the number of words added, if 0 then the keyword already exists
   if (response.result === 1) {

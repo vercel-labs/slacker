@@ -71,6 +71,20 @@ export async function removeKeyword(teamId: string, keyword: string) {
   return await res.json();
 }
 
+export async function countKeywords(teamId: string) {
+  /* Get list of keywords from redis */
+  const res = await fetch(
+    `${process.env.UPSTASH_REDIS_REST_URL}/scard/${teamId}_keywords`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
+      },
+    }
+  );
+  const json = await res.json();
+  return json.result as number;
+}
+
 export async function getChannel(teamId: string) {
   /* Get the channel ID to send notifications in for a Slack team in redis */
   const res = await fetch(

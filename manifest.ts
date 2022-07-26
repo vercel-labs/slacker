@@ -118,4 +118,5 @@ export const commonWords = [
   "i",
   "said",
   "part",
+  "is",
 ];
