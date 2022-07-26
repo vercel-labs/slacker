@@ -25,6 +25,10 @@ export async function cron() {
 
   for (let i = lastCheckedId + 1; i <= latestPostId; i++) {
     const post = await getPost(i); // get post from hacker news
+    if (!post) {
+      console.error(`Post ${i} not found`); // by the off chance that the post fails to fetch/doesn't exist, log it
+      continue;
+    }
     if (post.deleted) {
       continue; // if post is deleted, skip it
     }
