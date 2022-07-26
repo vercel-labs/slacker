@@ -4,7 +4,8 @@ import {
   setLastCheckedId,
   getTeamsAndKeywords,
 } from "./upstash";
-import { processPost } from "./helpers";
+import { postScanner } from "./helpers";
+import { sendSlackMessage } from "./slack";
 
 export async function cron() {
   const lastCheckedId = await getLastCheckedId(); // get last checked post id from redis
@@ -16,39 +17,34 @@ export async function cron() {
   }
 
   const teamsAndKeywords = await getTeamsAndKeywords(); // get all team keys from redis
+  const scanner = postScanner(teamsAndKeywords); // create a post scanner that contains all teams and their keywords in a constructed regex
 
   let results: {
-    [teamId: string]: {
-      // team id
-      mentionedPosts: number[]; // array of post ids that mention the keywords
-      deletedPosts: number[]; // array of post ids that were deleted
-      erroredPosts: number[]; // array of post ids that had an error
-    };
-  } = {}; // initialize results array
+    [postId: string]: string[]; // for each post, store the teams that it was sent to
+  } = {};
 
   for (let i = lastCheckedId + 1; i <= latestPostId; i++) {
     const post = await getPost(i); // get post from hacker news
+    if (!post) {
+      console.error(`Post ${i} not found`); // by the off chance that the post fails to fetch/doesn't exist, log it
+      continue;
+    }
+    if (post.deleted) {
+      continue; // if post is deleted, skip it
+    }
     console.log("checking for keywords in post", i);
-    await Promise.all(
-      teamsAndKeywords.map(async ({ teamId, keywords }) => {
-        const { status } = await processPost(post, teamId, keywords);
-        if (results[teamId] === undefined) {
-          results[teamId] = {
-            mentionedPosts: [],
-            deletedPosts: [],
-            erroredPosts: [],
-          };
-        } // initialize results array for team if it doesn't exist
-        if (status === "present") {
-          results[teamId].mentionedPosts.push(i);
-        } else if (status === "deleted") {
-          results[teamId].deletedPosts.push(i);
-        } else if (status === "error") {
-          results[teamId].erroredPosts.push(i);
-        }
-      })
-    );
+    const interestedTeams = Array.from(scanner(post)); // get teams that are interested in this post
+    if (interestedTeams.length > 0) {
+      results[i] = interestedTeams; // add post id and interested teams to results
+      await Promise.all(
+        interestedTeams.map(async (teamId) => {
+          console.log("sending post to team", teamId);
+          await sendSlackMessage(i, teamId);
+        })
+      );
+    }
   }
+
   await setLastCheckedId(latestPostId); // set last checked post id in redis
   return {
     summary: `Processed post ${lastCheckedId} to post ${latestPostId} (${

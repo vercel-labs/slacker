@@ -142,6 +142,11 @@ export async function setLastCheckedId(id: number) {
   return json as number;
 }
 
+export interface TeamAndKeywords {
+  teamId: string;
+  keywords: string[];
+}
+
 export async function getTeamsAndKeywords() {
   /* Get all teams and their respective keywords */
 
