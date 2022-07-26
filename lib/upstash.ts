@@ -4,7 +4,7 @@ export async function getAccessToken(teamId: string) {
 
   /* Get the access token for a Slack team in redis */
   const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/get/${teamId}`,
+    `${process.env.UPSTASH_REDIS_REST_URL}/get/${teamId}_token`,
     {
       headers: {
         Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
@@ -18,7 +18,7 @@ export async function getAccessToken(teamId: string) {
 export async function setAccessToken(teamId: string, accessToken: string) {
   /* Set the access token for a Slack team in redis */
   const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/set/${teamId}/${accessToken}`,
+    `${process.env.UPSTASH_REDIS_REST_URL}/set/${teamId}_token/${accessToken}`,
     {
       method: "POST",
       headers: {
