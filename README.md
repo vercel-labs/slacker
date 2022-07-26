@@ -55,7 +55,8 @@ You can click the button below to install the bot directly into your desired Sla
 
 Once it's installed, here are a few [slash commands](https://api.slack.com/interactivity/slash-commands) you can use to set up the bot:
 
-- `/channel`: Set the desired channel for the bot to send notifications in. You can also check the currently set channel with `/channel`.
+- `/channel <CHANNEL_ID>`: Set the desired channel for the bot to send notifications in. Here's [how you can get your `CHANNEL_ID`](https://stackoverflow.com/questions/40940327/what-is-the-simplest-way-to-find-a-slack-team-id-and-a-channel-id).
+- `/channel`: Check the currently set channel.
 - `/list`: Show the current list of `keywords` that are being tracked
 - `/track`: Add a keyword to track
 - `/untrack`: Remove a keyword to track
