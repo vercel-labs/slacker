@@ -48,7 +48,7 @@
 
 ## One-Click Install
 
-> Here's a [Loom tutorial](https://www.loom.com/share/3af38a0a203c4c6eb1cce9d3552df664) that walks you through the installation process, step-by-step. 
+> Here's a [Loom tutorial](https://www.loom.com/share/223dee4199f540448c4182f2e3135f62) that walks you through the installation process, step-by-step. 
 
 You can click the button below to install the bot directly into your desired Slack workspace:
 
