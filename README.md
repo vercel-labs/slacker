@@ -1,8 +1,16 @@
 <div align="center">
-    <img alt="Banner" src="https://user-images.githubusercontent.com/28986134/180896214-41446134-ee06-477b-8047-b0fb685c7fe4.png">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180939547-21810172-9613-48f0-a5d8-5c7388bd6e01.png">
+        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180896214-41446134-ee06-477b-8047-b0fb685c7fe4.png">
+        <img alt="Banner" src="https://user-images.githubusercontent.com/28986134/180896214-41446134-ee06-477b-8047-b0fb685c7fe4.png">
+    </picture>
     <h3 align="center">Hacker News Slack Bot</h3>
-    <p>A bot that monitors Hacker News for mentions of certain keywords, sends it to Slack, and shows a link preview.</p>
-    <img alt="Demo" src="https://user-images.githubusercontent.com/28986134/180898144-95b94026-bb9d-41bc-9942-48aee6c1ef91.png">
+    <p>A bot that monitors Hacker News for mentions of certain keywords, sends them to Slack, and shows a link preview.</p>
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180939963-92b706a3-3de1-4f6f-b263-d089ed0717e3.png">
+        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180898144-95b94026-bb9d-41bc-9942-48aee6c1ef91.png">
+        <img alt="Demo" src="[https://user-images.githubusercontent.com/28986134/180896214-41446134-ee06-477b-8047-b0fb685c7fe4.png](https://user-images.githubusercontent.com/28986134/180898144-95b94026-bb9d-41bc-9942-48aee6c1ef91.png)">
+    </picture>
 </div>
 
 
@@ -15,7 +23,7 @@
 </p>
 <br/>
 
-## Stack
+## Built With
 
 1. [Zeplo](https://www.zeplo.io/) for cron scheduling
 2. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/event.ts)
@@ -25,13 +33,13 @@
 
 ## How It Works
 
-![Hacker News Slack Bot Overview](https://user-images.githubusercontent.com/28986134/180705583-a52c3578-5df3-4576-8362-6d6e0b287ef2.png)
-
 1. Set up a cron in Zeplo that pings our [`/api/cron` endpoint](https://github.com/vercel/hacker-news-slack-bot/blob/main/pages/api/cron.ts) once every 60 seconds.
 2. Get the last checked HN post ID ([`lastCheckedId`](https://github.com/vercel/hacker-news-slack-bot/blob/5c72371a8dca779f99b14d7b82fdb86e53fb49b6/lib/cron.ts#L10)) and the list of `keywords` to check against from Upstash.
 3. Get the `latestPostId` using HN API's [`maxitem`](https://github.com/HackerNews/API#max-item-id) endpoint. Then, perform checks against each post between `lastCheckedId` and `latestPostId` to see if they contain any of the delineated `keywords`.
 4. For each positive post, send its link to Slack using the [`chat.postMessage` method](https://api.slack.com/methods/chat.postMessage).
 5. Listed to the [`link_shared` event](https://api.slack.com/events/link_shared) at our `/api/event` endpoint. Once an event occurs, send a POST request to Slack to unfurl the link using the [chat.unfurl method](https://api.slack.com/methods/chat.unfurl).
+
+![Hacker News Slack Bot Overview](https://user-images.githubusercontent.com/28986134/180705583-a52c3578-5df3-4576-8362-6d6e0b287ef2.png)
 
 ## One-Click Install
 
@@ -42,20 +50,15 @@ You can click the button below to install the bot directly into your desired Sla
 Once it's installed, here are a few [slash commands](https://api.slack.com/interactivity/slash-commands) you can use to set up the bot:
 
 - `/channel`: Set the desired channel for the bot to send notifications in. You can also check the currently set channel with `/channel`.
-  ![CleanShot 2022-07-25 at 00 44 18](https://user-images.githubusercontent.com/28986134/180706428-6052778f-2fba-4e8f-9a78-5035388544cc.png)
-  ![CleanShot 2022-07-25 at 00 45 42](https://user-images.githubusercontent.com/28986134/180706608-b8bcfc2d-f060-4912-bb84-4093302a804f.png)
 - `/list`: Show the current list of `keywords` that are being tracked
-  ![CleanShot 2022-07-25 at 00 52 01](https://user-images.githubusercontent.com/28986134/180707350-82d7b7b2-03a0-4c08-94a6-d57e6faa3ba0.png)
 - `/track`: Add a keyword to track
-  ![CleanShot 2022-07-25 at 00 49 40](https://user-images.githubusercontent.com/28986134/180707031-139de70e-43ac-434a-8ab4-bc26bbb2f1bf.png)
 - `/untrack`: Remove a keyword to track
-  ![CleanShot 2022-07-25 at 00 50 16](https://user-images.githubusercontent.com/28986134/180707134-98ddac64-e83c-4de1-8411-d0338e14f152.png)
 
 ## Deploy Your Own
 
 You can also deploy your own version of this bot using Zeplo, Vercel, and Upstash.
 
-### Step 1: Create Slack App + Securing Env Vars
+### Step 1: Create Slack App + Secure Env Vars
 
 1. Navigate to [api.slack.com/apps](https://api.slack.com/apps) and click on "Create New App".
 2. Select "From scratch" and input `Hacker News Bot` as the name of your app.
