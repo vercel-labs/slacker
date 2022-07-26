@@ -39,6 +39,7 @@ export default async function handler(
   }
   const response = await removeKeyword(team_id, text);
   if (response.result === 1) {
+    console.log("Team *`" + team_id + "`* stopped tracking *`" + text + "`*");
     return res.status(200).json({
       response_type: "in_channel",
       text:
