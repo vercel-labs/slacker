@@ -2,7 +2,7 @@
     <img alt="Banner" src="https://user-images.githubusercontent.com/28986134/180896214-41446134-ee06-477b-8047-b0fb685c7fe4.png">
     <h3 align="center">Hacker News Slack Bot</h3>
     <p>A bot that monitors Hacker News for mentions of certain keywords, sends it to Slack, and shows a link preview.</p>
-    <img alt="Example" src="https://user-images.githubusercontent.com/28986134/180668999-5ce216d7-00ef-4e9d-93cb-d24c3e532034.png">
+    <img alt="Demo" src="https://user-images.githubusercontent.com/28986134/180898144-95b94026-bb9d-41bc-9942-48aee6c1ef91.png">
 </div>
 
 
