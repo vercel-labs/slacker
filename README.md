@@ -48,6 +48,8 @@
 
 ## One-Click Install
 
+> Here's a [Loom tutorial](https://www.loom.com/share/3af38a0a203c4c6eb1cce9d3552df664) that walks you through the installation process, step-by-step. 
+
 You can click the button below to install the bot directly into your desired Slack workspace:
 
 <a href="https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=12364000946.3845028209600"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
@@ -66,6 +68,8 @@ Once it's installed, here are a few [slash commands](https://api.slack.com/inter
 ## Deploy Your Own
 
 You can also deploy your own version of this bot using Zeplo, Vercel, and Upstash.
+
+> Prefer a video tutorial instead? Watch this [Loom video](https://www.loom.com/share/3af38a0a203c4c6eb1cce9d3552df664).
 
 ### Step 1: Create Slack App + Secure Env Vars
 
