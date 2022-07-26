@@ -182,6 +182,7 @@ This project was originally created by [Steven Tey](https://twitter.com/stevente
 - Guillermo Rauch ([@rauchg](https://twitter.com/rauchg)) – [Vercel](https://vercel.com)
 - Justin Ridgewell ([@jridgewell](https://github.com/jridgewell)) – [Vercel](https://vercel.com)
 - Andrew Healey ([@healeycodes](https://github.com/healeycodes)) – [Vercel](https://vercel.com)
+- Lee Robinson ([@leeerob](https://twitter.com/leeerob)) – [Vercel](https://vercel.com)
 
 <br/>
 
