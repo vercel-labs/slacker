@@ -7,9 +7,9 @@
     <h3 align="center">Hacker News Slack Bot</h3>
     <p>A bot that monitors Hacker News for mentions of certain keywords, sends them to Slack, and shows a link preview.</p>
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180941083-370affae-a065-4008-8710-09419e2d9e70.png">
-        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180941122-2363098d-739a-4d25-aa7a-9c95e2db0e46.png">
-        <img alt="Demo" src="https://user-images.githubusercontent.com/28986134/180941122-2363098d-739a-4d25-aa7a-9c95e2db0e46.png">
+        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180941459-66936b53-c1d4-431f-b1b3-3e7295ad66b9.png">
+        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180941553-b12e3a2b-10f3-4979-848b-4eb8d98cd580.png">
+        <img alt="Demo" src="https://user-images.githubusercontent.com/28986134/180941553-b12e3a2b-10f3-4979-848b-4eb8d98cd580.png">
     </picture>
 </div>
 
@@ -39,7 +39,11 @@
 4. For each positive post, send its link to Slack using the [`chat.postMessage` method](https://api.slack.com/methods/chat.postMessage).
 5. Listed to the [`link_shared` event](https://api.slack.com/events/link_shared) at our `/api/event` endpoint. Once an event occurs, send a POST request to Slack to unfurl the link using the [chat.unfurl method](https://api.slack.com/methods/chat.unfurl).
 
-![Hacker News Slack Bot Overview](https://user-images.githubusercontent.com/28986134/180705583-a52c3578-5df3-4576-8362-6d6e0b287ef2.png)
+<picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180942458-01c9233c-41dc-4d51-a3a6-c64fbe5e44fb.png">
+        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180942414-dd69d83c-e37a-4833-877e-e60cccd85ecc.png">
+        <img alt="Hacker News Slack Bot Overview" src="https://user-images.githubusercontent.com/28986134/180942414-dd69d83c-e37a-4833-877e-e60cccd85ecc.png">
+    </picture>
 
 ## One-Click Install
 
@@ -110,7 +114,7 @@ For your Slack app to be able to send/unfurl messages in your Slack workspace, w
 5. Do the same for `Subscribe to events on behalf of users".
    ![Slack app configurations (1)](https://user-images.githubusercontent.com/28986134/180888217-911be4f9-be58-4f1c-a0bf-db915bbcb006.png)
 6. Under "App unfurl domains", add `news.ycombinator.com`.
-   ![Slack app configurations (2)](https://user-images.githubusercontent.com/28986134/180888572-5c682596-acab-447c-a150-8f69e922507b.png)
+   ![Slack app configurations](https://user-images.githubusercontent.com/28986134/180942661-8c3821c5-d841-4d0c-b6a9-3e88e11baed7.png)
 7. Click on "Save Changes".
 
 #### Step 4C: Configure Slash Commands
@@ -142,7 +146,11 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 4. Go back to "OAuth & Permissions". Copy the value of "Bot User OAuth Token".
    ![CleanShot 2022-07-25 at 18 28 46](https://user-images.githubusercontent.com/28986134/180891662-32c45dd7-18a1-4dd1-a729-e652bbdd42d6.png)
 5. Set it as the `SLACK_OAUTH_TOKEN` env var in your Vercel project. Here's a [guide](https://vercel.com/docs/concepts/projects/environment-variables) on how to do that.
-   ![CleanShot 2022-07-25 at 18 33 05](https://user-images.githubusercontent.com/28986134/180892017-510b87b6-5bc9-4262-ab10-32e5f7887ef9.png)
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180943047-59b23db2-affe-4a14-acc6-076244f68f06.png">
+        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180892017-510b87b6-5bc9-4262-ab10-32e5f7887ef9.png">
+        <img alt="Add env var" src="https://user-images.githubusercontent.com/28986134/180892017-510b87b6-5bc9-4262-ab10-32e5f7887ef9.png">
+    </picture>
 6. Redeploy your Vercel project for the changes to take effect.
 7. To verify that this worked, go to any channel on your Slack workspace and send a Hacker News link. The link should now unfurl and show a nice preview (like the one above).
 
