@@ -53,11 +53,17 @@ export default async function handler(
         text: "The keyword `" + text + "` is too common. Try a different one.",
       });
     }
-    if (text.length > 30) {
-      // if the keyword is too long, we'll reject it
+    if (text.length > 30 || text.length < 3) {
+      // if the keyword is too long or too short, we'll reject it
+      const issue = text.length > 30 ? "long" : "short";
       return res.status(200).json({
         response_type: "ephemeral",
-        text: "The keyword *`" + text + "`* is too long. Try a different one.",
+        text:
+          "The keyword *`" +
+          text +
+          "`* is too " +
+          issue +
+          " (min. 3 chars, max. 30 chars). Try a different one.",
       });
     }
     const keywordsCount = await countKeywords(team_id);
