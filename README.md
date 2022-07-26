@@ -1,15 +1,15 @@
 <div align="center">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180939547-21810172-9613-48f0-a5d8-5c7388bd6e01.png">
-        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180896214-41446134-ee06-477b-8047-b0fb685c7fe4.png">
-        <img alt="Banner" src="https://user-images.githubusercontent.com/28986134/180896214-41446134-ee06-477b-8047-b0fb685c7fe4.png">
+        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180941235-00044773-1b16-4984-9245-7a7d64a50219.png">
+        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180941185-0bb5b912-1884-4da9-b36d-e49cd09d5198.png">
+        <img alt="Banner" src="https://user-images.githubusercontent.com/28986134/180941185-0bb5b912-1884-4da9-b36d-e49cd09d5198.png">
     </picture>
     <h3 align="center">Hacker News Slack Bot</h3>
     <p>A bot that monitors Hacker News for mentions of certain keywords, sends them to Slack, and shows a link preview.</p>
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180939963-92b706a3-3de1-4f6f-b263-d089ed0717e3.png">
-        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180898144-95b94026-bb9d-41bc-9942-48aee6c1ef91.png">
-        <img alt="Demo" src="[https://user-images.githubusercontent.com/28986134/180896214-41446134-ee06-477b-8047-b0fb685c7fe4.png](https://user-images.githubusercontent.com/28986134/180898144-95b94026-bb9d-41bc-9942-48aee6c1ef91.png)">
+        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180941083-370affae-a065-4008-8710-09419e2d9e70.png">
+        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180941122-2363098d-739a-4d25-aa7a-9c95e2db0e46.png">
+        <img alt="Demo" src="https://user-images.githubusercontent.com/28986134/180941122-2363098d-739a-4d25-aa7a-9c95e2db0e46.png">
     </picture>
 </div>
 
