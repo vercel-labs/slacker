@@ -1,4 +1,5 @@
 import { sendSlackMessage } from "./slack";
+import { TeamAndKeywords } from "./upstash";
 import { decode } from "html-entities";
 // @ts-ignore - no type info for this module
 import mrkdwn from "html-to-mrkdwn";
@@ -19,39 +20,53 @@ export function combineText(post: any) {
   return text;
 }
 
-export async function processPost(
-  post: any,
-  teamId: string,
-  keywords: string[] = []
-): Promise<{ status: "present" | "absent" | "deleted" | "error" }> {
-  /* Process post to determine if it contains our keywords */
-  if (post.deleted) {
-    return { status: "deleted" };
-  }
-  const text = combineText(post);
+export function postScanner(teamsAndKeywords: TeamAndKeywords[]) {
+  const keywordMapping = new Map() as Map<string, string[]>;
+  const keywords = new Set();
 
-  for (let i = 0; i < keywords.length; i++) {
-    const keyword = keywords[i];
+  for (const team of teamsAndKeywords) {
+    for (const keyword of team.keywords) {
+      keywords.add(keyword);
 
-    /* 
-      This regex matches all instances of a keyword that are not preceded or proceeded by alphabets
-      e.g. keyword = `vite`:
-      - ...the Vite framework is... => matches
-      - ...we use vite. It is pretty... => matches
-      - ...my app is at https://vite.vercel.app/ => matches
-      - ...please send me an invite for... => does not match
-    */
-    if (RegExp(`(?<![A-Za-z])${keyword}(?![A-Za-z]+)`, "gmi").test(text)) {
-      try {
-        await sendSlackMessage(post.id, teamId); // send message to Slack
-        return { status: "present" };
-      } catch (err) {
-        console.log(err);
-        return { status: "error" };
+      let teams = keywordMapping.get(keyword);
+      if (teams === undefined) {
+        teams = [];
+        keywordMapping.set(keyword, teams);
       }
+      teams.push(team.teamId);
     }
   }
-  return { status: "absent" };
+
+  const keywordArray = Array.from(keywords) as string[];
+  const boundaries = keywordArray.map(
+    (keyword) => `\\b${regexEscape(keyword)}\\b`
+  );
+
+  const scanner = new RegExp(`(${boundaries.join(")|(")})`, "gi"); // create a regex that matches all keywords
+
+  return (post: any): Set<string> => {
+    const text = combineText(post); // combine text from post's title, text, and url
+    const teamsInterestedInThisPost = new Set() as Set<string>; // set of team IDs that are interested in this post
+
+    text.replace(scanner, (_, ...terms) => {
+      for (let i = 0; i < keywordArray.length; i++) {
+        if (terms[i] !== undefined) {
+          // if the keyword is found in the text
+          const teamsSubscribedToThisKeyword = keywordMapping.get(
+            keywordArray[i]
+          );
+          teamsSubscribedToThisKeyword!.forEach((teamId) => {
+            // using ! here because we know teamsSubscribedToThisKeyword is always defined
+            teamsInterestedInThisPost.add(teamId); // add team ID to set of teams that are interested in this post (if not already in set)
+          });
+          break;
+        }
+      }
+      return ""; // replace all instances of keywords with empty string (just for the replace function, we're not actually interested in the text here)
+    });
+
+    return teamsInterestedInThisPost; // return set of team IDs that are interested in this post
+  };
 }
 
 export function truncateString(str: string, num: number) {
