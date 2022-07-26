@@ -22,7 +22,10 @@ export default async function handler(
     });
   }
 
-  const text = rawText.toLowerCase().trim(); // convert text to lowercase and remove leading and trailing whitespace
+  const text = rawText
+    .toLowerCase()
+    .trim()
+    .replace(/[‘’“”]+/g, ""); // convert text to lowercase and remove leading and trailing whitespace & quotes
 
   if (command !== "/track")
     // probably won't happen but by the off chance it does, we'll handle it
@@ -53,7 +56,7 @@ export default async function handler(
       // if the keyword is too long, we'll reject it
       return res.status(200).json({
         response_type: "ephemeral",
-        text: "The keyword `" + text + "` is too long. Try a different one.",
+        text: "The keyword *`" + text + "`* is too long. Try a different one.",
       });
     }
     const keywordsCount = await countKeywords(team_id);
@@ -72,17 +75,17 @@ export default async function handler(
     return res.status(200).json({
       response_type: "in_channel",
       text:
-        "Successfully added *" +
+        "Successfully added *`" +
         text +
-        "* to list of tracked keywords. Use the `/list` command to see all keywords.",
+        "`* to list of tracked keywords. Use the `/list` command to see all keywords.",
     });
   } else if (response.result === 0) {
     return res.status(200).json({
       response_type: "ephemeral",
       text:
-        "*" +
+        "*`" +
         text +
-        "* is already in the list of tracked keywords. Use the `/list` command to see all keywords.",
+        "`* is already in the list of tracked keywords. Use the `/list` command to see all keywords.",
     });
   } else {
     return res.status(200).json({

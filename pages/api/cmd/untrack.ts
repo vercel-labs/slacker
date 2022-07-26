@@ -41,14 +41,14 @@ export default async function handler(
     return res.status(200).json({
       response_type: "in_channel",
       text:
-        "Successfully remove *" +
+        "Successfully removed *`" +
         text +
-        "* from list of tracked keywords. Use the `/list` command to see all keywords.",
+        "`* from list of tracked keywords. Use the `/list` command to see all keywords.",
     });
   } else if (response.result === 0) {
     return res.status(200).json({
       response_type: "ephemeral",
-      text: `*${text}* is not in the list of keywords.`,
+      text: "*`" + text + "`* is not in the list of keywords.",
     });
   } else {
     return res.status(200).json({
