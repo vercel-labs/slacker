@@ -10,7 +10,7 @@ export default function AddToSlack() {
         fontSize: "16px",
         fontWeight: "600",
       }}
-      className="group inline-flex items-center justify-center rounded-md w-[236px] h-[48px] border border-gray-300 hover:border-black transition-all"
+      className="group inline-flex items-center justify-center rounded-md w-[236px] h-[48px] border border-gray-300 hover:border-black bg-white transition-all"
     >
       <div className="group-hover:block hidden relative w-10 h-10 -ml-2.5 mr-0.5">
         <Image
