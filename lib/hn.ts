@@ -1,3 +1,5 @@
+import pRetry from "p-retry";
+
 export async function getLatestPost() {
   /* get latest post id from hacker news */
   const res = await fetch(
@@ -9,11 +11,25 @@ export async function getLatestPost() {
 
 export async function getPost(id: number) {
   /* get post data using its id from hacker news */
-  const res = await fetch(
-    `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-  );
-  const json = await res.json();
-  return json;
+  const run = async () => {
+    console.log("fetching post", id);
+    const res = await fetch(
+      `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+    );
+    const json = await res.json();
+    if (res.status === 404 || json === null) {
+      throw new Error(res.statusText);
+    }
+    return json;
+  };
+  try {
+    return await pRetry(run, {
+      retries: 5,
+      minTimeout: 50,
+    });
+  } catch (e) {
+    return null;
+  }
 }
 
 export async function getParent(post: any): Promise<any> {

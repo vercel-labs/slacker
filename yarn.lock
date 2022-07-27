@@ -134,6 +134,11 @@
     "@types/scheduler" "*"
     "csstype" "^3.0.2"
 
+"@types/retry@0.12.1":
+  "integrity" "sha512-xoDlM2S4ortawSWORYqsdU+2rxdh4LRW9ytc3zmT37RIKQh6IHyKwwtKhKis9ah8ol07DCkZxPt8BBvPjC6v4g=="
+  "resolved" "https://registry.npmjs.org/@types/retry/-/retry-0.12.1.tgz"
+  "version" "0.12.1"
+
 "@types/scheduler@*":
   "integrity" "sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew=="
   "resolved" "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
@@ -1835,6 +1840,14 @@
   dependencies:
     "p-limit" "^1.1.0"
 
+"p-retry@^5.1.1":
+  "integrity" "sha512-i69WkEU5ZAL8mrmdmVviWwU+DN+IUF8f4sSJThoJ3z5A7Nn5iuO5ROX3Boye0u+uYQLOSfgFl7SuFZCjlAVbQA=="
+  "resolved" "https://registry.npmjs.org/p-retry/-/p-retry-5.1.1.tgz"
+  "version" "5.1.1"
+  dependencies:
+    "@types/retry" "0.12.1"
+    "retry" "^0.13.1"
+
 "p-try@^1.0.0":
   "integrity" "sha512-U1etNYuMJoIz3ZXSrrySFjsXQTWOx2/jdi86L+2pRvph/qMKL6sbcCYdH23fqsbm8TH2Gn0OybpT4eSFlCVHww=="
   "resolved" "https://registry.npmjs.org/p-try/-/p-try-1.0.0.tgz"
@@ -2125,6 +2138,11 @@
     "is-core-module" "^2.9.0"
     "path-parse" "^1.0.7"
     "supports-preserve-symlinks-flag" "^1.0.0"
+
+"retry@^0.13.1":
+  "integrity" "sha512-XQBQ3I8W1Cge0Seh+6gjj03LbmRFWuoszgK9ooCpwYIrhhoO80pfq4cUkU5DkknwfOfFteRwlZ56PYOGYyFWdg=="
+  "resolved" "https://registry.npmjs.org/retry/-/retry-0.13.1.tgz"
+  "version" "0.13.1"
 
 "reusify@^1.0.4":
   "integrity" "sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw=="
