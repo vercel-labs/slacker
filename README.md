@@ -35,10 +35,10 @@
 ## How It Works
 
 1. Set up a cron in Zeplo that pings our [`/api/cron` endpoint](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/cron.ts) once every 60 seconds.
-2. Get the last checked HN post ID ([`lastCheckedId`](https://github.com/steven-tey/hacker-news-slack-bot/blob/5c72371a8dca779f99b14d7b82fdb86e53fb49b6/lib/cron.ts#L10)) and the list of `keywords` to check against from Upstash.
+2. Get the last checked HN post ID ([`lastCheckedId`](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/cron.ts#L11)) and the list of `keywords` to check against from Upstash.
 3. Get the `latestPostId` using HN API's [`maxitem`](https://github.com/HackerNews/API#max-item-id) endpoint. Then, perform checks against each post between `lastCheckedId` and `latestPostId` to see if they contain any of the delineated `keywords`.
 4. For each positive post, send its link to Slack using the [`chat.postMessage` method](https://api.slack.com/methods/chat.postMessage).
-5. Listed to the [`link_shared` event](https://api.slack.com/events/link_shared) at our `/api/event` endpoint. Once an event occurs, send a POST request to Slack to unfurl the link using the [chat.unfurl method](https://api.slack.com/methods/chat.unfurl).
+5. Listen to the [`link_shared` event](https://api.slack.com/events/link_shared) at our `/api/event` endpoint. Once an event occurs, send a POST request to Slack to unfurl the link using the [chat.unfurl method](https://api.slack.com/methods/chat.unfurl).
 
 <picture>
         <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180942458-01c9233c-41dc-4d51-a3a6-c64fbe5e44fb.png">
