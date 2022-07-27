@@ -64,7 +64,6 @@ export default function GithubCorner({ url }: { url: string }) {
           }
         }
       `}</style>
-      ;
     </>
   );
 }

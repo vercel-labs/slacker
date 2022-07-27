@@ -1,8 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import GithubCorner from "@/components/github-corner";
-import slackGif from "../public/slackanimation.gif";
+import AddToSlack from "@/components/add-to-slack";
+import Image from "next/image";
+import banner from "../public/banner.png";
 
 const Home: NextPage = () => {
   return (
@@ -12,54 +13,45 @@ const Home: NextPage = () => {
       </Head>
       <GithubCorner url="https://github.com/steven-tey/hacker-news-slack-bot" />
 
-      <main className="flex flex-col items-center justify-center min-h-screen py-2">
-        <h1 className="text-3xl font-bold mb-5">Hacker News Bot</h1>
-        <a
-          href={`https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}`}
-          style={{
-            fontFamily: "Lato, sans-serif",
-            fontSize: "16px",
-            fontWeight: "600",
-          }}
-          className="group inline-flex items-center justify-center rounded-md w-[236px] h-[48px] border border-gray-300 hover:border-black transition-all"
-        >
-          <div className="group-hover:block hidden relative w-10 h-10 -ml-2.5 mr-0.5">
-            <Image
-              src={slackGif}
-              alt="Slack logo animated"
-              layout="fill"
-              priority
-            />
-          </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
+      <main className="flex flex-col space-y-5 items-center justify-center min-h-screen pb-20">
+        <div className="relative w-[633px] h-[100px]">
+          <Image
+            src={banner}
+            alt="Hacker News Slack Bot Banner"
+            layout="fill"
+          />
+        </div>
+        <div className="text-center max-w-lg space-y-3">
+          <h1 className="text-4xl font-bold">Hacker News Slack Bot</h1>
+          <p className="text-gray-600">
+            A bot that monitors Hacker News for mentions of certain keywords,
+            sends them to Slack, and shows a link preview.
+          </p>
+        </div>
+
+        <div className="relative w-full max-w-xl h-96 border-2 border-black sm:rounded-lg overflow-hidden">
+          <iframe
+            src="https://www.loom.com/embed/223dee4199f540448c4182f2e3135f62"
+            frameBorder="0"
+            allowFullScreen
             style={{
-              height: "20px",
-              width: "20px",
-              marginRight: "12px",
+              position: "absolute",
+              zIndex: 5,
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
             }}
-            className="group-hover:hidden block"
-            viewBox="0 0 122.8 122.8"
-          >
-            <path
-              d="M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9v12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V77.6z"
-              fill="#e01e5a"
-            ></path>
-            <path
-              d="M45.2 25.8c-7.1 0-12.9-5.8-12.9-12.9S38.1 0 45.2 0s12.9 5.8 12.9 12.9v12.9H45.2zm0 6.5c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H12.9C5.8 58.1 0 52.3 0 45.2s5.8-12.9 12.9-12.9h32.3z"
-              fill="#36c5f0"
-            ></path>
-            <path
-              d="M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97V45.2zm-6.5 0c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9v32.3z"
-              fill="#2eb67d"
-            ></path>
-            <path
-              d="M77.6 97c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9-12.9-5.8-12.9-12.9V97h12.9zm0-6.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H77.6z"
-              fill="#ecb22e"
-            ></path>
-          </svg>
-          Add to Slack
-        </a>
+          ></iframe>
+          <Image
+            src="https://cdn.loom.com/sessions/thumbnails/223dee4199f540448c4182f2e3135f62-1658869733112-with-play.gif"
+            alt="Hacker News Bot"
+            width={600}
+            height={400}
+          />
+        </div>
+
+        <AddToSlack />
       </main>
     </div>
   );
