@@ -3,7 +3,8 @@ import Head from "next/head";
 import GithubCorner from "@/components/github-corner";
 import AddToSlack from "@/components/add-to-slack";
 import Image from "next/image";
-import banner from "../public/banner.png";
+import bannerImage from "../public/banner.png";
+import demoGif from "../public/demo.gif";
 
 const Home: NextPage = () => {
   return (
@@ -16,7 +17,7 @@ const Home: NextPage = () => {
       <main className="flex flex-col space-y-5 items-center justify-center min-h-screen py-10 sm:pb-20">
         <div className="relative w-[422px] h-[66px] sm:w-[633px] sm:h-[100px]">
           <Image
-            src={banner}
+            src={bannerImage}
             alt="Hacker News Slack Bot Banner"
             layout="fill"
           />
@@ -46,10 +47,10 @@ const Home: NextPage = () => {
             }}
           ></iframe>
           <Image
-            src="https://cdn.loom.com/sessions/thumbnails/223dee4199f540448c4182f2e3135f62-1658883288104-with-play.gif"
-            alt="Hacker News Bot"
-            width={600}
-            height={400}
+            src={demoGif}
+            alt="Hacker News Slack Bot Demo Gif"
+            layout="fill"
+            priority
           />
         </div>
         <div className="flex flex-col text-center space-y-2">
