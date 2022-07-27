@@ -70,7 +70,7 @@ Once it's installed, here are a few [slash commands](https://api.slack.com/inter
 
 ## Deploy Your Own
 
-You can also deploy your own version of this bot using Vercel, and Upstash.
+You can also deploy your own version of this bot using Vercel and Upstash. Note that while this is in early-access, some of these processes might change.
 
 > Prefer a video tutorial instead? Watch this [Loom video](https://www.loom.com/share/3af38a0a203c4c6eb1cce9d3552df664).
 
@@ -84,7 +84,6 @@ You can also deploy your own version of this bot using Vercel, and Upstash.
    - **Verification Token**: This is the verification token used to validate that requests are genuinely coming from Slack. It will be the value for the `SLACK_VERIFICATION_TOKEN` env var.
 
 ![CleanShot 2022-07-25 at 02 16 31](https://user-images.githubusercontent.com/28986134/180720201-816f985d-774b-41fe-8cf5-b87f730d77d2.png)
-
 
 ### Step 2: Create Upstash Account
 
@@ -187,7 +186,7 @@ This project was originally created by [Steven Tey](https://twitter.com/stevente
 - Justin Ridgewell ([@jridgewell](https://github.com/jridgewell)) – [Vercel](https://vercel.com)
 - Andrew Healey ([@healeycodes](https://github.com/healeycodes)) – [Vercel](https://vercel.com)
 - Lee Robinson ([@leeerob](https://twitter.com/leeerob)) – [Vercel](https://vercel.com)
-- Andreas Thomas ([@chronark_](https://twitter.com/chronark_)) – [Upstash](https://upstash.com)
+- Andreas Thomas ([@chronark\_](https://twitter.com/chronark_)) – [Upstash](https://upstash.com)
 
 <br/>
 
