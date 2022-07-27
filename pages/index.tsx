@@ -44,7 +44,7 @@ const Home: NextPage = () => {
             }}
           ></iframe>
           <Image
-            src="https://cdn.loom.com/sessions/thumbnails/223dee4199f540448c4182f2e3135f62-1658869733112-with-play.gif"
+            src="https://cdn.loom.com/sessions/thumbnails/223dee4199f540448c4182f2e3135f62-1658883288104-with-play.gif"
             alt="Hacker News Bot"
             width={600}
             height={400}
