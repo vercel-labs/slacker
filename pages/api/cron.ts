@@ -1,31 +1,30 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { cron } from "@/lib/cron";
-import crypto from "crypto";
+import { verifySignature } from "@upstash/qstash/nextjs";
+import { log } from "@/lib/slack";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method === "POST") {
-    try {
-      const { authorization } = req.headers;
-      if (
-        authorization &&
-        crypto.timingSafeEqual(
-          Buffer.from(authorization),
-          Buffer.from(`Bearer ${process.env.CRON_JOB_OAUTH_TOKEN}`)
-        )
-      ) {
-        const response = await cron();
-        res.status(200).json(response);
-      } else {
-        res.status(401).json({ message: "Unauthorized." });
-      }
-    } catch (err) {
-      res.status(500).json({ statusCode: 500, message: err });
-    }
-  } else {
-    res.setHeader("Allow", "POST");
-    res.status(405).end("Method Not Allowed");
+async function handler(_req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const response = await cron();
+    console.log("Cron job successful! Response:", response);
+    res.status(200).json(response);
+  } catch (err) {
+    console.log("Cron job error:", err);
+    await log("Cron job error: \n" + "```" + JSON.stringify(err) + "```");
+    res.status(500).json({ statusCode: 500, message: err });
   }
 }
+
+/**
+ * verifySignature will try to load `QSTASH_CURRENT_SIGNING_KEY` and `QSTASH_NEXT_SIGNING_KEY` from the environment.
+
+ * To test out the endpoint manually (wihtout using QStash), you can do `export default handler` instead and
+ * hit this endpoint via http://localhost:3000/api/cron
+ */
+export default verifySignature(handler);
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
