@@ -190,3 +190,30 @@ export async function handleUninstall(
   const response = await clearDataForTeam(team_id);
   return res.status(200).json(response);
 }
+
+export async function log(message: string) {
+  /* Log a message to the console */
+  console.log(message);
+  if (!process.env.VERCEL_SLACK_HOOK) return;
+  try {
+    return await fetch(process.env.VERCEL_SLACK_HOOK, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        blocks: [
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: message,
+            },
+          },
+        ],
+      }),
+    });
+  } catch (e) {
+    console.log(`Failed to log to Vercel Slack. Error: ${e}`);
+  }
+}

@@ -65,6 +65,8 @@ Once it's installed, here are a few [slash commands](https://api.slack.com/inter
 - `/track`: Add a keyword to track
 - `/untrack`: Remove a keyword to track
 
+<br/>
+
 ## Deploy Your Own
 
 You can also deploy your own version of this bot using Zeplo, Vercel, and Upstash.

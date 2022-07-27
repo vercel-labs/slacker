@@ -1,5 +1,5 @@
 import { addKeyword, countKeywords } from "@/lib/upstash";
-import { verifyRequest } from "@/lib/slack";
+import { verifyRequest, log } from "@/lib/slack";
 import { NextApiRequest, NextApiResponse } from "next";
 import { commonWords } from "manifest";
 
@@ -79,7 +79,7 @@ export default async function handler(
   const response = await addKeyword(team_id, text);
   // response.result is the number of words added, if 0 then the keyword already exists
   if (response.result === 1) {
-    console.log("Team *`" + team_id + "`* is now tracking *`" + text + "`*");
+    await log("Team *`" + team_id + "`* is now tracking *`" + text + "`*");
     return res.status(200).json({
       response_type: "in_channel",
       text:
