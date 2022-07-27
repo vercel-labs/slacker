@@ -1,31 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { cron } from "@/lib/cron";
-import crypto from "crypto";
+import { verifySignature } from "@upstash/qstash/nextjs";
 
-export default async function handler(
-  req: NextApiRequest,
+
+async function handler(
+  _req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "POST") {
-    try {
-      const { authorization } = req.headers;
-      if (
-        authorization &&
-        crypto.timingSafeEqual(
-          Buffer.from(authorization),
-          Buffer.from(`Bearer ${process.env.CRON_JOB_OAUTH_TOKEN}`)
-        )
-      ) {
-        const response = await cron();
-        res.status(200).json(response);
-      } else {
-        res.status(401).json({ message: "Unauthorized." });
-      }
-    } catch (err) {
-      res.status(500).json({ statusCode: 500, message: err });
-    }
-  } else {
-    res.setHeader("Allow", "POST");
-    res.status(405).end("Method Not Allowed");
+  try {
+    const response = await cron();
+    console.log(response)
+    res.status(200)
+
+  } catch (err) {
+    res.status(500).json({ statusCode: 500, message: err });
   }
 }
+
+/**
+ * verifySignature will try to load `QSTASH_CURRENT_SIGNING_KEY` and `QSTASH_NEXT_SIGNING_KEY` from the environment.
+ */
+export default verifySignature(handler);
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
