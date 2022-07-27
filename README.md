@@ -173,7 +173,7 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 1. Go to [console.upstash.com/qstash](https://console.upstash.com/qstash) and scroll down to the `Request Builder`.
 2. Configure the endpoint URL as `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cron`.
 3. Select the type as `Scheduled`.
-4. Configure the cron schedule as `* * * * *` (every minute).
+4. Configure the cron schedule as `* * * * *` (select the "day" dropdown and change it to "minute").
 5. Click on `Schedule`.
 6. You should now start receiving notifications whenever your keywords are mentioned on Hacker News.
 
