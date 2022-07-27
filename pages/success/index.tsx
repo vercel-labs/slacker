@@ -1,7 +1,6 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 
-const Success: NextPage = () => {
+export default function Success() {
   return (
     <div>
       <Head>
@@ -13,6 +12,4 @@ const Success: NextPage = () => {
       </main>
     </div>
   );
-};
-
-export default Success;
+}

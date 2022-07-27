@@ -188,7 +188,13 @@ export async function handleUninstall(
     });
   const { team_id } = req.body;
   const response = await clearDataForTeam(team_id);
-  return res.status(200).json(response);
+  const logResponse = await log(
+    "Team *`" + team_id + "`* just uninstalled the bot :cry:"
+  );
+  return res.status(200).json({
+    response,
+    logResponse,
+  });
 }
 
 export async function log(message: string) {

@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { setAccessToken } from "@/lib/upstash";
+import { log } from "@/lib/slack";
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,7 +16,14 @@ export default async function handler(
     if (access_token && team.id) {
       const upstashRepsonse = await setAccessToken(team.id, access_token);
       if (upstashRepsonse.result === "OK") {
-        res.redirect("/success");
+        await log(
+          "Team *`" +
+            team.name +
+            "`* (*`" +
+            team.id +
+            "`*) just installed the bot :tada:"
+        );
+        res.redirect(`/success/${team.id}`);
       } else {
         // failed to store access token in redis for some reason
         res.status(500).json(upstashRepsonse);

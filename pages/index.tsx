@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import GithubCorner from "@/components/github-corner";
-import AddToSlack from "@/components/add-to-slack";
+import SlackButton from "@/components/slack-button";
 import Image from "next/image";
 import bannerImage from "../public/banner.png";
 import demoGif from "../public/demo.gif";
@@ -54,7 +54,10 @@ const Home: NextPage = () => {
           />
         </div>
         <div className="flex flex-col text-center space-y-2">
-          <AddToSlack />
+          <SlackButton
+            text="Add to Slack"
+            url={`https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}`}
+          />
           <a
             href="https://github.com/steven-tey/hacker-news-slack-bot#deploy-your-own"
             className="text-gray-500 hover:text-black text-sm"

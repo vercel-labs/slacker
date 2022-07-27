@@ -1,10 +1,16 @@
 import Image from "next/image";
 import slackGif from "../public/slackanimation.gif";
 
-export default function AddToSlack() {
+export default function SlackButton({
+  text,
+  url,
+}: {
+  text: string;
+  url: string;
+}) {
   return (
     <a
-      href={`https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}`}
+      href={url}
       style={{
         fontFamily: "Lato, sans-serif",
         fontSize: "16px",
@@ -47,7 +53,7 @@ export default function AddToSlack() {
           fill="#ecb22e"
         ></path>
       </svg>
-      Add to Slack
+      {text}
     </a>
   );
 }
