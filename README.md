@@ -14,7 +14,7 @@
 </div>
 
 <div align="center">
-  <a href="https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=12364000946.3845028209600"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
+  <a href="https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=12364000946.3845028209600"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack@2x.png" /></a>
 </div>
 
 <p align="center">
@@ -24,11 +24,11 @@
 
 ## Built With
 
-1. [Zeplo](https://www.zeplo.io/) for cron scheduling
-2. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/event.ts)
-3. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/hn.ts)
-4. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L47) and [unfurling](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L73) messages
-5. [Upstash](https://upstash.com/) for [key-value storage](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/upstash.ts)
+1. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/event.ts)
+2. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/hn.ts)
+3. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L47) and [unfurling](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L73) messages
+4. [Upstash](https://upstash.com/) for [key-value storage](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/upstash.ts)
+5. [Zeplo](https://www.zeplo.io/) for cron scheduling
 
 <br/>
 
@@ -48,11 +48,11 @@
 
 ## One-Click Install
 
-> Here's a [Loom tutorial](https://www.loom.com/share/223dee4199f540448c4182f2e3135f62) that walks you through the installation process, step-by-step. 
+> Here's a [Loom tutorial](https://www.loom.com/share/223dee4199f540448c4182f2e3135f62) that walks you through the installation process, step-by-step.
 
 You can click the button below to install the bot directly into your desired Slack workspace:
 
-<a href="https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=12364000946.3845028209600"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
+<a href="https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=12364000946.3845028209600"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack@2x.png" /></a>
 
 Once it's installed, here are a few [slash commands](https://api.slack.com/interactivity/slash-commands) you can use to set up the bot:
 
