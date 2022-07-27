@@ -89,7 +89,8 @@ You can also deploy your own version of this bot using Vercel and Upstash. Note 
 
 Go to [console.upstash.com](https://console.upstash.com/login) and create an account. You'll need it for the next step.
 
-Afterwards copy the `QSTASH_CURRENT_SIGNING_KEY` and `QSTASH_NEXT_SIGNING_KEY` secrets from [console.upstash.com/qstash](https://console.upstash.com/qstash). You need them in the next step.
+Afterwards copy the `QSTASH_CURRENT_SIGNING_KEY` and `QSTASH_NEXT_SIGNING_KEY` secrets from [console.upstash.com/qstash](https://console.upstash.com/qstash). You'll need them in the next step.
+
 Similar to the slack signing secret, these are used to verify the authenticity of scheduled requests coming from Upstash.
 
 ### Step 3: Deploy to Vercel
