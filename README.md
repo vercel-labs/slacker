@@ -69,7 +69,7 @@ Once it's installed, here are a few [slash commands](https://api.slack.com/inter
 
 ## Deploy Your Own
 
-You can also deploy your own version of this bot using Zeplo, Vercel, and Upstash.
+You can also deploy your own version of this bot using Vercel, Upstash, and Zeplo. Note that while this is in early-access, some of these processes might change. 
 
 > Prefer a video tutorial instead? Watch this [Loom video](https://www.loom.com/share/3af38a0a203c4c6eb1cce9d3552df664).
 
