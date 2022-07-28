@@ -35,17 +35,17 @@
 
 ## How It Works
 
-1. Set up a cron schedule in Upstash that pings our [`/api/cron` endpoint](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/cron.ts) once every 60 seconds.
+1. Set up a cron schedule in Upstash (qStash) that pings our [`/api/cron` endpoint](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/cron.ts) once every 60 seconds.
 2. Get the last checked HN post ID ([`lastCheckedId`](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/cron.ts#L11)) and the list of `keywords` to check against from Upstash.
 3. Get the `latestPostId` using HN API's [`maxitem`](https://github.com/HackerNews/API#max-item-id) endpoint. Then, perform checks against each post between `lastCheckedId` and `latestPostId` to see if they contain any of the delineated `keywords`.
 4. For each positive post, send its link to Slack using the [`chat.postMessage` method](https://api.slack.com/methods/chat.postMessage).
 5. Listen to the [`link_shared` event](https://api.slack.com/events/link_shared) at our `/api/event` endpoint. Once an event occurs, send a POST request to Slack to unfurl the link using the [chat.unfurl method](https://api.slack.com/methods/chat.unfurl).
 
 <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/181386701-4e7890c4-5b1a-48fe-9616-7beb2cbe5d03.png">
-        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/181386667-d774c63a-4b43-4084-b878-5f99042324c6.png">
-        <img alt="Hacker News Slack Bot Overview" src="https://user-images.githubusercontent.com/28986134/181386667-d774c63a-4b43-4084-b878-5f99042324c6.png">
-    </picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180942458-01c9233c-41dc-4d51-a3a6-c64fbe5e44fb.png">
+   <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180942414-dd69d83c-e37a-4833-877e-e60cccd85ecc.png">
+   <img alt="Hacker News Slack Bot Overview" src="https://user-images.githubusercontent.com/28986134/180942414-dd69d83c-e37a-4833-877e-e60cccd85ecc.png">
+</picture>
 
 ## One-Click Install
 

@@ -4,7 +4,6 @@ import GithubCorner from "@/components/github-corner";
 import SlackButton from "@/components/slack-button";
 import Image from "next/image";
 import bannerImage from "../public/banner.png";
-import demoGif from "../public/demo.gif";
 
 const Home: NextPage = () => {
   return (
@@ -32,7 +31,7 @@ const Home: NextPage = () => {
           </p>
         </div>
 
-        <div className="relative w-full max-w-xl h-96 border-2 border-black sm:rounded-lg overflow-hidden">
+        <div className="relative w-full max-w-xl h-96 border-2 border-black bg-gray-100 sm:rounded-lg overflow-hidden">
           <iframe
             src="https://www.loom.com/embed/223dee4199f540448c4182f2e3135f62"
             frameBorder="0"
@@ -46,12 +45,6 @@ const Home: NextPage = () => {
               height: "100%",
             }}
           ></iframe>
-          <Image
-            src={demoGif}
-            alt="Hacker News Slack Bot Demo Gif"
-            layout="fill"
-            priority
-          />
         </div>
         <div className="flex flex-col text-center space-y-2">
           <SlackButton
