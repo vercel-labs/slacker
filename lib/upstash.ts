@@ -43,10 +43,12 @@ export async function getKeywords(teamId: string) {
   return json.result as string[];
 }
 
-export async function addKeyword(teamId: string, keyword: string) {
+export async function addKeywords(teamId: string, keywords: string[]) {
   /* Set the last checked post ID in redis */
   const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/sadd/${teamId}_keywords/${keyword}`,
+    `${
+      process.env.UPSTASH_REDIS_REST_URL
+    }/sadd/${teamId}_keywords/${keywords.join("/")}`,
     {
       method: "POST",
       headers: {

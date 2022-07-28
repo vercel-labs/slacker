@@ -117,6 +117,7 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
   const { processedPost, mentionedTerms } = regexOperations(post, keywords); // get post data with keywords highlighted
 
   const originalPost = post.parent ? await getParent(post) : null; // if post is a comment, get title of original post
+  console.log(accessToken, post, originalPost);
 
   const response = await fetch("https://slack.com/api/chat.unfurl", {
     // unfurl the hacker news post using the Slack API
@@ -223,3 +224,114 @@ export async function log(message: string) {
     console.log(`Failed to log to Vercel Slack. Error: ${e}`);
   }
 }
+
+export const configureBlocks = (keywords: string[], channel: string) => [
+  {
+    type: "header",
+    text: {
+      type: "plain_text",
+      text: ":hammer_and_wrench:  Configuration  :hammer_and_wrench:",
+    },
+  },
+  {
+    type: "context",
+    elements: [
+      {
+        text: "*November 12, 2019*  |  Sales Team Announcements",
+        type: "mrkdwn",
+      },
+    ],
+  },
+  {
+    type: "divider",
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "*KEYWORDS*",
+    },
+    accessory: {
+      action_id: "add_keyword",
+      type: "multi_external_select",
+      placeholder: {
+        type: "plain_text",
+        text: "Add a keyword",
+      },
+      min_query_length: 1,
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        keywords.length > 0
+          ? "Here's the list of keywords that you're currently tracking:"
+          : "_No keywords configured yet._",
+    },
+  },
+  ...(keywords.length > 0
+    ? keywords.map((keyword: any) => ({
+        type: "section",
+        block_id: "keyword",
+        text: {
+          type: "mrkdwn",
+          text: "*`" + keyword + "`*",
+        },
+        accessory: {
+          action_id: "remove_keyword",
+          type: "button",
+          text: {
+            type: "plain_text",
+            text: "Remove",
+          },
+          value: keyword,
+        },
+      }))
+    : []),
+  {
+    type: "input",
+    block_id: "new_keyword",
+    dispatch_action: true,
+    element: {
+      type: "plain_text_input",
+      multiline: true,
+      dispatch_action_config: {
+        trigger_actions_on: ["on_character_entered"],
+      },
+    },
+    label: {
+      type: "plain_text",
+      text: "This is a multiline plain-text input",
+      emoji: true,
+    },
+  },
+  {
+    type: "divider",
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "*CHANNEL*",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Select a channel to receive notifications in:",
+    },
+    accessory: {
+      action_id: "set_channel",
+      type: "conversations_select",
+      placeholder: {
+        type: "plain_text",
+        text: "Select a channel...",
+        emoji: true,
+      },
+      ...(channel ? { initial_conversation: channel } : {}),
+    },
+  },
+];
