@@ -28,7 +28,7 @@
 2. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/hn.ts)
 3. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L47) and [unfurling](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L73) messages
 4. [Upstash](https://upstash.com)
-   - [Redis](https://upstash.com/redis) for [key-value storage](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/upstash.ts)
+   - [Redis](https://upstash.com/redis) for key-value storage
    - [qStash](https://upstash.com/qstash/) for cron scheduling
 
 <br/>
