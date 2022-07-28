@@ -123,7 +123,7 @@ For your Slack app to be able to send/unfurl messages in your Slack workspace, w
 
 1. Now, select "Event Subscriptions" from the sidebar (under "Features").
 2. Toggle "Enable Events" to "ON".
-3. For the "Request URL" field, input your Vercel project's domain and append `/api/event` to it. The final URL should look something like `https://hacker-news-slack-bot-eight.vercel.app//api/event`.
+3. For the "Request URL" field, input your Vercel project's domain and append `/api/event` to it. The final URL should look something like `https://hacker-news-slack-bot-eight.vercel.app/api/event`.
 4. Scroll down to "Subscribe to bot events". Add the `link_shared` bot user event.
 5. Do the same for `Subscribe to events on behalf of users".
    ![Slack app configurations (1)](https://user-images.githubusercontent.com/28986134/180888217-911be4f9-be58-4f1c-a0bf-db915bbcb006.png)
