@@ -19,8 +19,14 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="keywords" content="hacker news, slack, bot" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta itemProp="image" content="/thumbnail.png" />
-        <meta property="og:image" content="/thumbnail.png" />
+        <meta
+          itemProp="image"
+          content="https://hn-slack-bot.vercel.app/thumbnail.png"
+        />
+        <meta
+          property="og:image"
+          content="https://hn-slack-bot.vercel.app/thumbnail.png"
+        />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@vercel" />
@@ -30,7 +36,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           name="twitter:description"
           content="A bot that monitors Hacker News for mentions of certain keywords and sends it to a Slack channel."
         />
-        <meta name="twitter:image" content="/thumbnail.png" />
+        <meta
+          name="twitter:image"
+          content="https://hn-slack-bot.vercel.app/thumbnail.png"
+        />
       </Head>
       <Component {...pageProps} />
     </div>
