@@ -3,7 +3,6 @@ import Head from "next/head";
 import GithubCorner from "@/components/github-corner";
 import SlackButton from "@/components/slack-button";
 import Image from "next/image";
-import bannerImage from "../public/banner.png";
 
 const Home: NextPage = () => {
   return (
@@ -16,7 +15,7 @@ const Home: NextPage = () => {
       <main className="flex flex-col space-y-5 items-center justify-center min-h-screen py-10 sm:pb-20">
         <div className="relative w-[422px] h-[66px] sm:w-[633px] sm:h-[100px]">
           <Image
-            src={bannerImage}
+            src="/banner.png"
             alt="Hacker News Slack Bot Banner"
             layout="fill"
           />

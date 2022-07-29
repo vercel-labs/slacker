@@ -223,3 +223,175 @@ export async function log(message: string) {
     console.log(`Failed to log to Vercel Slack. Error: ${e}`);
   }
 }
+
+export const configureBlocks = (
+  keywords: string[],
+  channel: string,
+  statsElements: { type: string; text: string }[],
+  feedback?: {
+    keyword?: string;
+    channel?: string;
+  }
+) => [
+  {
+    type: "header",
+    text: {
+      type: "plain_text",
+      text: ":hammer_and_wrench:  Bot Configuration  :hammer_and_wrench:",
+    },
+  },
+  {
+    type: "context",
+    block_id: "stats",
+    elements: statsElements,
+  },
+  {
+    type: "divider",
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: ":bulb: KEYWORDS :bulb:",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        keywords.length > 0
+          ? "Here's the list of keywords that you're currently tracking:"
+          : "_No keywords configured yet._",
+    },
+  },
+  ...(keywords.length > 0
+    ? keywords.map((keyword: any) => ({
+        type: "section",
+        block_id: `keyword_${keyword}`,
+        text: {
+          type: "mrkdwn",
+          text: "`" + keyword + "`",
+        },
+        accessory: {
+          action_id: "remove_keyword",
+          type: "button",
+          text: {
+            type: "plain_text",
+            text: "Remove",
+          },
+          value: keyword,
+        },
+      }))
+    : []),
+  {
+    type: "input",
+    dispatch_action: true,
+    element: {
+      type: "plain_text_input",
+      action_id: "add_keyword",
+      placeholder: {
+        type: "plain_text",
+        text: "Add a keyword (must be between 3 and 30 characters)",
+      },
+      dispatch_action_config: {
+        trigger_actions_on: ["on_enter_pressed"],
+      },
+      min_length: 3,
+      max_length: 30,
+      focus_on_load: true,
+    },
+    label: {
+      type: "plain_text",
+      text: " ",
+    },
+  },
+  ...(feedback?.keyword
+    ? [
+        {
+          type: "context",
+          elements: [
+            {
+              type: "mrkdwn",
+              text: feedback.keyword,
+            },
+          ],
+        },
+      ]
+    : []),
+  {
+    type: "divider",
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: ":hash: CHANNEL :hash:",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Select a channel to receive notifications in:",
+    },
+    accessory: {
+      action_id: "set_channel",
+      type: "conversations_select",
+      placeholder: {
+        type: "plain_text",
+        text: "Select a channel...",
+        emoji: true,
+      },
+      ...(channel ? { initial_conversation: channel } : {}),
+    },
+  },
+  ...(feedback?.channel
+    ? [
+        {
+          type: "context",
+          elements: [
+            {
+              type: "mrkdwn",
+              text: feedback.channel,
+            },
+          ],
+        },
+      ]
+    : []),
+  {
+    type: "divider",
+  },
+  {
+    type: "context",
+    elements: [
+      {
+        type: "mrkdwn",
+        text: "View the source on <https://github.com/vercel/hacker-news-slack-bot|GitHub>  |  Made with :black_heart: by <https://vercel.com/|▲ Vercel>",
+      },
+    ],
+  },
+];
+
+export async function respondToSlack(
+  res: NextApiResponse,
+  response_url: string,
+  keywords: string[], // list of currently tracked keywords
+  statsElements: { type: string; text: string }[], // elements to be displayed in the stats section
+  channelId: string, // channel to send notifications to
+  feedback?: {
+    keyword?: string;
+    channel?: string;
+  }
+) {
+  const response = await fetch(response_url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      blocks: configureBlocks(keywords, channelId, statsElements, feedback),
+    }),
+  });
+  return res.status(200).json(response);
+}

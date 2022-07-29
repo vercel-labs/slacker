@@ -1,4 +1,3 @@
-import { sendSlackMessage } from "./slack";
 import { TeamAndKeywords } from "./upstash";
 import { decode } from "html-entities";
 // @ts-ignore - no type info for this module
