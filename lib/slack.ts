@@ -117,7 +117,6 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
   const { processedPost, mentionedTerms } = regexOperations(post, keywords); // get post data with keywords highlighted
 
   const originalPost = post.parent ? await getParent(post) : null; // if post is a comment, get title of original post
-  console.log(accessToken, post, originalPost);
 
   const response = await fetch("https://slack.com/api/chat.unfurl", {
     // unfurl the hacker news post using the Slack API
@@ -228,7 +227,11 @@ export async function log(message: string) {
 export const configureBlocks = (
   keywords: string[],
   channel: string,
-  error?: string
+  statsElements: { type: string; text: string }[],
+  feedback?: {
+    keyword?: string;
+    channel?: string;
+  }
 ) => [
   {
     type: "header",
@@ -239,12 +242,8 @@ export const configureBlocks = (
   },
   {
     type: "context",
-    elements: [
-      {
-        type: "mrkdwn",
-        text: "<https://slack.com/apps/A03QV0U65HN|Open full configuration settings in browser>",
-      },
-    ],
+    block_id: "stats",
+    elements: statsElements,
   },
   {
     type: "divider",
@@ -253,7 +252,7 @@ export const configureBlocks = (
     type: "section",
     text: {
       type: "mrkdwn",
-      text: ":bulb: *KEYWORDS* :bulb:",
+      text: ":bulb: KEYWORDS :bulb:",
     },
   },
   {
@@ -272,7 +271,7 @@ export const configureBlocks = (
         block_id: `keyword_${keyword}`,
         text: {
           type: "mrkdwn",
-          text: "*`" + keyword + "`*",
+          text: "`" + keyword + "`",
         },
         accessory: {
           action_id: "remove_keyword",
@@ -307,14 +306,14 @@ export const configureBlocks = (
       text: " ",
     },
   },
-  ...(error
+  ...(feedback?.keyword
     ? [
         {
           type: "context",
           elements: [
             {
               type: "mrkdwn",
-              text: `:warning: ${error}`,
+              text: feedback.keyword,
             },
           ],
         },
@@ -327,7 +326,7 @@ export const configureBlocks = (
     type: "section",
     text: {
       type: "mrkdwn",
-      text: ":hash: *CHANNEL* :hash:",
+      text: ":hash: CHANNEL :hash:",
     },
   },
   {
@@ -347,24 +346,52 @@ export const configureBlocks = (
       ...(channel ? { initial_conversation: channel } : {}),
     },
   },
+  ...(feedback?.channel
+    ? [
+        {
+          type: "context",
+          elements: [
+            {
+              type: "mrkdwn",
+              text: feedback.channel,
+            },
+          ],
+        },
+      ]
+    : []),
   {
     type: "divider",
+  },
+  {
+    type: "context",
+    elements: [
+      {
+        type: "mrkdwn",
+        text: "View the source on <https://github.com/vercel/hacker-news-slack-bot|GitHub>  |  Made with :black_heart: by <https://vercel.com/|▲ Vercel>",
+      },
+    ],
   },
 ];
 
 export async function respondToSlack(
+  res: NextApiResponse,
   response_url: string,
-  keywords: string[],
-  channelId: string,
-  error?: string
+  keywords: string[], // list of currently tracked keywords
+  statsElements: { type: string; text: string }[], // elements to be displayed in the stats section
+  channelId: string, // channel to send notifications to
+  feedback?: {
+    keyword?: string;
+    channel?: string;
+  }
 ) {
-  return await fetch(response_url, {
+  const response = await fetch(response_url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      blocks: configureBlocks(keywords, channelId, error),
+      blocks: configureBlocks(keywords, channelId, statsElements, feedback),
     }),
   });
+  return res.status(200).json(response);
 }

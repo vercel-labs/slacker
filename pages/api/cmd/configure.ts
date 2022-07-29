@@ -1,4 +1,4 @@
-import { getChannel, getKeywords } from "@/lib/upstash";
+import { getTeamConfigAndStats } from "@/lib/upstash";
 import { verifyRequest, configureBlocks } from "@/lib/slack";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -14,14 +14,33 @@ export default async function handler(
       text: verification.message,
     });
 
-  const { team_id } = req.body;
+  const { team_id, command } = req.body;
 
-  const keywords = await getKeywords(team_id); // get keywords for team
-  const channel = await getChannel(team_id); // get keywords for team
+  if (command === "/configure") {
+    const { keywords, channel, unfurls, notifications } =
+      await getTeamConfigAndStats(team_id);
 
-  return res.status(200).json({
-    response_type: "in_channel",
-    text: "Configure your bot",
-    blocks: configureBlocks(keywords, channel),
-  });
+    const statsElements = [
+      {
+        type: "mrkdwn",
+        text: `Current Usage: ${notifications} notifications sent, ${unfurls} link previews shown |  <https://slack.com/apps/A03QV0U65HN|More Configuration Settings>`,
+      },
+    ];
+
+    return res.status(200).json({
+      response_type: "in_channel",
+      text: "Configure your bot",
+      unfurl_links: false, // do not unfurl links & media for bot configuration message
+      unfurl_media: false,
+      blocks: configureBlocks(keywords, channel, statsElements),
+    });
+  } else {
+    return res.status(200).json({
+      response_type: "ephemeral",
+      text:
+        "The command `" +
+        command +
+        "` is deprecated. Please use `/configure` instead.",
+    });
+  }
 }
