@@ -225,20 +225,24 @@ export async function log(message: string) {
   }
 }
 
-export const configureBlocks = (keywords: string[], channel: string) => [
+export const configureBlocks = (
+  keywords: string[],
+  channel: string,
+  error?: string
+) => [
   {
     type: "header",
     text: {
       type: "plain_text",
-      text: ":hammer_and_wrench:  Configuration  :hammer_and_wrench:",
+      text: ":hammer_and_wrench:  Bot Configuration  :hammer_and_wrench:",
     },
   },
   {
     type: "context",
     elements: [
       {
-        text: "*November 12, 2019*  |  Sales Team Announcements",
         type: "mrkdwn",
+        text: "<https://slack.com/apps/A03QV0U65HN|Open full configuration settings in browser>",
       },
     ],
   },
@@ -249,16 +253,7 @@ export const configureBlocks = (keywords: string[], channel: string) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text: "*KEYWORDS*",
-    },
-    accessory: {
-      action_id: "add_keyword",
-      type: "multi_external_select",
-      placeholder: {
-        type: "plain_text",
-        text: "Add a keyword",
-      },
-      min_query_length: 1,
+      text: ":bulb: *KEYWORDS* :bulb:",
     },
   },
   {
@@ -274,7 +269,7 @@ export const configureBlocks = (keywords: string[], channel: string) => [
   ...(keywords.length > 0
     ? keywords.map((keyword: any) => ({
         type: "section",
-        block_id: "keyword",
+        block_id: `keyword_${keyword}`,
         text: {
           type: "mrkdwn",
           text: "*`" + keyword + "`*",
@@ -292,21 +287,39 @@ export const configureBlocks = (keywords: string[], channel: string) => [
     : []),
   {
     type: "input",
-    block_id: "new_keyword",
     dispatch_action: true,
     element: {
       type: "plain_text_input",
-      multiline: true,
-      dispatch_action_config: {
-        trigger_actions_on: ["on_character_entered"],
+      action_id: "add_keyword",
+      placeholder: {
+        type: "plain_text",
+        text: "Add a keyword (must be between 3 and 30 characters)",
       },
+      dispatch_action_config: {
+        trigger_actions_on: ["on_enter_pressed"],
+      },
+      min_length: 3,
+      max_length: 30,
+      focus_on_load: true,
     },
     label: {
       type: "plain_text",
-      text: "This is a multiline plain-text input",
-      emoji: true,
+      text: " ",
     },
   },
+  ...(error
+    ? [
+        {
+          type: "context",
+          elements: [
+            {
+              type: "mrkdwn",
+              text: `:warning: ${error}`,
+            },
+          ],
+        },
+      ]
+    : []),
   {
     type: "divider",
   },
@@ -314,7 +327,7 @@ export const configureBlocks = (keywords: string[], channel: string) => [
     type: "section",
     text: {
       type: "mrkdwn",
-      text: "*CHANNEL*",
+      text: ":hash: *CHANNEL* :hash:",
     },
   },
   {
@@ -334,4 +347,24 @@ export const configureBlocks = (keywords: string[], channel: string) => [
       ...(channel ? { initial_conversation: channel } : {}),
     },
   },
+  {
+    type: "divider",
+  },
 ];
+
+export async function respondToSlack(
+  response_url: string,
+  keywords: string[],
+  channelId: string,
+  error?: string
+) {
+  return await fetch(response_url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      blocks: configureBlocks(keywords, channelId, error),
+    }),
+  });
+}
