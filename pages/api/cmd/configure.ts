@@ -20,22 +20,16 @@ export default async function handler(
     const { keywords, channel, unfurls, notifications } =
       await getTeamConfigAndStats(team_id);
 
-    const statsElements = [
-      {
-        type: "mrkdwn",
-        text: `Current Usage: ${notifications} notifications sent, ${unfurls} link previews shown |  <https://slack.com/apps/A03QV0U65HN|More Configuration Settings>`,
-      },
-    ];
-
     return res.status(200).json({
       response_type: "in_channel",
       text: "Configure your bot",
       unfurl_links: false, // do not unfurl links & media for bot configuration message
       unfurl_media: false,
-      blocks: configureBlocks(keywords, channel, statsElements),
+      blocks: configureBlocks(keywords, channel, unfurls, notifications),
     });
   } else {
     return res.status(200).json({
+      // account for old commands that are now deprecated
       response_type: "ephemeral",
       text:
         "The command `" +

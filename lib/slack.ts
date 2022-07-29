@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
-import { truncateString, regexOperations } from "./helpers";
+import {
+  truncateString,
+  regexOperations,
+  combineKeywordLists,
+} from "./helpers";
 import {
   clearDataForTeam,
   getAccessToken,
@@ -8,6 +12,7 @@ import {
   getKeywords,
   trackBotUsage,
   trackUnfurls,
+  getTeamConfigAndStats,
 } from "./upstash";
 import { getPost, getParent } from "@/lib/hn";
 
@@ -227,7 +232,8 @@ export async function log(message: string) {
 export const configureBlocks = (
   keywords: string[],
   channel: string,
-  statsElements: { type: string; text: string }[],
+  unfurls: number,
+  notifications: number,
   feedback?: {
     keyword?: string;
     channel?: string;
@@ -243,7 +249,12 @@ export const configureBlocks = (
   {
     type: "context",
     block_id: "stats",
-    elements: statsElements,
+    elements: [
+      {
+        type: "mrkdwn",
+        text: `Current Usage: ${unfurls} link previews shown, ${notifications} notifications sent |  <https://slack.com/apps/A03QV0U65HN|More Configuration Settings>`,
+      },
+    ],
   },
   {
     type: "divider",
@@ -367,7 +378,7 @@ export const configureBlocks = (
     elements: [
       {
         type: "mrkdwn",
-        text: "Made with :black_heart: and <https://hn-slack-bot.vercel.app/|open-sourced> by <https://vercel.com/|▲ Vercel>",
+        text: "Made and <https://hn-slack-bot.vercel.app/|open-sourced> with :black_heart: by <https://vercel.com/|▲ Vercel>",
       },
     ],
   },
@@ -376,21 +387,37 @@ export const configureBlocks = (
 export async function respondToSlack(
   res: NextApiResponse,
   response_url: string,
-  keywords: string[], // list of currently tracked keywords
-  statsElements: { type: string; text: string }[], // elements to be displayed in the stats section
-  channelId: string, // channel to send notifications to
+  teamId: string,
+  oldKeywords: string[],
   feedback?: {
     keyword?: string;
     channel?: string;
   }
 ) {
+  const {
+    keywords: newKeywords,
+    channel,
+    unfurls,
+    notifications,
+  } = await getTeamConfigAndStats(teamId); // get the latest state of the bot configurations to make sure it's up to date
+
+  // respond to Slack with the new state of the bot
   const response = await fetch(response_url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      blocks: configureBlocks(keywords, channelId, statsElements, feedback),
+      blocks: configureBlocks(
+        // here, we are combining the two keyword lists to
+        // preserve the sequence of the old keyword list
+        // because they're stored as a set in Upstash
+        combineKeywordLists(oldKeywords, newKeywords),
+        channel,
+        unfurls,
+        notifications,
+        feedback
+      ),
     }),
   });
   return res.status(200).json(response);
