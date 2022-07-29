@@ -108,9 +108,9 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
   }
 
   const [post, accessToken, keywords] = await Promise.all([
-    await getPost(parseInt(id)), // get post data from hacker news API
-    await getAccessToken(team_id), // get access token from upstash
-    await getKeywords(team_id), // get keywords from upstash
+    getPost(parseInt(id)), // get post data from hacker news API
+    getAccessToken(team_id), // get access token from upstash
+    getKeywords(team_id), // get keywords from upstash
   ])
 
   const { processedPost, mentionedTerms } = regexOperations(post, keywords); // get post data with keywords highlighted
