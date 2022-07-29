@@ -56,7 +56,7 @@ export async function cron() {
       );
     }
   }
-  
+
   await setLastCheckedId(latestPostId); // set last checked post id in redis
   return {
     summary: `Processed post ${lastCheckedId} to post ${latestPostId} (${
