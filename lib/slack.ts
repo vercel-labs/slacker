@@ -68,8 +68,7 @@ export function verifyRequest(req: NextApiRequest) {
 
 export async function sendSlackMessage(postId: number, teamId: string) {
   /* Send a message containing the link to the hacker news post to Slack */
-  const accessToken = await getAccessToken(teamId);
-  const channelId = await getChannel(teamId);
+  const [accessToken, channelId] = await Promise.all([getAccessToken(teamId), getChannel(teamId)])
   console.log(
     `Sending message to team ${teamId} in channel ${channelId} for post ${postId}`
   );
@@ -108,11 +107,11 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
     return res.status(400).json({ message: "No id found" });
   }
 
-  const post = await getPost(parseInt(id)); // get post data from hacker news API
-
-  const accessToken = await getAccessToken(team_id); // get access token from upstash
-
-  const keywords: string[] = await getKeywords(team_id); // get keywords from upstash
+  const [post, accessToken, keywords] = await Promise.all([
+    await getPost(parseInt(id)), // get post data from hacker news API
+    await getAccessToken(team_id), // get access token from upstash
+    await getKeywords(team_id), // get keywords from upstash
+  ])
 
   const { processedPost, mentionedTerms } = regexOperations(post, keywords); // get post data with keywords highlighted
 
