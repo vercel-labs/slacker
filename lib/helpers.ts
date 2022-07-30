@@ -1,4 +1,3 @@
-import { sendSlackMessage } from "./slack";
 import { TeamAndKeywords } from "./upstash";
 import { decode } from "html-entities";
 // @ts-ignore - no type info for this module
@@ -146,4 +145,24 @@ export function regexOperations(post: any, keywords: string[]) {
     processedPost,
     mentionedTerms,
   };
+}
+
+export function combineKeywordLists(
+  oldKeywords: string[],
+  newKeywords: string[]
+) {
+  /* 
+    combine the two keyword lists to preserve the sequence of the old keyword list 
+    because keywords are stored as a set in Upstash 
+  */
+  const newKeywordsSet = new Set(newKeywords);
+  const filteredOldKeywords = oldKeywords.filter((keyword) => {
+    if (newKeywordsSet.has(keyword)) {
+      newKeywordsSet.delete(keyword);
+      return true;
+    } else {
+      return false;
+    }
+  });
+  return [...filteredOldKeywords, ...Array.from(newKeywordsSet)];
 }

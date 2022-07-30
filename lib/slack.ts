@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
-import { truncateString, regexOperations } from "./helpers";
+import {
+  truncateString,
+  regexOperations,
+  combineKeywordLists,
+} from "./helpers";
 import {
   clearDataForTeam,
   getAccessToken,
@@ -8,6 +12,7 @@ import {
   getKeywords,
   trackBotUsage,
   trackUnfurls,
+  getTeamConfigAndStats,
 } from "./upstash";
 import { getPost, getParent } from "@/lib/hn";
 
@@ -222,4 +227,198 @@ export async function log(message: string) {
   } catch (e) {
     console.log(`Failed to log to Vercel Slack. Error: ${e}`);
   }
+}
+
+export const configureBlocks = (
+  keywords: string[],
+  channel: string,
+  unfurls: number,
+  notifications: number,
+  feedback?: {
+    keyword?: string;
+    channel?: string;
+  }
+) => [
+  {
+    type: "header",
+    text: {
+      type: "plain_text",
+      text: ":hammer_and_wrench:  Bot Configuration  :hammer_and_wrench:",
+    },
+  },
+  {
+    type: "context",
+    block_id: "stats",
+    elements: [
+      {
+        type: "mrkdwn",
+        text: `Current Usage: ${unfurls} link previews shown, ${notifications} notifications sent |  <https://slack.com/apps/A03QV0U65HN|More Configuration Settings>`,
+      },
+    ],
+  },
+  {
+    type: "divider",
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: ":bulb: KEYWORDS :bulb:",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text:
+        keywords.length > 0
+          ? "Here's the list of keywords that you're currently tracking:"
+          : "_No keywords configured yet._",
+    },
+  },
+  ...(keywords.length > 0
+    ? keywords.map((keyword: any) => ({
+        type: "section",
+        block_id: `keyword_${keyword}`,
+        text: {
+          type: "mrkdwn",
+          text: "`" + keyword + "`",
+        },
+        accessory: {
+          action_id: "remove_keyword",
+          type: "button",
+          text: {
+            type: "plain_text",
+            text: "Remove",
+          },
+          value: keyword,
+        },
+      }))
+    : []),
+  {
+    type: "input",
+    dispatch_action: true,
+    element: {
+      type: "plain_text_input",
+      action_id: "add_keyword",
+      placeholder: {
+        type: "plain_text",
+        text: "Add a keyword (must be between 3 and 30 characters)",
+      },
+      dispatch_action_config: {
+        trigger_actions_on: ["on_enter_pressed"],
+      },
+      min_length: 3,
+      max_length: 30,
+      focus_on_load: true,
+    },
+    label: {
+      type: "plain_text",
+      text: " ",
+    },
+  },
+  ...(feedback?.keyword
+    ? [
+        {
+          type: "context",
+          elements: [
+            {
+              type: "mrkdwn",
+              text: feedback.keyword,
+            },
+          ],
+        },
+      ]
+    : []),
+  {
+    type: "divider",
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: ":hash: CHANNEL :hash:",
+    },
+  },
+  {
+    type: "section",
+    text: {
+      type: "mrkdwn",
+      text: "Select a channel to receive notifications in:",
+    },
+    accessory: {
+      action_id: "set_channel",
+      type: "conversations_select",
+      placeholder: {
+        type: "plain_text",
+        text: "Select a channel...",
+        emoji: true,
+      },
+      ...(channel ? { initial_conversation: channel } : {}),
+    },
+  },
+  ...(feedback?.channel
+    ? [
+        {
+          type: "context",
+          elements: [
+            {
+              type: "mrkdwn",
+              text: feedback.channel,
+            },
+          ],
+        },
+      ]
+    : []),
+  {
+    type: "divider",
+  },
+  {
+    type: "context",
+    elements: [
+      {
+        type: "mrkdwn",
+        text: "Made and <https://hn-slack-bot.vercel.app/|open-sourced> with :black_heart: by <https://vercel.com/|▲ Vercel>",
+      },
+    ],
+  },
+];
+
+export async function respondToSlack(
+  res: NextApiResponse,
+  response_url: string,
+  teamId: string,
+  oldKeywords: string[],
+  feedback?: {
+    keyword?: string;
+    channel?: string;
+  }
+) {
+  const {
+    keywords: newKeywords,
+    channel,
+    unfurls,
+    notifications,
+  } = await getTeamConfigAndStats(teamId); // get the latest state of the bot configurations to make sure it's up to date
+
+  // respond to Slack with the new state of the bot
+  const response = await fetch(response_url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      blocks: configureBlocks(
+        // here, we are combining the two keyword lists to
+        // preserve the sequence of the old keyword list
+        // because they're stored as a set in Upstash
+        combineKeywordLists(oldKeywords, newKeywords),
+        channel,
+        unfurls,
+        notifications,
+        feedback
+      ),
+    }),
+  });
+  return res.status(200).json(response);
 }
