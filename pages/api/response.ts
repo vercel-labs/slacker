@@ -93,14 +93,14 @@ export default async function handler(
     }
 
     const response = await addKeyword(team.id, keyword);
-    if (response.error) {
-      return respondToSlack(res, response_url, team.id, oldKeywords, {
-        keyword: `:warning: ${response.error}`,
-      });
-    } else if (response.result === 1) {
+    if (response === 1) {
       await log("Team *`" + team.id + "`* is now tracking *`" + keyword + "`*");
+      return respondToSlack(res, response_url, team.id, oldKeywords);
+    } else {
+      return respondToSlack(res, response_url, team.id, oldKeywords, {
+        keyword: `:warning: Failed to add keyword. Cause: ${response}`,
+      });
     }
-    return respondToSlack(res, response_url, team.id, oldKeywords);
 
     /* -----------------
      * REMOVING A KEYWORD

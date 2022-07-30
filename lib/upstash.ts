@@ -1,6 +1,6 @@
 import { Redis } from "@upstash/redis";
 
-const redis = new Redis({
+export const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL || "",
   token: process.env.UPSTASH_REDIS_REST_TOKEN || "",
 });
@@ -21,236 +21,96 @@ export async function getAccessToken(teamId: string) {
   if (process.env.SLACK_OAUTH_TOKEN) return process.env.SLACK_OAUTH_TOKEN;
 
   /* Get the access token for a Slack team in redis */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/get/${teamId}_token`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  const json = await res.json();
-  return json.result as string;
+  return await redis.get(`${teamId}_token`);
 }
 
 export async function setAccessToken(teamId: string, accessToken: string) {
   /* Set the access token for a Slack team in redis */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/set/${teamId}_token/${accessToken}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  return await res.json();
+  return await redis.set(`${teamId}_token`, accessToken);
 }
 
-export async function getKeywords(teamId: string) {
-  /* Get list of keywords from redis */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/smembers/${teamId}_keywords`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  const json = await res.json();
-  return json.result as string[];
+export async function getKeywords(teamId: string): Promise<string[]> {
+  /* Get list of keywords for a given team from redis */
+  return (await redis.hget("keywords", teamId)) || [];
 }
 
 export async function addKeyword(teamId: string, keyword: string) {
-  /* Set the last checked post ID in redis */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/sadd/${teamId}_keywords/${keyword}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  return await res.json();
+  /* Add a keyword for a team in redis */
+  const keywords = await getKeywords(teamId); // get list of keywords for team
+
+  if (!keywords.includes(keyword)) {
+    // if keyword is not already in list, add it
+    keywords.push(keyword);
+    await redis.hset("keywords", { [teamId]: keywords });
+    return 1; // return 1 to indicate keyword was added (hset returns 0 if key already exists)
+  } else {
+    // if keyword is already in list
+    return 0; // return 0 to indicate keyword already exists and was not added
+  }
 }
 
 export async function removeKeyword(teamId: string, keyword: string) {
-  /* Set the last checked post ID in redis */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/srem/${teamId}_keywords/${keyword}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  return await res.json();
+  /* Remove a keyword for a team in redis */
+  const keywords = await getKeywords(teamId); // get list of keywords for team
+
+  if (keywords.includes(keyword)) {
+    // if keyword is in list, remove it
+    keywords.splice(keywords.indexOf(keyword), 1);
+    await redis.hset("keywords", { [teamId]: keywords });
+    return 1; // return 1 to indicate keyword was removed (hset returns 0 if key already exists)
+  } else {
+    // if keyword is not in list
+    return 0; // return 0 to indicate keyword was not in the list and was not removed
+  }
 }
 
 export async function countKeywords(teamId: string) {
-  /* Get list of keywords from redis */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/scard/${teamId}_keywords`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  const json = await res.json();
-  return json.result as number;
+  /* Count the list of keywords from redis */
+  return (await getKeywords(teamId)).length;
 }
 
 export async function getChannel(teamId: string) {
   /* Get the channel ID to send notifications in for a Slack team in redis */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/get/${teamId}_channel`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  const json = await res.json();
-  return json.result as string;
+  return await redis.get(`${teamId}_channel`);
 }
 
 export async function setChannel(teamId: string, channel: string) {
   /* Set the channel ID to send notifications in for a Slack team in redis */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/set/${teamId}_channel/${channel}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  return await res.json();
+  return await redis.set(`${teamId}_channel`, channel);
 }
 
 export async function getLastCheckedId() {
   /* Get the last checked post ID from redis */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/get/lastCheckedId`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  const json = await res.json();
-  return parseInt(json.result) as number;
+  return await redis.get("lastCheckedId");
 }
 
 export async function setLastCheckedId(id: number) {
   /* Set the last checked post ID in redis */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/set/lastCheckedId/${id}`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  const json = await res.json();
-  return json as number;
-}
-
-export interface TeamAndKeywords {
-  teamId: string;
-  keywords: string[];
+  return await redis.set("lastCheckedId", id);
 }
 
 export async function getTeamsAndKeywords() {
   /* Get all teams and their respective keywords */
-
-  // First, get all the keys that end with `_keywords`
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/keys/*_keywords`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  const json = await res.json();
-  const teamKeys = json.result as string[];
-
-  // pipeline to get the keywords for each team
-  const response = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/pipeline`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-      body: JSON.stringify(teamKeys.map((key) => ["SMEMBERS", key])),
-    }
-  );
-  const results = await response.json();
-  return teamKeys.map((key, i) => {
-    if (results[i].error) {
-      console.log(
-        "Error getting keywords for team:",
-        key.replace("_keywords", "")
-      );
-    }
-    return {
-      teamId: key.replace("_keywords", ""),
-      keywords: (results[i].result as string[]) || [],
-    };
-  });
+  return await redis.hgetall("keywords");
 }
 
 export async function clearDataForTeam(teamId: string) {
   /* Clear all data for a team */
-  const response = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/pipeline`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-      body: JSON.stringify([
-        ["DEL", `${teamId}_token`],
-        ["DEL", `${teamId}_keywords`],
-        ["DEL", `${teamId}_channel`],
-      ]),
-    }
-  );
-  return await response.json();
+  const pipeline = redis.pipeline();
+  pipeline.del(`${teamId}_token`);
+  pipeline.del(`${teamId}_channel`);
+  pipeline.hdel("keywords", teamId);
+  return await pipeline.exec();
 }
 
 export async function trackUnfurls(teamId: string) {
   /* Track unfurls for a team */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/incr/${teamId}_unfurls`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  return await res.json();
+  return await redis.incr(`${teamId}_unfurls`);
 }
 
 export async function trackBotUsage(teamId: string) {
   /* Track unfurls for a team */
-  const res = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/incr/${teamId}_notifications`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-    }
-  );
-  return await res.json();
+  return await redis.incr(`${teamId}_notifications`);
 }
 
 export interface TeamConfigAndStats {
@@ -261,29 +121,21 @@ export interface TeamConfigAndStats {
   notifications: number;
 }
 
-export async function getTeamConfigAndStats(teamId: string) {
+export async function getTeamConfigAndStats(
+  teamId: string
+): Promise<TeamConfigAndStats> {
   /* Pipeline function to retrieve the team's keywords, channel and usage stats (unfurls, notifications) */
-  const response = await fetch(
-    `${process.env.UPSTASH_REDIS_REST_URL}/pipeline`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.UPSTASH_REDIS_REST_TOKEN}`,
-      },
-      body: JSON.stringify([
-        ["SMEMBERS", `${teamId}_keywords`],
-        ["GET", `${teamId}_channel`],
-        ["GET", `${teamId}_unfurls`],
-        ["GET", `${teamId}_notifications`],
-      ]),
-    }
-  );
-  const json = await response.json();
+  const pipeline = redis.pipeline();
+  pipeline.hget("keywords", teamId);
+  pipeline.get(`${teamId}_channel`);
+  pipeline.get(`${teamId}_unfurls`);
+  pipeline.get(`${teamId}_notifications`);
+  const json = (await pipeline.exec()) as [string[], string, number, number];
   return {
     teamId,
-    keywords: json[0].result,
-    channel: json[1].result,
-    unfurls: json[2].result || 0,
-    notifications: json[3].result || 0,
-  } as TeamConfigAndStats;
+    keywords: json[0],
+    channel: json[1],
+    unfurls: json[2] || 0,
+    notifications: json[3] || 0,
+  };
 }

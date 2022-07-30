@@ -117,7 +117,7 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
 
   const accessToken = await getAccessToken(team_id); // get access token from upstash
 
-  const keywords: string[] = await getKeywords(team_id); // get keywords from upstash
+  const keywords = await getKeywords(team_id); // get keywords from upstash
 
   const { processedPost, mentionedTerms } = regexOperations(post, keywords); // get post data with keywords highlighted
 
