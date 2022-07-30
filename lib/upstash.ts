@@ -1,3 +1,21 @@
+import { Redis } from "@upstash/redis";
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL || "",
+  token: process.env.UPSTASH_REDIS_REST_TOKEN || "",
+});
+
+export async function isDuplicateCron() {
+  /* Function to check for duplicate cron jobs:
+   * nx  tells it to only set the key if it does not exist yet, otherwise an error is returned
+   * ex  sets the TTL on the key to 5 seconds
+   * This function should return string OK  if the key did not exists and was set correctly
+   * or null  if the key already existed
+   */
+  const response = await redis.set("dedupIndex", "set", { nx: true, ex: 5 });
+  return response === null;
+}
+
 export async function getAccessToken(teamId: string) {
   // If you are self hosting this app & have set a SLACK_OAUTH_TOKEN env var, you can just return it here.
   if (process.env.SLACK_OAUTH_TOKEN) return process.env.SLACK_OAUTH_TOKEN;
