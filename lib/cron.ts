@@ -8,8 +8,11 @@ import { equalsIgnoreOrder, postScanner } from "./helpers";
 import { sendSlackMessage } from "./slack";
 
 export async function cron() {
-  const latestPostId = await getLatestPost(); // get latest post id from hacker news
-  const lastCheckedId = await getLastCheckedId(); // get last checked post id from redis
+  // last checked post id from redis, latest post id from hacker news
+  const [lastCheckedId, latestPostId] = await Promise.all([
+    getLastCheckedId(),
+    getLatestPost(),
+  ]);
 
   if (latestPostId === lastCheckedId) {
     // if latest post id is the same as last checked id, do nothing
