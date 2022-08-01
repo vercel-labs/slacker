@@ -110,17 +110,24 @@ export function regexOperations(post: any, keywords: string[]) {
     return "";
   });
 
-  // This regex searches for formatted links, and for our keywords. "Vercel"
-  // may appear in the link href (eg, "<https://vercel.com|Vercel> is
-  // awesome!"), and we only want to decorate the link's text. We match:
+  // This regex searches for our keywords, while also matching a few extra
+  // patterns that we want to prevent a keyword match during.  Eg, "Vercel" may
+  // appear in the link href (eg, "<https://vercel.com|Vercel> is awesome!"),
+  // and we only want to decorate the link's text. We match:
+  // - the ````` ```text``` ````` code blocks, so that we may ignore it when decorating.
   // - the `<https://vercel.com` link href first, so that we may ignore it when decorating.
   // - the `|https://vercel.com` href (where the link has no explicit text) second, so we can again ignore.
   // - the term "Vercel" word that doesn't appear inside either of those.
   // text second, so that we can decorate.
   // This regex will be of the form:
-  //   const decorateRegex = /<http[^|]*|\|http[^>]*|(\bVercel\b|\bNextJS\b)/gi
+  //   const decorateRegex = /```(?:(?!```)[^])*|<http[^|]*|\|http[^>]*|(\bVercel\b|\bNextJS\b)/gi
   const decorateRegex = new RegExp(
-    `<http[^|]*|\\|http[^>]*|(${keywordWordBoundary.join("|")})`,
+    [
+      '```(?:(?!```)[^])*', // code blocks, using a negative lookahead and an an "anything" `[^]` negative char class.
+      `<http[^|]*`, // The href of a link
+      `\\|http[^>]*`, // An auto-generated link without explicit text
+      `(${keywordWordBoundary.join("|")})`, // Our keywords to decorate
+    ].join('|'),
     "gi"
   );
 
