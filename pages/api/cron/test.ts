@@ -1,16 +1,33 @@
+import { testCron } from "@/lib/cron";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export default function handler(_req: NextApiRequest, res: NextApiResponse) {
-  const response = [
-    {
-      by: "ratww",
-      id: 32185607,
-      kids: [32186808, 32189384, 32186128, 32190316],
-      parent: 32183437,
-      text: "This is why I still like Agile and Scrum, as much as other devs might hate it. “Yeah I want REAL deliverables after the first or second week”.<p>Keeps me honest. And will keep me from working with architecture astronauts don’t really deliver anything but hot air and build ultra-extensible structures that are  actually impossible to extend beyond the fantasy world of their maker. Or the equivalent for designers.",
-      time: 1658440117,
-      type: "comment",
-    },
-  ];
+const postsToTest = [
+  32273228, // target word directly next to a bracket, e.g. Vercel(Api)
+  32257847, // target word inside a code block, e.g. ```blah blah blah...Vercel...blah blah blah```
+  32179305, // target word in an inline-link e.g. <https://vercel.com/api|Vercel>
+  32276017, // target word in title URL e.g. https://chronotrains-eu.vercel.app/
+];
+
+const fakeTeamsAndKeywords = {
+  VERCEL: ["next.js", "vercel", "javascript"],
+  SUPABASE: ["supabase", "typescript"],
+};
+
+const fakeInterestedTeams = {
+  32273228: ["VERCEL", "SUPABASE"],
+  32257847: ["VERCEL", "SUPABASE"],
+  32179305: ["VERCEL"],
+  32276017: ["VERCEL"],
+};
+
+export default async function handler(
+  _req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const response = await testCron(
+    postsToTest,
+    fakeTeamsAndKeywords,
+    fakeInterestedTeams
+  );
   res.status(200).json(response);
 }

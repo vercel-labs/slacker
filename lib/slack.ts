@@ -1,10 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import crypto from "crypto";
-import {
-  truncateString,
-  regexOperations,
-  combineKeywordLists,
-} from "./helpers";
+import { truncateString, regexOperations } from "./helpers";
 import {
   clearDataForTeam,
   getAccessToken,
@@ -117,7 +113,7 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
 
   const accessToken = await getAccessToken(team_id); // get access token from upstash
 
-  const keywords: string[] = await getKeywords(team_id); // get keywords from upstash
+  const keywords = await getKeywords(team_id); // get keywords from upstash
 
   const { processedPost, mentionedTerms } = regexOperations(post, keywords); // get post data with keywords highlighted
 
@@ -388,18 +384,13 @@ export async function respondToSlack(
   res: NextApiResponse,
   response_url: string,
   teamId: string,
-  oldKeywords: string[],
   feedback?: {
     keyword?: string;
     channel?: string;
   }
 ) {
-  const {
-    keywords: newKeywords,
-    channel,
-    unfurls,
-    notifications,
-  } = await getTeamConfigAndStats(teamId); // get the latest state of the bot configurations to make sure it's up to date
+  const { keywords, channel, unfurls, notifications } =
+    await getTeamConfigAndStats(teamId); // get the latest state of the bot configurations to make sure it's up to date
 
   // respond to Slack with the new state of the bot
   const response = await fetch(response_url, {
@@ -409,10 +400,7 @@ export async function respondToSlack(
     },
     body: JSON.stringify({
       blocks: configureBlocks(
-        // here, we are combining the two keyword lists to
-        // preserve the sequence of the old keyword list
-        // because they're stored as a set in Upstash
-        combineKeywordLists(oldKeywords, newKeywords),
+        keywords,
         channel,
         unfurls,
         notifications,

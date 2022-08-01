@@ -31,11 +31,6 @@ export default async function handler(
   const payload = JSON.parse(req.body.payload);
   const { response_url, message, actions, team } = payload;
 
-  // get old keywords from the Slack message
-  const oldKeywords = message.blocks
-    .filter((block: any) => block.block_id.startsWith("keyword_"))
-    .map((block: any) => block.block_id.replace("keyword_", ""));
-
   // get the action type and the action value
   const { action_id, ...data } = actions[0];
 
@@ -59,7 +54,7 @@ export default async function handler(
   if (action_id === "add_keyword") {
     const rawKeyword = data.value;
     if (!rawKeyword) {
-      return respondToSlack(res, response_url, team.id, oldKeywords, {
+      return respondToSlack(res, response_url, team.id, {
         keyword:
           ":warning: Please enter a keyword that is at least 3 characters long.",
       });
@@ -77,7 +72,7 @@ export default async function handler(
 
       // if the keyword too common, we'll reject it
       if (commonWords.includes(keyword)) {
-        return respondToSlack(res, response_url, team.id, oldKeywords, {
+        return respondToSlack(res, response_url, team.id, {
           keyword:
             ":warning: The keyword `" +
             keyword +
@@ -85,7 +80,7 @@ export default async function handler(
         });
       } else if (keywordsCount >= 15) {
         // if the team has too many keywords, we'll reject it
-        return respondToSlack(res, response_url, team.id, oldKeywords, {
+        return respondToSlack(res, response_url, team.id, {
           keyword:
             ":warning: You have too many keywords. Try removing some before adding more.",
         });
@@ -93,14 +88,16 @@ export default async function handler(
     }
 
     const response = await addKeyword(team.id, keyword);
-    if (response.error) {
-      return respondToSlack(res, response_url, team.id, oldKeywords, {
-        keyword: `:warning: ${response.error}`,
-      });
-    } else if (response.result === 1) {
+    if (response === 1) {
       await log("Team *`" + team.id + "`* is now tracking *`" + keyword + "`*");
+      return respondToSlack(res, response_url, team.id);
+    } else {
+      return respondToSlack(res, response_url, team.id, {
+        keyword: `:warning: Failed to add keyword. Cause: ${
+          response === 0 ? "Keyword already exists" : response
+        }`,
+      });
     }
-    return respondToSlack(res, response_url, team.id, oldKeywords);
 
     /* -----------------
      * REMOVING A KEYWORD
@@ -114,16 +111,18 @@ export default async function handler(
     const wordToRemove = data.value;
 
     const response = await removeKeyword(team.id, wordToRemove);
-    if (response.error) {
-      return respondToSlack(res, response_url, team.id, oldKeywords, {
-        keyword: `:warning: ${response.error}`,
-      });
-    } else if (response.result === 1) {
+    if (response === 1) {
       await log(
         "Team *`" + team.id + "`* stopped tracking *`" + wordToRemove + "`*"
       );
+      return respondToSlack(res, response_url, team.id);
+    } else {
+      return respondToSlack(res, response_url, team.id, {
+        keyword: `:warning: Failed to remove keyword. Cause: ${
+          response === 0 ? "Keyword not found" : response
+        }`,
+      });
     }
-    return respondToSlack(res, response_url, team.id, oldKeywords);
 
     /* -----------------
      * SETTING A CHANNEL
@@ -134,14 +133,14 @@ export default async function handler(
      */
   } else if (action_id === "set_channel") {
     const channelId = data.selected_conversation;
-    const setChannelResponse = await setChannel(team.id, channelId);
-    if (!setChannelResponse.error) {
-      return respondToSlack(res, response_url, team.id, oldKeywords, {
+    const response = await setChannel(team.id, channelId);
+    if (response === "OK") {
+      return respondToSlack(res, response_url, team.id, {
         channel: `:white_check_mark: Successfully set channel to <#${channelId}>`,
       });
     } else {
-      return respondToSlack(res, response_url, team.id, oldKeywords, {
-        channel: `:warning: ${setChannelResponse.error}`,
+      return respondToSlack(res, response_url, team.id, {
+        channel: `:warning: Failed to set channel. Cause: ${response}`,
       });
     }
   }
