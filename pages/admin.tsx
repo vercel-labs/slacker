@@ -174,7 +174,7 @@ export async function getStaticProps() {
       const [token, unfurls, notifications] = await redis.mget(
         tokenKey,
         `${teamId}_unfurls`,
-        `${teamId}_unfurls`
+        `${teamId}_notifications`
       );
       const slack = await fetch("https://slack.com/api/team.info", {
         headers: {
