@@ -15,7 +15,7 @@ export default async function handler(
     const { access_token, team } = json;
     if (access_token && team.id) {
       const upstashRepsonse = await setAccessToken(team.id, access_token);
-      if (upstashRepsonse === "OK") {
+      if (upstashRepsonse[0] === "OK") {
         await log(
           "Team *`" +
             team.name +
@@ -26,6 +26,7 @@ export default async function handler(
         res.redirect(`/success/${team.id}`);
       } else {
         // failed to store access token in redis for some reason
+        console.log("failed to store access token in redis");
         res.status(500).json(upstashRepsonse);
       }
     } else {
