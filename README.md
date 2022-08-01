@@ -158,7 +158,8 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 3. Select the type as `Scheduled`.
 4. Configure the cron schedule as `* * * * *` (select the "day" dropdown and change it to "minute").
 5. Click on `Schedule`.
-6. You should now start receiving notifications whenever your keywords are mentioned on Hacker News.
+6. Go back to Slack and use the `/configure` slash command that you set up earlier to add keyewords to track + set the channel to receive notifications in.
+7. You should now start receiving notifications whenever your keywords are mentioned on Hacker News.
 
 <br/>
 
