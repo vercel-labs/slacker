@@ -5,11 +5,11 @@
         <img alt="Banner" src="https://user-images.githubusercontent.com/28986134/180941185-0bb5b912-1884-4da9-b36d-e49cd09d5198.png">
     </picture>
     <h3 align="center">Hacker News Slack Bot</h3>
-    <p>A bot that monitors Hacker News for mentions of certain keywords, sends them to Slack, and shows a link preview.</p>
+    <p>A bot that notifies you on Slack whenever your company/product is mentioned on Hacker News.</p>
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/182242325-90a786f8-776c-4569-907c-9e32bda1ea8a.png">
-        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/182242291-95296416-6bdd-4af8-992e-59808945ef55.png">
-        <img alt="Demo" src="https://user-images.githubusercontent.com/28986134/182242291-95296416-6bdd-4af8-992e-59808945ef55.png">
+        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/182243546-7687d077-280e-4c13-b96b-c6639c2a9e8e.png">
+        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/182243511-a118223b-ebe2-4a07-a3d1-58d4a88d541e.png">
+        <img alt="Demo" src="https://user-images.githubusercontent.com/28986134/182243511-a118223b-ebe2-4a07-a3d1-58d4a88d541e.png">
     </picture>
 </div>
 
