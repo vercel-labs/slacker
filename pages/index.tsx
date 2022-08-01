@@ -10,7 +10,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Hacker News Slack Bot</title>
       </Head>
-      <GithubCorner url="https://github.com/steven-tey/hacker-news-slack-bot" />
+      <GithubCorner url="https://github.com/vercel-labs/hacker-news-slack-bot" />
 
       <main className="flex flex-col space-y-5 items-center justify-center min-h-screen py-10 sm:pb-20">
         <div className="relative w-[422px] h-[66px] sm:w-[633px] sm:h-[100px]">
@@ -51,7 +51,7 @@ const Home: NextPage = () => {
             url={`https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}`}
           />
           <a
-            href="https://github.com/steven-tey/hacker-news-slack-bot#deploy-your-own"
+            href="https://github.com/vercel-labs/hacker-news-slack-bot#deploy-your-own"
             className="text-gray-500 hover:text-black text-sm"
             target="_blank"
             rel="noopener noreferrer"
