@@ -7,9 +7,9 @@
     <h3 align="center">Hacker News Slack Bot</h3>
     <p>A bot that monitors Hacker News for mentions of certain keywords, sends them to Slack, and shows a link preview.</p>
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180941459-66936b53-c1d4-431f-b1b3-3e7295ad66b9.png">
-        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180941553-b12e3a2b-10f3-4979-848b-4eb8d98cd580.png">
-        <img alt="Demo" src="https://user-images.githubusercontent.com/28986134/180941553-b12e3a2b-10f3-4979-848b-4eb8d98cd580.png">
+        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/182242325-90a786f8-776c-4569-907c-9e32bda1ea8a.png">
+        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/182242291-95296416-6bdd-4af8-992e-59808945ef55.png">
+        <img alt="Demo" src="https://user-images.githubusercontent.com/28986134/182242291-95296416-6bdd-4af8-992e-59808945ef55.png">
     </picture>
 </div>
 
@@ -27,9 +27,7 @@
 1. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/event.ts)
 2. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/hn.ts)
 3. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L47) and [unfurling](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L73) messages
-4. [Upstash](https://upstash.com)
-   - [Redis](https://upstash.com/redis) for key-value storage
-   - [qStash](https://upstash.com/qstash/) for cron scheduling
+4. [Upstash](https://upstash.com) for key-value storage ([Redis](https://upstash.com/redis)) and cron scheduling ([qStash](https://upstash.com/qstash/)).
 
 <br/>
 
