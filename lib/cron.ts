@@ -4,12 +4,12 @@ import {
   setLastCheckedId,
   getTeamsAndKeywords,
 } from "./upstash";
-import { postScanner } from "./helpers";
+import { equalsIgnoreOrder, postScanner } from "./helpers";
 import { sendSlackMessage } from "./slack";
 
 export async function cron() {
-  const lastCheckedId = await getLastCheckedId(); // get last checked post id from redis
   const latestPostId = await getLatestPost(); // get latest post id from hacker news
+  const lastCheckedId = await getLastCheckedId(); // get last checked post id from redis
 
   if (latestPostId === lastCheckedId) {
     // if latest post id is the same as last checked id, do nothing
@@ -64,5 +64,38 @@ export async function cron() {
     } posts)`,
     results,
     errors,
+  };
+}
+
+export async function testCron(
+  postsToTest: number[],
+  fakeTeamsAndKeywords: { [teamId: string]: string[] },
+  fakeInterestedTeams: { [postId: number]: string[] }
+) {
+  const scanner = postScanner(fakeTeamsAndKeywords);
+  let results: { [postId: number]: string } = {};
+  for (const id of postsToTest) {
+    console.log(`checking for post ${id}`);
+    const post = await getPost(id); // get post from hacker news
+    if (!post) {
+      results[id] = `Hacker News post not found.`;
+      continue;
+    }
+    if (post.deleted) {
+      continue; // if post is deleted, skip it
+    }
+    const interestedTeams = Array.from(scanner(post)); // get teams that are interested in this post
+    if (!equalsIgnoreOrder(fakeInterestedTeams[id], interestedTeams)) {
+      results[
+        id
+      ] = `Interested teams don't match. Expected: ${fakeInterestedTeams[id]}, Actual: ${interestedTeams}`;
+    }
+  }
+  return {
+    message:
+      Object.keys(results).length > 0
+        ? "Some tests failing"
+        : "All tests passed",
+    results,
   };
 }

@@ -1,4 +1,5 @@
 import { Redis } from "@upstash/redis";
+import { getLatestPost } from "./hn";
 
 export const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL || "",
@@ -79,9 +80,15 @@ export async function setChannel(teamId: string, channel: string) {
   return await redis.set(`${teamId}_channel`, channel);
 }
 
-export async function getLastCheckedId() {
+export async function getLastCheckedId(): Promise<number> {
   /* Get the last checked post ID from redis */
-  return await redis.get("lastCheckedId");
+  const lastCheckedId = (await redis.get("lastCheckedId")) as number;
+  if (!lastCheckedId) {
+    // if lastCheckedId is not set (first time running), return the latest post ID on HN instead
+    const latestPostId = await getLatestPost();
+    return latestPostId;
+  }
+  return lastCheckedId;
 }
 
 export async function setLastCheckedId(id: number) {
@@ -89,9 +96,13 @@ export async function setLastCheckedId(id: number) {
   return await redis.set("lastCheckedId", id);
 }
 
-export async function getTeamsAndKeywords() {
+export interface TeamAndKeywords {
+  [teamId: string]: string[];
+}
+
+export async function getTeamsAndKeywords(): Promise<TeamAndKeywords> {
   /* Get all teams and their respective keywords */
-  return await redis.hgetall("keywords");
+  return (await redis.hgetall("keywords")) || {};
 }
 
 export async function clearDataForTeam(teamId: string) {

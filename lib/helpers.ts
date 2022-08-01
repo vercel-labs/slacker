@@ -1,8 +1,8 @@
-import { TeamAndKeywords } from "./upstash";
 import { decode } from "html-entities";
 // @ts-ignore - no type info for this module
 import mrkdwn from "html-to-mrkdwn";
 import regexEscape from "escape-string-regexp";
+import { TeamAndKeywords } from "@/lib/upstash";
 
 export function combineText(post: any) {
   /* combine text from post's title, text, and url */
@@ -19,12 +19,12 @@ export function combineText(post: any) {
   return text;
 }
 
-export function postScanner(teamsAndKeywords: TeamAndKeywords[]) {
+export function postScanner(teamsAndKeywords: TeamAndKeywords) {
   const keywordMapping = new Map() as Map<string, string[]>;
   const keywords = new Set();
 
-  for (const team of teamsAndKeywords) {
-    for (const keyword of team.keywords) {
+  for (const teamId of Object.keys(teamsAndKeywords)) {
+    for (const keyword of teamsAndKeywords[teamId]) {
       keywords.add(keyword);
 
       let teams = keywordMapping.get(keyword);
@@ -32,7 +32,7 @@ export function postScanner(teamsAndKeywords: TeamAndKeywords[]) {
         teams = [];
         keywordMapping.set(keyword, teams);
       }
-      teams.push(team.teamId);
+      teams.push(teamId);
     }
   }
 
@@ -140,22 +140,7 @@ export function regexOperations(post: any, keywords: string[]) {
   };
 }
 
-export function combineKeywordLists(
-  oldKeywords: string[],
-  newKeywords: string[]
-) {
-  /* 
-    combine the two keyword lists to preserve the sequence of the old keyword list 
-    because keywords are stored as a set in Upstash 
-  */
-  const newKeywordsSet = new Set(newKeywords);
-  const filteredOldKeywords = oldKeywords.filter((keyword) => {
-    if (newKeywordsSet.has(keyword)) {
-      newKeywordsSet.delete(keyword);
-      return true;
-    } else {
-      return false;
-    }
-  });
-  return [...filteredOldKeywords, ...Array.from(newKeywordsSet)];
-}
+export const equalsIgnoreOrder = (a: string[], b: string[]) => {
+  if (a.length !== b.length) return false;
+  return a.sort().join(",") === b.sort().join(",");
+};

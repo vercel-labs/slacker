@@ -37,6 +37,6 @@ export default async function handler(
     }
   } catch (err) {
     // failed to fetch from slack oauth API
-    res.status(500).json({ statusCode: 500, message: err });
+    res.status(500).json({ statusCode: 500 });
   }
 }
