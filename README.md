@@ -55,16 +55,7 @@ You can click the button below to install the bot directly into your desired Sla
 
 <a href="https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=12364000946.3845028209600"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack@2x.png" /></a>
 
-Once it's installed, here are a few [slash commands](https://api.slack.com/interactivity/slash-commands) you can use to set up the bot:
-
-- `/channel <CHANNEL_ID>`: Set the desired channel for the bot to send notifications in.
-
-  > Note: this is your unique channel ID (not your channel slug/name). Here's [how you can get your `CHANNEL_ID`](https://stackoverflow.com/questions/40940327/what-is-the-simplest-way-to-find-a-slack-team-id-and-a-channel-id).
-
-- `/channel`: Check the currently set channel.
-- `/list`: Show the current list of `keywords` that are being tracked
-- `/track`: Add a keyword to track
-- `/untrack`: Remove a keyword to track
+Once it's installed, create a channel to receive notifications in and start configuring the bot with the `/configure` command.
 
 <br/>
 
@@ -133,24 +124,18 @@ For your Slack app to be able to send/unfurl messages in your Slack workspace, w
 
 #### Step 4C: Configure Slash Commands
 
-Select "Slash Commands" from the sidebar (under "Features"). Create the following commmands with their respective Request URLs (based on your Vercel project's domain):
+Select "Slash Commands" from the sidebar (under "Features"). Create the following commmand with its respective Request URLs (based on your Vercel project's domain):
 
-1. Channel
-   - Command: `/channel`
-   - Request URL: `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cmd/channel`
-   - Short Description: Set the desired channel for the bot to send notifications in.
-2. List
-   - Command: `/list`
-   - Request URL: `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cmd/list`
-   - Short Description: Show the current list of keywords that are being tracked
-3. Track
-   - Command: `/track`
-   - Request URL: `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cmd/track`
-   - Short Description: Add a keyword to track
-4. Untrack
-   - Command: `/untrack`
-   - Request URL: `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cmd/untrack`
-   - Short Description: Remove a keyword to track
+- Command: `/configure`
+- Request URL: `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cmd/configure`
+- Short Description: Configure your HN Slack Bot
+
+#### Step 4E: Enable Interactivity
+
+1. Now, select "Interactivity & Shortcuts" from the sidebar (under "Features").
+2. Toggle "Interactivity" to "ON".
+3. For the "Request URL" field, input your Vercel project's domain and append `/api/response` to it. The final URL should look something like `https://hacker-news-slack-bot-eight.vercel.app/api/response`.
+4. Click on "Save Changes".
 
 #### Step 4D: Install App to Slack Workspace + Get OAuth token
 

@@ -8,6 +8,7 @@ import {
   getKeywords,
   trackBotUsage,
   trackUnfurls,
+  getTeamConfigAndStats,
 } from "./upstash";
 import { getPost, getParent } from "@/lib/hn";
 
@@ -68,7 +69,10 @@ export function verifyRequest(req: NextApiRequest) {
 
 export async function sendSlackMessage(postId: number, teamId: string) {
   /* Send a message containing the link to the hacker news post to Slack */
-  const [accessToken, channelId] = await Promise.all([getAccessToken(teamId), getChannel(teamId)])
+  const [accessToken, channelId] = await Promise.all([
+    getAccessToken(teamId),
+    getChannel(teamId),
+  ]);
   console.log(
     `Sending message to team ${teamId} in channel ${channelId} for post ${postId}`
   );
@@ -111,7 +115,7 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
     getPost(parseInt(id)), // get post data from hacker news API
     getAccessToken(team_id), // get access token from upstash
     getKeywords(team_id), // get keywords from upstash
-  ])
+  ]);
 
   const { processedPost, mentionedTerms } = regexOperations(post, keywords); // get post data with keywords highlighted
 
@@ -226,7 +230,8 @@ export async function log(message: string) {
 export const configureBlocks = (
   keywords: string[],
   channel: string,
-  statsElements: { type: string; text: string }[],
+  unfurls: number,
+  notifications: number,
   feedback?: {
     keyword?: string;
     channel?: string;
@@ -242,7 +247,12 @@ export const configureBlocks = (
   {
     type: "context",
     block_id: "stats",
-    elements: statsElements,
+    elements: [
+      {
+        type: "mrkdwn",
+        text: `Current Usage: ${unfurls} link previews shown, ${notifications} notifications sent |  <https://slack.com/apps/A03QV0U65HN|More Configuration Settings>`,
+      },
+    ],
   },
   {
     type: "divider",
@@ -366,7 +376,7 @@ export const configureBlocks = (
     elements: [
       {
         type: "mrkdwn",
-        text: "Made with :black_heart: and <https://hn-slack-bot.vercel.app/|open-sourced> by <https://vercel.com/|▲ Vercel>",
+        text: "Made and <https://hn-slack-bot.vercel.app/|open-sourced> with :black_heart: by <https://vercel.com/|▲ Vercel>",
       },
     ],
   },
@@ -375,21 +385,29 @@ export const configureBlocks = (
 export async function respondToSlack(
   res: NextApiResponse,
   response_url: string,
-  keywords: string[], // list of currently tracked keywords
-  statsElements: { type: string; text: string }[], // elements to be displayed in the stats section
-  channelId: string, // channel to send notifications to
+  teamId: string,
   feedback?: {
     keyword?: string;
     channel?: string;
   }
 ) {
+  const { keywords, channel, unfurls, notifications } =
+    await getTeamConfigAndStats(teamId); // get the latest state of the bot configurations to make sure it's up to date
+
+  // respond to Slack with the new state of the bot
   const response = await fetch(response_url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      blocks: configureBlocks(keywords, channelId, statsElements, feedback),
+      blocks: configureBlocks(
+        keywords,
+        channel,
+        unfurls,
+        notifications,
+        feedback
+      ),
     }),
   });
   return res.status(200).json(response);

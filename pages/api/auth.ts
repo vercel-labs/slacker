@@ -15,7 +15,7 @@ export default async function handler(
     const { access_token, team } = json;
     if (access_token && team.id) {
       const upstashRepsonse = await setAccessToken(team.id, access_token);
-      if (upstashRepsonse.result === "OK") {
+      if (upstashRepsonse === "OK") {
         await log(
           "Team *`" +
             team.name +
@@ -37,6 +37,8 @@ export default async function handler(
     }
   } catch (err) {
     // failed to fetch from slack oauth API
-    res.status(500).json({ statusCode: 500, message: err });
+    res
+      .status(500)
+      .json({ statusCode: 500, message: "An unknown error occured." });
   }
 }

@@ -11,6 +11,7 @@
   "dependencies": {
     "@tailwindcss/forms": "^0.5.2",
     "@upstash/qstash": "^0.1.6",
+    "@upstash/redis": "^1.10.2",
     "escape-string-regexp": "5.0.0",
     "html-entities": "^2.3.3",
     "html-to-mrkdwn": "^3.0.0",
