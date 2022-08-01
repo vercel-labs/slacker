@@ -150,29 +150,21 @@ export default function Admin({
 }
 
 export async function getStaticProps() {
-  const allTeamsTokenKeys = (
-    await redis.scan(0, {
-      match: "*_token",
-      count: 10000,
-    })
-  )[1];
-
-  const teamsAndKeywords = await getTeamsAndKeywords();
   const signupTimes = await redis.zrange<string[]>("signupTimes", 0, -1, {
     withScores: true,
   });
 
-  console.log(signupTimes);
-  console.log(
-    signupTimes.indexOf("T01MYQYNR96"),
-    signupTimes[signupTimes.indexOf("T01MYQYNR96") + 1]
-  );
+  const signUpTimesObj: { [teamId: string]: string } = {};
+  Array.from(Array(signupTimes.length / 2).keys()).forEach((i) => {
+    signUpTimesObj[signupTimes[i * 2]] = signupTimes[i * 2 + 1];
+  });
+
+  const teamsAndKeywords = await getTeamsAndKeywords();
 
   const data = await Promise.all(
-    allTeamsTokenKeys.map(async (tokenKey) => {
-      const teamId = tokenKey.replace("_token", "");
+    Object.keys(signUpTimesObj).map(async (teamId) => {
       const [token, unfurls, notifications] = await redis.mget(
-        tokenKey,
+        `${teamId}_token`,
         `${teamId}_unfurls`,
         `${teamId}_notifications`
       );
@@ -183,9 +175,7 @@ export async function getStaticProps() {
       }).then((res) => res.json());
       return {
         teamId,
-        signupTime: JSON.stringify(
-          signupTimes[signupTimes.indexOf(teamId) + 1]
-        ),
+        signupTime: JSON.stringify(signUpTimesObj[teamId]),
         slackInfo: slack.ok ? slack.team : null,
         unfurls: unfurls || 0,
         notifications: notifications || 0,
