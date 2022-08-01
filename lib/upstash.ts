@@ -141,7 +141,7 @@ export async function getTeamConfigAndStats(
   pipeline.get(`${teamId}_channel`);
   pipeline.get(`${teamId}_unfurls`);
   pipeline.get(`${teamId}_notifications`);
-  const json = (await pipeline.exec()) as [string[], string, number, number];
+  const json = await pipeline.exec<[string[], string, number, number]>();
   return {
     teamId,
     keywords: json[0],

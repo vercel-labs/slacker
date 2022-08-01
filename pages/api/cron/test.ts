@@ -3,9 +3,9 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const postsToTest = [
   32273228, // target word directly next to a bracket, e.g. Vercel(Api)
-  32257847, // target word inside a code block
-  32179305, // target word in an inline-link
-  32276017, // target word in title URL
+  32257847, // target word inside a code block, e.g. ```blah blah blah...Vercel...blah blah blah```
+  32179305, // target word in an inline-link e.g. <https://vercel.com/api|Vercel>
+  32276017, // target word in title URL e.g. https://chronotrains-eu.vercel.app/
 ];
 
 const fakeTeamsAndKeywords = {
