@@ -2,8 +2,13 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { cron } from "@/lib/cron";
 import { verifySignature } from "@upstash/qstash/nextjs";
 import { log } from "@/lib/slack";
+import { isDuplicateCron } from "@/lib/upstash";
 
 async function handler(_req: NextApiRequest, res: NextApiResponse) {
+  if (await isDuplicateCron()) {
+    // check if this is a duplicate cron job (threshold of 5s)
+    return res.status(500).json({ message: "Duplicate cron job" });
+  }
   try {
     const response = await cron();
     console.log("Cron job successful! Response:", response);
