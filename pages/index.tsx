@@ -4,7 +4,7 @@ import GithubCorner from "@/components/github-corner";
 import SlackButton from "@/components/slack-button";
 import Image from "next/image";
 
-const Home: NextPage = () => {
+export default function Home() {
   return (
     <div>
       <Head>
@@ -62,6 +62,4 @@ const Home: NextPage = () => {
       </main>
     </div>
   );
-};
-
-export default Home;
+}
