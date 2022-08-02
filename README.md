@@ -24,7 +24,7 @@
 
 ## Built With
 
-1. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/event.ts)
+1. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/cron/index.ts) & [event subscriptions via webhooks](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/event.ts)
 2. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/hn.ts)
 3. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/slack.ts#L47) and [unfurling](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/slack.ts#L73) messages
 4. [Upstash](https://upstash.com) for key-value storage ([Redis](https://upstash.com/redis)) and cron scheduling ([qStash](https://upstash.com/qstash/)).
@@ -128,17 +128,17 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 - Request URL: `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cmd/configure`
 - Short Description: Configure your HN Slack Bot
 
-#### Step 4E: Enable Interactivity
+#### Step 4D: Enable Interactivity
 
 1. Now, select "Interactivity & Shortcuts" from the sidebar (under "Features").
 2. Toggle "Interactivity" to "ON".
 3. For the "Request URL" field, input your Vercel project's domain and append `/api/response` to it. The final URL should look something like `https://hacker-news-slack-bot-eight.vercel.app/api/response`.
 4. Click on "Save Changes".
 
-#### Step 4D: Install App to Slack Workspace + Get OAuth token
+#### Step 4E: Install App to Slack Workspace + Get OAuth token
 
 1. Go to "Basic Information" (under "Settings").
-2. Under "Install your app", click opn "Install to Workspace".
+2. Under "Install your app", click on "Install to Workspace".
 3. You should receive a notification that your app has been installed in your Slack workspace.
 4. Go back to "OAuth & Permissions". Copy the value of "Bot User OAuth Token".
    ![CleanShot 2022-07-25 at 18 28 46](https://user-images.githubusercontent.com/28986134/180891662-32c45dd7-18a1-4dd1-a729-e652bbdd42d6.png)
