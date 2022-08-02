@@ -69,6 +69,7 @@ export function postScanner(teamsAndKeywords: TeamAndKeywords) {
 }
 
 export function truncateString(str: string, num: number) {
+  if (!str) return "";
   if (str.length > num) {
     return str.slice(0, num) + "...";
   } else {

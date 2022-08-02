@@ -154,7 +154,7 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
           footer: `<https://news.ycombinator.com/item?id=${
             originalPost ? originalPost.id : post.id
           }|${
-            originalPost // if original post exists, add a footer with the link to it
+            originalPost?.title // if original post exists, add a footer with the link to it
               ? `on: ${truncateString(originalPost.title, 40)}` // truncate the title to max 40 chars
               : "Hacker News"
           }> | <!date^${
