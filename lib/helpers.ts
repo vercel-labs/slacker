@@ -90,7 +90,10 @@ export function regexOperations(post: any, keywords: string[]) {
   //   const termsRegex = /(\bVercel\b)|(\bNextJS\b))\b/gi
   const termsRegex = new RegExp(`(${keywordWordBoundary.join(")|(")})`, "gi");
 
-  const marked: string = mrkdwn(decode(post.text)).text;
+  let marked: string = "";
+  try {
+    marked = mrkdwn(decode(post.text));
+  } catch {}
 
   // We use String.replace here so that we can know which capture group is
   // actually matched, so that we can extract the appropriate keyword.
@@ -123,11 +126,11 @@ export function regexOperations(post: any, keywords: string[]) {
   //   const decorateRegex = /```(?:(?!```)[^])*|<http[^|]*|\|http[^>]*|(\bVercel\b|\bNextJS\b)/gi
   const decorateRegex = new RegExp(
     [
-      '```(?:(?!```)[^])*', // code blocks, using a negative lookahead and an an "anything" `[^]` negative char class.
+      "```(?:(?!```)[^])*", // code blocks, using a negative lookahead and an an "anything" `[^]` negative char class.
       `<http[^|]*`, // The href of a link
       `\\|http[^>]*`, // An auto-generated link without explicit text
       `(${keywordWordBoundary.join("|")})`, // Our keywords to decorate
-    ].join('|'),
+    ].join("|"),
     "gi"
   );
 
