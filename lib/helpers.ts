@@ -90,10 +90,9 @@ export function regexOperations(post: any, keywords: string[]) {
   //   const termsRegex = /(\bVercel\b)|(\bNextJS\b))\b/gi
   const termsRegex = new RegExp(`(${keywordWordBoundary.join(")|(")})`, "gi");
 
-  let marked: string = "";
-  try {
-    marked = mrkdwn(decode(post.text));
-  } catch {}
+  const marked: string = mrkdwn(decode(post?.text || ""))
+    ? mrkdwn(decode(post?.text || ""))
+    : "";
 
   // We use String.replace here so that we can know which capture group is
   // actually matched, so that we can extract the appropriate keyword.
