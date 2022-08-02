@@ -21,7 +21,7 @@ export default async function handler(
       await getTeamConfigAndStats(team_id);
 
     return res.status(200).json({
-      response_type: "in_channel",
+      response_type: "ephemeral",
       text: "Configure your bot",
       unfurl_links: false, // do not unfurl links & media for bot configuration message
       unfurl_media: false,

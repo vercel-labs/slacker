@@ -27,7 +27,10 @@ export async function getAccessToken(teamId: string) {
 
 export async function setAccessToken(teamId: string, accessToken: string) {
   /* Set the access token for a Slack team in redis */
-  return await redis.set(`${teamId}_token`, accessToken);
+  const pipeline = redis.pipeline();
+  pipeline.set(`${teamId}_token`, accessToken);
+  pipeline.zadd("signupTimes", { score: Date.now(), member: teamId });
+  return await pipeline.exec();
 }
 
 export async function getKeywords(teamId: string): Promise<string[]> {
