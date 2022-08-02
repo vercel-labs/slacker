@@ -25,8 +25,8 @@ const Home: NextPage = () => {
             Hacker News Slack Bot
           </h1>
           <p className="text-sm sm:text-base text-gray-600">
-            A bot that monitors Hacker News for mentions of certain keywords,
-            sends them to Slack, and shows a link preview.
+            A bot that notifies you on Slack whenever your company/product is
+            mentioned on Hacker News.
           </p>
         </div>
 

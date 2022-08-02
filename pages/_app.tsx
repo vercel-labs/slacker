@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <meta
           name="description"
-          content="A bot that monitors Hacker News for mentions of certain keywords and sends it to a Slack channel."
+          content="A bot that notifies you on Slack whenever your company/product is mentioned on Hacker News."
         />
         <link rel="icon" href="/favicon.ico" />
         <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="twitter:title" content="Hacker News Slack Bot" />
         <meta
           name="twitter:description"
-          content="A bot that monitors Hacker News for mentions of certain keywords and sends it to a Slack channel."
+          content="A bot that notifies you on Slack whenever your company/product is mentioned on Hacker News."
         />
         <meta
           name="twitter:image"
