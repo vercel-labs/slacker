@@ -91,7 +91,7 @@ export function regexOperations(post: any, keywords: string[]) {
   const termsRegex = new RegExp(`(${keywordWordBoundary.join(")|(")})`, "gi");
 
   const marked: string = mrkdwn(decode(post?.text || ""))
-    ? mrkdwn(decode(post?.text || ""))
+    ? mrkdwn(decode(post?.text || "")).text
     : "";
 
   // We use String.replace here so that we can know which capture group is
