@@ -42,7 +42,7 @@ export default function Home() {
             params=""
             playlist={false}
             playlistCoverId="gBCIaf200oQ"
-            poster="hqdefault"
+            poster="maxresdefault"
             title="Hacker News Slack Bot Demo"
             noCookie={true}
           />
