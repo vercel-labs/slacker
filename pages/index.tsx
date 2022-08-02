@@ -13,7 +13,7 @@ export default function Home() {
       </Head>
       <GithubCorner url="https://github.com/vercel-labs/hacker-news-slack-bot" />
 
-      <main className="flex flex-col space-y-5 items-center justify-center max-h-screen py-10 sm:pb-20">
+      <main className="flex flex-col space-y-5 items-center justify-center min-h-screen max-h-screen py-10 sm:pb-20">
         <div className="relative w-[422px] h-[66px] sm:w-[633px] sm:h-[100px]">
           <Image
             src="/banner.png"
