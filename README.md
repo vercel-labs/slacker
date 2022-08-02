@@ -33,7 +33,7 @@
 
 ## How It Works
 
-1. Set up a cron schedule in Upstash (qStash) that pings our [`/api/cron` endpoint](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/cron.ts) once every 60 seconds.
+1. Set up a cron schedule in Upstash (qStash) that pings our [`/api/cron` endpoint](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/cron/index.ts) once every 60 seconds.
 2. Get the last checked HN post ID ([`lastCheckedId`](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/cron.ts#L11)) and the list of `keywords` to check against from Upstash.
 3. Get the `latestPostId` using HN API's [`maxitem`](https://github.com/HackerNews/API#max-item-id) endpoint. Then, perform checks against each post between `lastCheckedId` and `latestPostId` to see if they contain any of the delineated `keywords`.
 4. For each positive post, send its link to Slack using the [`chat.postMessage` method](https://api.slack.com/methods/chat.postMessage).
