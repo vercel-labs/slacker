@@ -61,7 +61,7 @@ Once it's installed, create a channel to receive notifications in and start conf
 
 You can also deploy your own version of this bot using Vercel and Upstash. Note that while this is in early-access, some of these processes might change.
 
-> Prefer a video tutorial instead? Watch this [Loom video](https://www.loom.com/share/3af38a0a203c4c6eb1cce9d3552df664).
+> Prefer a video tutorial instead? Watch this [video](https://youtu.be/_F4VuVKJn0Q).
 
 ### Step 1: Create Slack App + Secure Env Vars
 
