@@ -40,9 +40,9 @@
 5. Listen to the [`link_shared` event](https://api.slack.com/events/link_shared) at our `/api/event` endpoint. Once an event occurs, send a POST request to Slack to unfurl the link using the [chat.unfurl method](https://api.slack.com/methods/chat.unfurl).
 
 <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/181404934-420f366b-a0f8-4a52-af48-a2cd7ff28daf.png">
-   <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180942414-dd69d83c-e37a-4833-877e-e60cccd85ecc.png">
-   <img alt="Hacker News Slack Bot Overview" src="https://user-images.githubusercontent.com/28986134/180942414-dd69d83c-e37a-4833-877e-e60cccd85ecc.png">
+   <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/182371964-b00cb4f5-fd80-4475-a8a5-3ce6971e06ca.png">
+   <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/182371926-da1bef29-71d9-4d4c-abd7-3fe2366f4aa1.png">
+   <img alt="Hacker News Slack Bot Overview" src="https://user-images.githubusercontent.com/28986134/182371926-da1bef29-71d9-4d4c-abd7-3fe2366f4aa1.png">
 </picture>
 
 ## One-Click Install
