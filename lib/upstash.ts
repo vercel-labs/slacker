@@ -141,15 +141,17 @@ export async function getTeamConfigAndStats(
   /* Pipeline function to retrieve the team's keywords, channel and usage stats (unfurls, notifications) */
   const pipeline = redis.pipeline();
   pipeline.hget("keywords", teamId);
-  pipeline.get(`${teamId}_channel`);
-  pipeline.get(`${teamId}_unfurls`);
-  pipeline.get(`${teamId}_notifications`);
-  const json = await pipeline.exec<[string[], string, number, number]>();
+  pipeline.mget(
+    `${teamId}_channel`,
+    `${teamId}_unfurls`,
+    `${teamId}_notifications`
+  );
+  const json = await pipeline.exec<[string[], [string, number, number]]>();
   return {
     teamId,
     keywords: json[0] || [],
-    channel: json[1],
-    unfurls: json[2] || 0,
-    notifications: json[3] || 0,
+    channel: json[1][0],
+    unfurls: json[1][1] || 0,
+    notifications: json[1][2] || 0,
   };
 }
