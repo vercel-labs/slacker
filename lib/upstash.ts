@@ -25,11 +25,24 @@ export async function getAccessToken(teamId: string) {
   return await redis.get(`${teamId}_token`);
 }
 
-export async function setAccessToken(teamId: string, accessToken: string) {
+export async function setAccessToken(accessToken: string, teamId: string) {
   /* Set the access token for a Slack team in redis */
+  const slack = await fetch("https://slack.com/api/team.info", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+    .then((res) => res.json())
+    .catch((err) => {
+      console.log(err);
+      return { ok: false, message: "Failed to fetch team info" };
+    });
+
   const pipeline = redis.pipeline();
   pipeline.set(`${teamId}_token`, accessToken);
-  pipeline.zadd("signupTimes", { score: Date.now(), member: teamId });
+  pipeline.hset("metadata", {
+    [teamId]: { joined: Date.now(), slack: slack.ok ? slack.team : null },
+  });
   return await pipeline.exec();
 }
 
