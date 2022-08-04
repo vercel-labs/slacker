@@ -25,9 +25,25 @@ export async function getAccessToken(teamId: string) {
   return await redis.get(`${teamId}_token`);
 }
 
-export async function setAccessToken(teamId: string, accessToken: string) {
+export async function setAccessToken(accessToken: string, teamId: string) {
   /* Set the access token for a Slack team in redis */
-  return await redis.set(`${teamId}_token`, accessToken);
+  const slack = await fetch("https://slack.com/api/team.info", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+    .then((res) => res.json())
+    .catch((err) => {
+      console.log(err);
+      return { ok: false, message: "Failed to fetch team info" };
+    });
+
+  const pipeline = redis.pipeline();
+  pipeline.set(`${teamId}_token`, accessToken);
+  pipeline.hset("metadata", {
+    [teamId]: { joined: Date.now(), slack: slack.ok ? slack.team : null },
+  });
+  return await pipeline.exec();
 }
 
 export async function getKeywords(teamId: string): Promise<string[]> {
@@ -107,10 +123,16 @@ export async function getTeamsAndKeywords(): Promise<TeamAndKeywords> {
 
 export async function clearDataForTeam(teamId: string) {
   /* Clear all data for a team */
+  const metadata = (await redis.hget("metadata", teamId)) as {
+    joined: string;
+    slack: any;
+  };
+  const keywords = await redis.hget("keywords", teamId);
   const pipeline = redis.pipeline();
   pipeline.del(`${teamId}_token`);
   pipeline.del(`${teamId}_channel`);
   pipeline.hdel("keywords", teamId);
+  pipeline.hset("metadata", { [teamId]: { ...metadata, keywords } });
   return await pipeline.exec();
 }
 
@@ -138,15 +160,17 @@ export async function getTeamConfigAndStats(
   /* Pipeline function to retrieve the team's keywords, channel and usage stats (unfurls, notifications) */
   const pipeline = redis.pipeline();
   pipeline.hget("keywords", teamId);
-  pipeline.get(`${teamId}_channel`);
-  pipeline.get(`${teamId}_unfurls`);
-  pipeline.get(`${teamId}_notifications`);
-  const json = await pipeline.exec<[string[], string, number, number]>();
+  pipeline.mget(
+    `${teamId}_channel`,
+    `${teamId}_unfurls`,
+    `${teamId}_notifications`
+  );
+  const json = await pipeline.exec<[string[], [string, number, number]]>();
   return {
     teamId,
     keywords: json[0] || [],
-    channel: json[1],
-    unfurls: json[2] || 0,
-    notifications: json[3] || 0,
+    channel: json[1][0],
+    unfurls: json[1][1] || 0,
+    notifications: json[1][2] || 0,
   };
 }

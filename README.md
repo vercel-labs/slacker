@@ -5,11 +5,11 @@
         <img alt="Banner" src="https://user-images.githubusercontent.com/28986134/180941185-0bb5b912-1884-4da9-b36d-e49cd09d5198.png">
     </picture>
     <h3 align="center">Hacker News Slack Bot</h3>
-    <p>A bot that monitors Hacker News for mentions of certain keywords, sends them to Slack, and shows a link preview.</p>
+    <p>A bot that notifies you on Slack whenever your company/product is mentioned on Hacker News.</p>
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180941459-66936b53-c1d4-431f-b1b3-3e7295ad66b9.png">
-        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180941553-b12e3a2b-10f3-4979-848b-4eb8d98cd580.png">
-        <img alt="Demo" src="https://user-images.githubusercontent.com/28986134/180941553-b12e3a2b-10f3-4979-848b-4eb8d98cd580.png">
+        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/182243546-7687d077-280e-4c13-b96b-c6639c2a9e8e.png">
+        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/182243511-a118223b-ebe2-4a07-a3d1-58d4a88d541e.png">
+        <img alt="Demo" src="https://user-images.githubusercontent.com/28986134/182243511-a118223b-ebe2-4a07-a3d1-58d4a88d541e.png">
     </picture>
 </div>
 
@@ -24,32 +24,30 @@
 
 ## Built With
 
-1. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/cron.ts) & [event subscriptions via webhooks](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/event.ts)
-2. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/hn.ts)
-3. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L47) and [unfurling](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/slack.ts#L73) messages
-4. [Upstash](https://upstash.com)
-   - [Redis](https://upstash.com/redis) for key-value storage
-   - [qStash](https://upstash.com/qstash/) for cron scheduling
+1. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/cron/index.ts) & [event subscriptions via webhooks](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/event.ts)
+2. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/hn.ts)
+3. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/slack.ts#L47) and [unfurling](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/slack.ts#L73) messages
+4. [Upstash](https://upstash.com) for key-value storage ([Redis](https://upstash.com/redis)) and cron scheduling ([qStash](https://upstash.com/qstash/)).
 
 <br/>
 
 ## How It Works
 
-1. Set up a cron schedule in Upstash (qStash) that pings our [`/api/cron` endpoint](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/pages/api/cron.ts) once every 60 seconds.
-2. Get the last checked HN post ID ([`lastCheckedId`](https://github.com/steven-tey/hacker-news-slack-bot/blob/main/lib/cron.ts#L11)) and the list of `keywords` to check against from Upstash.
+1. Set up a cron schedule in Upstash (qStash) that pings our [`/api/cron` endpoint](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/cron/index.ts) once every 60 seconds.
+2. Get the last checked HN post ID ([`lastCheckedId`](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/cron.ts#L11)) and the list of `keywords` to check against from Upstash.
 3. Get the `latestPostId` using HN API's [`maxitem`](https://github.com/HackerNews/API#max-item-id) endpoint. Then, perform checks against each post between `lastCheckedId` and `latestPostId` to see if they contain any of the delineated `keywords`.
 4. For each positive post, send its link to Slack using the [`chat.postMessage` method](https://api.slack.com/methods/chat.postMessage).
 5. Listen to the [`link_shared` event](https://api.slack.com/events/link_shared) at our `/api/event` endpoint. Once an event occurs, send a POST request to Slack to unfurl the link using the [chat.unfurl method](https://api.slack.com/methods/chat.unfurl).
 
 <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/181404934-420f366b-a0f8-4a52-af48-a2cd7ff28daf.png">
-   <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180942414-dd69d83c-e37a-4833-877e-e60cccd85ecc.png">
-   <img alt="Hacker News Slack Bot Overview" src="https://user-images.githubusercontent.com/28986134/180942414-dd69d83c-e37a-4833-877e-e60cccd85ecc.png">
+   <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/182371964-b00cb4f5-fd80-4475-a8a5-3ce6971e06ca.png">
+   <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/182371926-da1bef29-71d9-4d4c-abd7-3fe2366f4aa1.png">
+   <img alt="Hacker News Slack Bot Overview" src="https://user-images.githubusercontent.com/28986134/182371926-da1bef29-71d9-4d4c-abd7-3fe2366f4aa1.png">
 </picture>
 
 ## One-Click Install
 
-> Here's a [Loom tutorial](https://www.loom.com/share/223dee4199f540448c4182f2e3135f62) that walks you through the installation process, step-by-step.
+> Here's a [90s video](https://youtu.be/gBCIaf200oQ) that walks you through the installation process, step-by-step.
 
 You can click the button below to install the bot directly into your desired Slack workspace:
 
@@ -63,7 +61,7 @@ Once it's installed, create a channel to receive notifications in and start conf
 
 You can also deploy your own version of this bot using Vercel and Upstash. Note that while this is in early-access, some of these processes might change.
 
-> Prefer a video tutorial instead? Watch this [Loom video](https://www.loom.com/share/3af38a0a203c4c6eb1cce9d3552df664).
+> Prefer a video tutorial instead? Watch this [video](https://youtu.be/_F4VuVKJn0Q).
 
 ### Step 1: Create Slack App + Secure Env Vars
 
@@ -88,7 +86,7 @@ Similar to the slack signing secret, these are used to verify the authenticity o
 
 You can deploy your bot to Vercel with one-click:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsteven-tey%2Fhacker-news-slack-bot&project-name=hacker-news-slack-bot&repository-name=hacker-news-slack-bot&env=NEXT_PUBLIC_SLACK_CLIENT_ID,SLACK_SIGNING_SECRET,SLACK_VERIFICATION_TOKEN,QSTASH_CURRENT_SIGNING_KEY,QSTASH_NEXT_SIGNING_KEY&envDescription=Read%20more%20about%20the%20required%20env%20vars%20here%3A&envLink=https%3A%2F%2Fgithub.com%2F%2Fhacker-news-slack-bot%23deploy-your-own&demo-title=Hacker%20News%20Slack%20Bot&demo-description=A%20bot%20that%20monitors%20Hacker%20News%20for%20mentions%20of%20certain%20keywords%20and%20sends%20it%20to%20a%20Slack%20channel.&demo-url=https%3A%2F%2Fhn-slack-bot.vercel.app%2F&demo-image=https%3A%2F%2Fhn-slack-bot.vercel.app%2Fthumbnail.png&integration-ids=oac_V3R1GIpkoJorr6fqyiwdhl17)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Fhacker-news-slack-bot&project-name=hacker-news-slack-bot&repository-name=hacker-news-slack-bot&env=NEXT_PUBLIC_SLACK_CLIENT_ID,SLACK_SIGNING_SECRET,SLACK_VERIFICATION_TOKEN,QSTASH_CURRENT_SIGNING_KEY,QSTASH_NEXT_SIGNING_KEY&envDescription=Read%20more%20about%20the%20required%20env%20vars%20here%3A&envLink=https%3A%2F%2Fgithub.com%2F%2Fhacker-news-slack-bot%23deploy-your-own&demo-title=Hacker%20News%20Slack%20Bot&demo-description=A%20bot%20that%20monitors%20Hacker%20News%20for%20mentions%20of%20certain%20keywords%20and%20sends%20it%20to%20a%20Slack%20channel.&demo-url=https%3A%2F%2Fhn-slack-bot.vercel.app%2F&demo-image=https%3A%2F%2Fhn-slack-bot.vercel.app%2Fthumbnail.png&integration-ids=oac_V3R1GIpkoJorr6fqyiwdhl17)
 
 Be sure to include all 5 of the env vars above in your deployment.
 
@@ -130,17 +128,17 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 - Request URL: `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cmd/configure`
 - Short Description: Configure your HN Slack Bot
 
-#### Step 4E: Enable Interactivity
+#### Step 4D: Enable Interactivity
 
 1. Now, select "Interactivity & Shortcuts" from the sidebar (under "Features").
 2. Toggle "Interactivity" to "ON".
 3. For the "Request URL" field, input your Vercel project's domain and append `/api/response` to it. The final URL should look something like `https://hacker-news-slack-bot-eight.vercel.app/api/response`.
 4. Click on "Save Changes".
 
-#### Step 4D: Install App to Slack Workspace + Get OAuth token
+#### Step 4E: Install App to Slack Workspace + Get OAuth token
 
 1. Go to "Basic Information" (under "Settings").
-2. Under "Install your app", click opn "Install to Workspace".
+2. Under "Install your app", click on "Install to Workspace".
 3. You should receive a notification that your app has been installed in your Slack workspace.
 4. Go back to "OAuth & Permissions". Copy the value of "Bot User OAuth Token".
    ![CleanShot 2022-07-25 at 18 28 46](https://user-images.githubusercontent.com/28986134/180891662-32c45dd7-18a1-4dd1-a729-e652bbdd42d6.png)
@@ -160,7 +158,8 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 3. Select the type as `Scheduled`.
 4. Configure the cron schedule as `* * * * *` (select the "day" dropdown and change it to "minute").
 5. Click on `Schedule`.
-6. You should now start receiving notifications whenever your keywords are mentioned on Hacker News.
+6. Go back to Slack and use the `/configure` slash command that you set up earlier to add keyewords to track + set the channel to receive notifications in.
+7. You should now start receiving notifications whenever your keywords are mentioned on Hacker News.
 
 <br/>
 

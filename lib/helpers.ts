@@ -69,6 +69,7 @@ export function postScanner(teamsAndKeywords: TeamAndKeywords) {
 }
 
 export function truncateString(str: string, num: number) {
+  if (!str) return "";
   if (str.length > num) {
     return str.slice(0, num) + "...";
   } else {
@@ -90,7 +91,10 @@ export function regexOperations(post: any, keywords: string[]) {
   //   const termsRegex = /(\bVercel\b)|(\bNextJS\b))\b/gi
   const termsRegex = new RegExp(`(${keywordWordBoundary.join(")|(")})`, "gi");
 
-  const marked: string = mrkdwn(decode(post.text)).text;
+  const marked: string = mrkdwn(decode(post?.text || ""))
+    ? mrkdwn(decode(post?.text || "")).text
+    : "";
+
   const combined = combineText(post);
 
   let match;
@@ -120,11 +124,11 @@ export function regexOperations(post: any, keywords: string[]) {
   //   const decorateRegex = /```(?:(?!```)[^])*|<http[^|]*|\|http[^>]*|(\bVercel\b|\bNextJS\b)/gi
   const decorateRegex = new RegExp(
     [
-      '```(?:(?!```)[^])*', // code blocks, using a negative lookahead and an an "anything" `[^]` negative char class.
+      "```(?:(?!```)[^])*", // code blocks, using a negative lookahead and an an "anything" `[^]` negative char class.
       `<http[^|]*`, // The href of a link
       `\\|http[^>]*`, // An auto-generated link without explicit text
       `(${keywordWordBoundary.join("|")})`, // Our keywords to decorate
-    ].join('|'),
+    ].join("|"),
     "gi"
   );
 
