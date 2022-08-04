@@ -123,10 +123,16 @@ export async function getTeamsAndKeywords(): Promise<TeamAndKeywords> {
 
 export async function clearDataForTeam(teamId: string) {
   /* Clear all data for a team */
+  const metadata = (await redis.hget("metadata", teamId)) as {
+    joined: string;
+    slack: any;
+  };
+  const keywords = await redis.hget("keywords", teamId);
   const pipeline = redis.pipeline();
   pipeline.del(`${teamId}_token`);
   pipeline.del(`${teamId}_channel`);
   pipeline.hdel("keywords", teamId);
+  pipeline.hset("metadata", { [teamId]: { ...metadata, keywords } });
   return await pipeline.exec();
 }
 
