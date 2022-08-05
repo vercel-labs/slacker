@@ -38,6 +38,9 @@ export async function getParent(post: any): Promise<any> {
     return post;
   } else {
     const parent = await getPost(post.parent);
-    return await getParent(parent);
+    if (parent) {
+      return getParent(parent);
+    }
+    return post;
   }
 }
