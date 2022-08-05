@@ -2,6 +2,7 @@ import { getLatestPost, getPost } from "./hn";
 import {
   getLastCheckedId,
   setLastCheckedId,
+  checkIfPostWasChecked,
   getTeamsAndKeywords,
 } from "./upstash";
 import { equalsIgnoreOrder, postScanner } from "./helpers";
@@ -28,6 +29,8 @@ export async function cron() {
   let errors: any[] = [];
 
   for (let i = lastCheckedId + 1; i <= latestPostId; i++) {
+    if (await checkIfPostWasChecked(i)) continue; // avoid double checking posts
+
     const post = await getPost(i); // get post from hacker news
     if (!post) {
       console.log(`Hacker News post not found. Post number: ${i}`); // by the off chance that the post fails to fetch/doesn't exist, log it
