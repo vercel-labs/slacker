@@ -112,6 +112,17 @@ export async function setLastCheckedId(id: number) {
   return await redis.set("lastCheckedId", id);
 }
 
+export async function checkIfPostWasChecked(id: number) {
+  /* Check if a post has been checked in redis – 
+     if setting the key for the post returns null, it means it's already been set
+     Here, we're setting the keys to expire in 24 hours 
+  */
+  return (
+    (await redis.set(`post_${id}`, true, { nx: true, ex: 24 * 60 * 60 })) ===
+    null
+  );
+}
+
 export interface TeamAndKeywords {
   [teamId: string]: string[];
 }
