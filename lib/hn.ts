@@ -41,6 +41,7 @@ export async function getParent(post: any): Promise<any> {
     if (parent) {
       return getParent(parent);
     }
+    console.log(`Hacker News post not found. Post number: ${post.id}`); // by the off chance that the post fails to fetch/doesn't exist, log it
     return post;
   }
 }
