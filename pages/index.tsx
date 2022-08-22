@@ -4,6 +4,7 @@ import SlackButton from "@/components/slack-button";
 import Image from "next/image";
 import LiteYouTubeEmbed from "react-lite-youtube-embed";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -57,6 +58,19 @@ export default function Home() {
             rel="noopener noreferrer"
           >
             Looking to self-host instead?
+          </a>
+        </div>
+        <div className="flex space-x-4 absolute bottom-2 right-4">
+          <Link href="/support">
+            <a className="text-gray-500 text-sm hover:text-black">Support</a>
+          </Link>
+          <a
+            className="text-gray-500 text-sm hover:text-black"
+            href="https://vercel.com/privacy"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Privacy Policy
           </a>
         </div>
       </main>
