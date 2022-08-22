@@ -66,7 +66,7 @@ export default function Home() {
           </Link>
           <a
             className="text-gray-500 text-sm hover:text-black"
-            href="https://vercel.com/privacy"
+            href="/privacy"
             target="_blank"
             rel="noreferrer"
           >
