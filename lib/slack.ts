@@ -342,7 +342,7 @@ export const configureBlocks = (
     type: "section",
     text: {
       type: "mrkdwn",
-      text: "Select a channel to receive notifications in:",
+      text: "Select a public channel to receive notifications in:",
     },
     accessory: {
       action_id: "set_channel",
