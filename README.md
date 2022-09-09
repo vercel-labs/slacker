@@ -172,7 +172,7 @@ This project was originally created by [Steven Tey](https://twitter.com/stevente
 - Andrew Healey ([@healeycodes](https://github.com/healeycodes)) – [Vercel](https://vercel.com)
 - Drew Bredvick ([@dbredvick](https://twitter.com/dbredvick)) – [Vercel](https://vercel.com)
 - Lee Robinson ([@leeerob](https://twitter.com/leeerob)) – [Vercel](https://vercel.com)
-- Andreas Thomas ([@chronark\_](https://twitter.com/chronark_)) – [Upstash](https://upstash.com)
+- Andreas Thomas ([@chronarkdotdev](https://twitter.com/chronarkdotdev)) – [Upstash](https://upstash.com)
 
 <br/>
 
