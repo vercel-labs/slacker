@@ -135,7 +135,8 @@ export async function handleUnfurl(req: NextApiRequest, res: NextApiResponse) {
         [url]: {
           mrkdwn_in: ["author_name", "text", "footer"],
           fallback: `https://news.ycombinator.com/item?id=${post.id}`,
-          author_name: `New <https://news.ycombinator.com/item?id=${post.id}|${post.type}> from <https://news.ycombinator.com/user?id=${post.by}|${post.by}>`,
+          author_name: `New ${post.type} from ${post.by}`,
+          author_link: `https://news.ycombinator.com/item?id=${post.id}`,
           author_icon: `https://ui-avatars.com/api/?name=${post.by}&background=random`,
           ...(post.title && {
             title: post.title,
