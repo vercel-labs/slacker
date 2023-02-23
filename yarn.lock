@@ -336,10 +336,34 @@
     "@typescript-eslint/types" "5.30.7"
     eslint-visitor-keys "^3.3.0"
 
+"@upstash/core-analytics@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@upstash/core-analytics/-/core-analytics-0.0.5.tgz#dd11ba31f50ad86a27bbf1f306d2293e8bf34a07"
+  integrity sha512-E+y9ENEUYzR5/coaxEze977NkwtyyF6g54gED2aVvwGi83V1wc9ngLt+jO4fUR+pnQlDtrtH/yquN0q3X4sBhQ==
+  dependencies:
+    "@upstash/redis" "^1.19.3"
+    next "13.1.6"
+    react "^18.2.0"
+    zod "^3.20.0"
+
+"@upstash/ratelimit@^0.3.8":
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/@upstash/ratelimit/-/ratelimit-0.3.8.tgz#faa77032fdc678ca7ab9e4c9a0dfc84717bce4e7"
+  integrity sha512-+DM2k2hqQRhMCnqUIVzqYCd3+hczDGiZOS6a/JXPP1sVFjpsCiVYdme5SdGeKuqzHYQ021nhnKCuAuk0zYrNVg==
+  dependencies:
+    "@upstash/core-analytics" "0.0.5"
+
 "@upstash/redis@^1.10.2":
   version "1.10.2"
   resolved "https://registry.npmjs.org/@upstash/redis/-/redis-1.10.2.tgz"
   integrity sha512-eQg9i6PUeBhsH7XddIcdBJXSlJlXhcad4aOg4QvvjshssyZhlmu6SW2dKkr50vgjZScln8pCsexZkEcpn8GMhQ==
+  dependencies:
+    isomorphic-fetch "^3.0.0"
+
+"@upstash/redis@^1.19.3":
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/@upstash/redis/-/redis-1.20.0.tgz#9288d7ea563d879cde689c5883428d446abc8ecd"
+  integrity sha512-jhOfwBF/dZpx0Gd139YB2KTXqkBrB1fksK0jzSqep5QZyN1cfcZUy5QfcSen5EEdYyUSmWefBzNqGWSJustsJg==
   dependencies:
     isomorphic-fetch "^3.0.0"
 
@@ -1914,7 +1938,7 @@ natural-compare@^1.4.0:
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-next@^13.1.6:
+next@13.1.6, next@^13.1.6:
   version "13.1.6"
   resolved "https://registry.yarnpkg.com/next/-/next-13.1.6.tgz#054babe20b601f21f682f197063c9b0b32f1a27c"
   integrity sha512-hHlbhKPj9pW+Cymvfzc15lvhaOZ54l+8sXDXJWm3OBNBzgrVj6hwGPmqqsXg40xO1Leq+kXpllzRPuncpC0Phw==
@@ -2266,7 +2290,7 @@ react-is@^16.13.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react@18.2.0:
+react@18.2.0, react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
@@ -2889,3 +2913,8 @@ yoga-wasm-web@^0.3.0:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/yoga-wasm-web/-/yoga-wasm-web-0.3.1.tgz#f588ad0f1bc255ce1f89efeaf6b24f3d656e8987"
   integrity sha512-J74OxJtRb5GLW/GH+ibYpb0/0zixk9qp0EOIuKKkavk0w0cMHIQ76YPkca4cRBUW+d+r+GFSM9Q3a+HXQd4b8g==
+
+zod@^3.20.0:
+  version "3.20.6"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.20.6.tgz#2f2f08ff81291d47d99e86140fedb4e0db08361a"
+  integrity sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA==

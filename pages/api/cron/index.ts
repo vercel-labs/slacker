@@ -1,15 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { cron } from "@/lib/cron";
 import { log } from "@/lib/slack";
-import { isDuplicateCron } from "@/lib/upstash";
+import { ratelimit } from "@/lib/upstash";
 
 export default async function handler(
   _req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (await isDuplicateCron()) {
-    // check if this is a duplicate cron job (threshold of 30s)
-    return res.status(500).json({ message: "Duplicate cron job" });
+  const { success } = await ratelimit.limit("cron");
+  if (!success) {
+    return new Response("Don't DDoS me pls 🥺", { status: 429 });
   }
   try {
     const response = await cron();
