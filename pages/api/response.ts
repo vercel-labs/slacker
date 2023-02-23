@@ -43,7 +43,7 @@ export default async function handler(
    * We first process the keyword by converting it to lowercase and
    * removing any leading or trailing whitespace and quotes.
    *
-   * For the hosted service (https://hn-slack-bot.vercel.app),
+   * For the hosted service (https://slacker.run),
    * we'll also define some abuse prevention measures for the added keyword.
    *
    * We also handle the case where Upstash fails to add the keyword.

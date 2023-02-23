@@ -377,7 +377,7 @@ export const configureBlocks = (
     elements: [
       {
         type: "mrkdwn",
-        text: "Made and <https://hn-slack-bot.vercel.app/|open-sourced> with :black_heart: by <https://vercel.com/|▲ Vercel>",
+        text: "Made and <https://slacker.run/|open-sourced> with :black_heart: by <https://vercel.com/|▲ Vercel>",
       },
     ],
   },
