@@ -1,10 +1,6 @@
 <div align="center">
-    <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/180941235-00044773-1b16-4984-9245-7a7d64a50219.png">
-        <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/180941185-0bb5b912-1884-4da9-b36d-e49cd09d5198.png">
-        <img alt="Banner" src="https://user-images.githubusercontent.com/28986134/180941185-0bb5b912-1884-4da9-b36d-e49cd09d5198.png">
-    </picture>
-    <h3 align="center">Hacker News Slack Bot</h3>
+    <img alt="Slacker OG Image" src="https://slacker.run/api/og">
+    <h3 align="center">Slacker</h3>
     <p>A bot that notifies you on Slack whenever your company/product is mentioned on Hacker News.</p>
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/182243546-7687d077-280e-4c13-b96b-c6639c2a9e8e.png">
@@ -24,17 +20,18 @@
 
 ## Built With
 
-1. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/cron/index.ts) & [event subscriptions via webhooks](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/event.ts)
-2. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/hn.ts)
-3. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/slack.ts#L47) and [unfurling](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/slack.ts#L73) messages
-4. [Upstash](https://upstash.com) for key-value storage ([Redis](https://upstash.com/redis)) and cron scheduling ([qStash](https://upstash.com/qstash/)).
+1. [Vercel Functions](https://vercel.com/docs/concepts/functions) for [cron processes](https://github.com/vercel-labs/slacker/blob/main/pages/api/cron/index.ts) & [event subscriptions via webhooks](https://github.com/vercel-labs/slacker/blob/main/pages/api/event.ts)
+2. [Vercel Cron Jobs](https://vercel.com/docs/cron-jobs) for triggering cron processes.
+3. [Hacker News API](https://github.com/HackerNews/API) for [pulling data](https://github.com/vercel-labs/slacker/blob/main/lib/hn.ts)
+4. [Slack API](https://api.slack.com/docs) for [sending](https://github.com/vercel-labs/slacker/blob/main/lib/slack.ts#L47) and [unfurling](https://github.com/vercel-labs/slacker/blob/main/lib/slack.ts#L73) messages
+5. [Upstash](https://upstash.com) for key-value storage ([Redis](https://upstash.com/redis)).
 
 <br/>
 
 ## How It Works
 
-1. Set up a cron schedule in Upstash (qStash) that pings our [`/api/cron` endpoint](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/pages/api/cron/index.ts) once every 60 seconds.
-2. Get the last checked HN post ID ([`lastCheckedId`](https://github.com/vercel-labs/hacker-news-slack-bot/blob/main/lib/cron.ts#L11)) and the list of `keywords` to check against from Upstash.
+1. Set up a [Vercel cron job](https://vercel.com/docs/cron-jobs) that pings our [`/api/cron` endpoint](https://github.com/vercel-labs/slacker/blob/main/pages/api/cron/index.ts) once every 60 seconds.
+2. Get the last checked HN post ID ([`lastCheckedId`](https://github.com/vercel-labs/slacker/blob/main/lib/cron.ts#L11)) and the list of `keywords` to check against from Upstash.
 3. Get the `latestPostId` using HN API's [`maxitem`](https://github.com/HackerNews/API#max-item-id) endpoint. Then, perform checks against each post between `lastCheckedId` and `latestPostId` to see if they contain any of the delineated `keywords`.
 4. For each positive post, send its link to Slack using the [`chat.postMessage` method](https://api.slack.com/methods/chat.postMessage).
 5. Listen to the [`link_shared` event](https://api.slack.com/events/link_shared) at our `/api/event` endpoint. Once an event occurs, send a POST request to Slack to unfurl the link using the [chat.unfurl method](https://api.slack.com/methods/chat.unfurl).
@@ -42,7 +39,7 @@
 <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/182371964-b00cb4f5-fd80-4475-a8a5-3ce6971e06ca.png">
    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/182371926-da1bef29-71d9-4d4c-abd7-3fe2366f4aa1.png">
-   <img alt="Hacker News Slack Bot Overview" src="https://user-images.githubusercontent.com/28986134/182371926-da1bef29-71d9-4d4c-abd7-3fe2366f4aa1.png">
+   <img alt="Slacker Overview" src="https://user-images.githubusercontent.com/28986134/182371926-da1bef29-71d9-4d4c-abd7-3fe2366f4aa1.png">
 </picture>
 
 ## One-Click Install
@@ -78,19 +75,15 @@ You can also deploy your own version of this bot using Vercel and Upstash. Note 
 
 Go to [console.upstash.com](https://console.upstash.com/login) and create an account. You'll need it for the next step.
 
-Afterwards copy the `QSTASH_CURRENT_SIGNING_KEY` and `QSTASH_NEXT_SIGNING_KEY` secrets from [console.upstash.com/qstash](https://console.upstash.com/qstash). You'll need them in the next step.
-
-Similar to the slack signing secret, these are used to verify the authenticity of scheduled requests coming from Upstash.
-
 ### Step 3: Deploy to Vercel
 
 You can deploy your bot to Vercel with one-click:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Fhacker-news-slack-bot&project-name=hacker-news-slack-bot&repository-name=hacker-news-slack-bot&env=NEXT_PUBLIC_SLACK_CLIENT_ID,SLACK_SIGNING_SECRET,SLACK_VERIFICATION_TOKEN,QSTASH_CURRENT_SIGNING_KEY,QSTASH_NEXT_SIGNING_KEY&envDescription=Read%20more%20about%20the%20required%20env%20vars%20here%3A&envLink=https%3A%2F%2Fgithub.com%2F%2Fhacker-news-slack-bot%23deploy-your-own&demo-title=Hacker%20News%20Slack%20Bot&demo-description=A%20bot%20that%20monitors%20Hacker%20News%20for%20mentions%20of%20certain%20keywords%20and%20sends%20it%20to%20a%20Slack%20channel.&demo-url=https%3A%2F%2Fhn-slack-bot.vercel.app%2F&demo-image=https%3A%2F%2Fhn-slack-bot.vercel.app%2Fthumbnail.png&integration-ids=oac_V3R1GIpkoJorr6fqyiwdhl17)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Fslacker&project-name=slacker&repository-name=slacker&env=NEXT_PUBLIC_SLACK_CLIENT_ID,SLACK_SIGNING_SECRET,SLACK_VERIFICATION_TOKEN&envDescription=Read%20more%20about%20the%20required%20env%20vars%20here%3A&envLink=https%3A%2F%2Fgithub.com%2F%2Fslacker%23deploy-your-own&demo-title=Hacker%20News%20Slack%20Bot&demo-description=A%20bot%20that%20monitors%20Hacker%20News%20for%20mentions%20of%20certain%20keywords%20and%20sends%20it%20to%20a%20Slack%20channel.&demo-url=https%3A%2F%2Fhn-slack-bot.vercel.app%2F&demo-image=https%3A%2F%2Fhn-slack-bot.vercel.app%2Fthumbnail.png&integration-ids=oac_V3R1GIpkoJorr6fqyiwdhl17)
 
 Be sure to include all 5 of the env vars above in your deployment.
 
-When the project finishes deploying, get your project's domain (e.g. `https://hacker-news-slack-bot-eight.vercel.app/`). You'll need it for the next step.
+When the project finishes deploying, get your project's domain (e.g. `https://slacker-eight.vercel.app/`). You'll need it for the next step.
 
 ### Step 4: Configuring Slack app
 
@@ -112,7 +105,7 @@ For your Slack app to be able to send/unfurl messages in your Slack workspace, w
 
 1. Now, select "Event Subscriptions" from the sidebar (under "Features").
 2. Toggle "Enable Events" to "ON".
-3. For the "Request URL" field, input your Vercel project's domain and append `/api/event` to it. The final URL should look something like `https://hacker-news-slack-bot-eight.vercel.app/api/event`.
+3. For the "Request URL" field, input your Vercel project's domain and append `/api/event` to it. The final URL should look something like `https://slacker-eight.vercel.app/api/event`.
 4. Scroll down to "Subscribe to bot events". Add the `link_shared` bot user event.
 5. Do the same for `Subscribe to events on behalf of users".
    ![Slack app configurations (1)](https://user-images.githubusercontent.com/28986134/180888217-911be4f9-be58-4f1c-a0bf-db915bbcb006.png)
@@ -132,7 +125,7 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
 
 1. Now, select "Interactivity & Shortcuts" from the sidebar (under "Features").
 2. Toggle "Interactivity" to "ON".
-3. For the "Request URL" field, input your Vercel project's domain and append `/api/response` to it. The final URL should look something like `https://hacker-news-slack-bot-eight.vercel.app/api/response`.
+3. For the "Request URL" field, input your Vercel project's domain and append `/api/response` to it. The final URL should look something like `https://slacker-eight.vercel.app/api/response`.
 4. Click on "Save Changes".
 
 #### Step 4E: Install App to Slack Workspace + Get OAuth token
@@ -150,16 +143,6 @@ Select "Slash Commands" from the sidebar (under "Features"). Create the followin
    </picture>
 6. Redeploy your Vercel project for the changes to take effect.
 7. To verify that this worked, go to any channel on your Slack workspace and send a Hacker News link. The link should now unfurl and show a nice preview (like the one above).
-
-### Step 5: Set Up Cron Processes in qStash
-
-1. Go to [console.upstash.com/qstash](https://console.upstash.com/qstash) and scroll down to the `Request Builder`.
-2. Configure the endpoint URL as `https://[YOUR_VERCEL_PROJECT_DOMAIN]/api/cron`.
-3. Select the type as `Scheduled`.
-4. Configure the cron schedule as `* * * * *` (select the "day" dropdown and change it to "minute").
-5. Click on `Schedule`.
-6. Go back to Slack and use the `/configure` slash command that you set up earlier to add keyewords to track + set the channel to receive notifications in.
-7. You should now start receiving notifications whenever your keywords are mentioned on Hacker News.
 
 <br/>
 

@@ -17,11 +17,6 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@deno/shim-crypto@~0.3.0":
-  version "0.3.1"
-  resolved "https://registry.npmjs.org/@deno/shim-crypto/-/shim-crypto-0.3.1.tgz"
-  integrity sha512-ed4pNnfur6UbASEgF34gVxR9p7Mc3qF+Ygbmjiil8ws5IhNFhPDFy5vE5hQAUA9JmVsSxXPcVLM5Rf8LOZqQ5Q==
-
 "@emotion/is-prop-valid@^0.8.2":
   version "0.8.8"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"
@@ -340,13 +335,6 @@
   dependencies:
     "@typescript-eslint/types" "5.30.7"
     eslint-visitor-keys "^3.3.0"
-
-"@upstash/qstash@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.npmjs.org/@upstash/qstash/-/qstash-0.1.6.tgz"
-  integrity sha512-8rubip2VeRjBV5KI8o2gEvRsXB04mFlnXVzDMMZ6fdbIRFeR+jSvdcU4SEY4Xv+sfpJe5JCXtf3K5v8pQsNLXA==
-  dependencies:
-    "@deno/shim-crypto" "~0.3.0"
 
 "@upstash/redis@^1.10.2":
   version "1.10.2"
