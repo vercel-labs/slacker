@@ -37,9 +37,9 @@
 5. Listen to the [`link_shared` event](https://api.slack.com/events/link_shared) at our `/api/event` endpoint. Once an event occurs, send a POST request to Slack to unfurl the link using the [chat.unfurl method](https://api.slack.com/methods/chat.unfurl).
 
 <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/221010710-c48bc89b-8e68-4feb-9e05-79d7ba1707e3.png">
-   <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/221010630-fb4ee19d-f33f-4e4d-bdc5-e908a76bb681.png">
-   <img alt="Slacker Overview" src="https://user-images.githubusercontent.com/28986134/221010630-fb4ee19d-f33f-4e4d-bdc5-e908a76bb681.png">
+   <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/28986134/221011048-524226f6-b9aa-4f64-b39e-70267ed8eb37.png">
+   <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/28986134/221011121-c6f368b6-cbff-4b67-a0ee-ffc7986d9add.png">
+   <img alt="Slacker Overview" src="https://user-images.githubusercontent.com/28986134/221011121-c6f368b6-cbff-4b67-a0ee-ffc7986d9add.png">
 </picture>
 
 ## One-Click Install
