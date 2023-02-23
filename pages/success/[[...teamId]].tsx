@@ -11,7 +11,7 @@ export default function SuccessTeam(props: { teamId: string }) {
     <Layout meta={{ title: "Installation Successful" }}>
       <VideoModal />
       <div className="text-center max-w-sm sm:max-w-lg space-y-4">
-        <h1 className="my-8 bg-gradient-to-br from-white via-white to-[#130127] bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
+        <h1 className="my-8 bg-gradient-to-br from-white via-white to-[#532a01] bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
           Installation Successful
         </h1>
         <p className="sm:text-lg text-gray-300">
