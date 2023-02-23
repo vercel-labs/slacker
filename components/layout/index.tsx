@@ -46,7 +46,7 @@ export default function Layout({
           </a>
         </div>
       </div>
-      <main className="w-full min-h-screen flex flex-col items-center justify-center py-20 bg-gradient-radial from-[#290153] via-black to-black">
+      <main className="w-full min-h-screen flex flex-col items-center justify-center py-20 bg-gradient-radial from-[#532a01] via-[#180c00] to-black">
         {children}
       </main>
       <div className="flex space-x-4 fixed bottom-2 right-4">

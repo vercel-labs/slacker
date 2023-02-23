@@ -9,7 +9,7 @@ export default function Home() {
     <Layout>
       <VideoModal />
       <div className="text-center max-w-sm sm:max-w-lg space-y-4">
-        <h1 className="my-8 bg-gradient-to-br from-white via-white to-[#130127] bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
+        <h1 className="my-8 bg-gradient-to-br from-white via-white to-[#532a01] bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
           Stay on top of your mentions
         </h1>
         <p className="sm:text-lg text-gray-300">
@@ -19,7 +19,7 @@ export default function Home() {
             href="https://vercel.com/blog/cron-jobs"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-gradient-to-br from-[#c5aefa] hover:from-[#d8caf8] to-[#9b6bd2] hover:to-[#b392da] text-transparent bg-clip-text transition-all"
+            className="bg-gradient-to-br from-[#faddae] hover:from-[#f8eaca] to-[#d2ab6b] hover:to-[#dabb92] text-transparent bg-clip-text transition-all"
           >
             Vercel Cron Jobs
           </a>

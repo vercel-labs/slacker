@@ -34,7 +34,7 @@ export default async function handler(req: NextRequest) {
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "black",
-          background: "radial-gradient(circle closest-side, #290153, #000000)",
+          background: "radial-gradient(circle closest-side, #532a01, #000000)",
         }}
       >
         <svg
@@ -61,7 +61,7 @@ export default async function handler(req: NextRequest) {
             fontSize: "100px",
             fontFamily: "Inter Bold",
             background:
-              "linear-gradient(to bottom right, #ffffff 40%, #130127 100%)",
+              "linear-gradient(to bottom right, #ffffff 40%, #532a01 100%)",
             backgroundClip: "text",
             color: "transparent",
             lineHeight: "5rem",
