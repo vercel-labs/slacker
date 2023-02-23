@@ -10,11 +10,11 @@ export default function SuccessTeam(props: { teamId: string }) {
   return (
     <Layout meta={{ title: "Installation Successful" }}>
       <VideoModal />
-      <div className="text-center max-w-md sm:max-w-lg space-y-4">
+      <div className="text-center max-w-sm sm:max-w-lg space-y-4">
         <h1 className="my-8 bg-gradient-to-br from-white via-white to-[#130127] bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
           Installation Successful
         </h1>
-        <p className="text-lg text-gray-300">
+        <p className="sm:text-lg text-gray-300">
           You can now create a channel to receive notifications in and start
           configuring the bot with the{" "}
           <span className="font-mono text-red-500">/configure</span> command.

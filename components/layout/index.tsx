@@ -31,7 +31,7 @@ export default function Layout({
             </p>
           </Link>
           <a
-            href="https://github.com/vercel-labs/hacker-news-slack-bot"
+            href="https://github.com/vercel-labs/slacker"
             target="_blank"
             rel="noopener noreferrer"
             className="relative overflow-hidden rounded-full w-32 px-10 py-4 focus:outline-none focus:ring-0"

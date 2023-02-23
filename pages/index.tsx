@@ -8,13 +8,22 @@ export default function Home() {
   return (
     <Layout>
       <VideoModal />
-      <div className="text-center max-w-md sm:max-w-lg space-y-4">
+      <div className="text-center max-w-sm sm:max-w-lg space-y-4">
         <h1 className="my-8 bg-gradient-to-br from-white via-white to-[#130127] bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
           Stay on top of your mentions
         </h1>
-        <p className="text-lg text-gray-300">
+        <p className="sm:text-lg text-gray-300">
           Slacker notifies you on Slack whenever your company is mentioned on
-          Hacker News.
+          Hacker News. Built with{" "}
+          <a
+            href="https://vercel.com/blog/cron-jobs"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-gradient-to-br from-[#c5aefa] hover:from-[#d8caf8] to-[#9b6bd2] hover:to-[#b392da] text-transparent bg-clip-text transition-all"
+          >
+            Vercel Cron Jobs
+          </a>
+          .
         </p>
       </div>
 
@@ -44,7 +53,7 @@ export default function Home() {
           url={`https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}`}
         />
         <a
-          href="https://github.com/vercel-labs/hacker-news-slack-bot#deploy-your-own"
+          href="https://github.com/vercel-labs/slacker#deploy-your-own"
           className="text-gray-400 hover:text-gray-200 text-sm"
           target="_blank"
           rel="noopener noreferrer"
