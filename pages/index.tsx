@@ -3,15 +3,16 @@ import Layout from "@/components/layout";
 import { Play } from "lucide-react";
 import { useVideoModal } from "@/components/video-modal";
 import va from "@vercel/analytics";
+import Balancer from "react-wrap-balancer";
 
 export default function Home() {
   const { setShowVideoModal, VideoModal } = useVideoModal();
   return (
     <Layout>
       <VideoModal />
-      <div className="text-center max-w-sm sm:max-w-lg space-y-4">
+      <div className="text-center max-w-sm sm:max-w-xl space-y-4">
         <h1 className="my-8 bg-gradient-to-br from-white via-white to-[#532a01] bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
-          Stay on top of your mentions
+          <Balancer ratio={0.6}>Stay on top of your HN mentions</Balancer>
         </h1>
         <p className="sm:text-lg text-gray-300">
           Slacker notifies you on Slack whenever your company is mentioned on
