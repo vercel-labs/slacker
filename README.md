@@ -44,7 +44,7 @@
 
 ## One-Click Install
 
-> Here's a [90s video](https://youtu.be/gBCIaf200oQ) that walks you through the installation process, step-by-step.
+> Here's a [60s video](https://user-images.githubusercontent.com/28986134/221060512-df024fa3-594e-4e09-9d1e-656fae85f5c3.mp4) that walks you through the installation process, step-by-step.
 
 You can click the button below to install the bot directly into your desired Slack workspace:
 
