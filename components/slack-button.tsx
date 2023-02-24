@@ -4,12 +4,15 @@ import slackGif from "../public/assets/slackanimation.gif";
 export default function SlackButton({
   text,
   url,
+  onClick,
 }: {
   text: string;
   url: string;
+  onClick?: () => void;
 }) {
   return (
     <a
+      onClick={onClick}
       href={url}
       style={{
         fontFamily: "Lato, sans-serif",

@@ -2,6 +2,7 @@ import SlackButton from "@/components/slack-button";
 import Layout from "@/components/layout";
 import { Play } from "lucide-react";
 import { useVideoModal } from "@/components/video-modal";
+import va from "@vercel/analytics";
 
 export default function Home() {
   const { setShowVideoModal, VideoModal } = useVideoModal();
@@ -49,6 +50,7 @@ export default function Home() {
       </div>
       <div className="flex flex-col text-center space-y-2">
         <SlackButton
+          onClick={() => va.track("Install Clicked")}
           text="Add to Slack"
           url={`https://slack.com/oauth/v2/authorize?scope=chat:write,chat:write.public,links:read,links:write,commands,team:read&client_id=${process.env.NEXT_PUBLIC_SLACK_CLIENT_ID}`}
         />

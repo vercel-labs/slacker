@@ -4,9 +4,15 @@ import SlackButton from "@/components/slack-button";
 import Layout from "@/components/layout";
 import { Play } from "lucide-react";
 import { useVideoModal } from "@/components/video-modal";
+import va from "@vercel/analytics";
+import { useEffect } from "react";
 
 export default function SuccessTeam(props: { teamId: string }) {
   const { setShowVideoModal, VideoModal } = useVideoModal();
+  useEffect(() => {
+    va.track("Install Success", { teamId: props.teamId });
+  }, [props.teamId]);
+
   return (
     <Layout meta={{ title: "Installation Successful" }}>
       <VideoModal />

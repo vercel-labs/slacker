@@ -343,10 +343,10 @@
   dependencies:
     isomorphic-fetch "^3.0.0"
 
-"@vercel/analytics@^0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-0.1.10.tgz#772ab975f1226b6db9632568299ead173c21da7d"
-  integrity sha512-jjJ8GzcPnQp0cMxpfYoUycMRBtDiaIeyVjZPiEPe99Dj1PdjMzAFYEASiV/hpNsXHkpcNYCveDFh6jnmh0YSDQ==
+"@vercel/analytics@^0.1.9-beta.6":
+  version "0.1.9-beta.6"
+  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-0.1.9-beta.6.tgz#8bba86eaa1e479523e79fc4c71f8955774b7e8cc"
+  integrity sha512-83mHCRsx2BAWijgBd17BvVw2g9/FkRs+i1paGES3KRf5yB+aU8VadlxoEeP2wkiLCMxpZWxrzaGKdwkoKId0TQ==
 
 "@vercel/og@^0.1.0":
   version "0.1.0"
