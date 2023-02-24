@@ -20,7 +20,7 @@ const VideoModal = ({
         className="w-11/12 overflow-hidden shadow-xl rounded-2xl"
         autoPlay
         controls
-        src="https://assets.vercel.com/video/upload/v1677175120/random/slacker.mp4"
+        src="/assets/demo.mp4"
         poster="data:image/gif,AAAA"
       />
     </Modal>

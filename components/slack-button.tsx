@@ -1,5 +1,5 @@
 import Image from "next/image";
-import slackGif from "../public/slackanimation.gif";
+import slackGif from "../public/assets/slackanimation.gif";
 
 export default function SlackButton({
   text,

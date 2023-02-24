@@ -37,7 +37,7 @@ export default function SuccessTeam(props: { teamId: string }) {
           autoPlay
           loop
           muted
-          src="/demo-preview.mp4"
+          src="/assets/demo-preview.mp4"
           className="w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] rounded-full object-cover"
         />
       </div>
