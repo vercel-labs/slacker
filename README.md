@@ -1,5 +1,5 @@
 <div align="center">
-    <img alt="Slacker OG Image" src="https://slacker.run/api/og">
+    <img alt="Slacker OG Image" src="https://slacker.run/api/og?latest">
     <h3 align="center">Slacker</h3>
     <p>A bot that notifies you on Slack whenever your company/product is mentioned on Hacker News.</p>
     <picture>
