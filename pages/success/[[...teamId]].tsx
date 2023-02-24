@@ -11,7 +11,8 @@ export default function SuccessTeam(props: { teamId: string }) {
   const { setShowVideoModal, VideoModal } = useVideoModal();
   useEffect(() => {
     va.track("Install Success", { teamId: props.teamId });
-  }, [props.teamId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Layout meta={{ title: "Installation Successful" }}>
