@@ -13,8 +13,8 @@ export default async function handler(
   }
   try {
     const response = await cron();
-    console.log("Cron job successful! Response:", response);
-    res.status(200).json(response);
+    console.log("Cron job successful!");
+    res.status(200).json({ message: "Cron job successful!" });
   } catch (err) {
     console.log("Cron job error:", err);
     await log("Cron job error: \n" + "```" + JSON.stringify(err) + "```");
