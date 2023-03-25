@@ -20,17 +20,22 @@ export function combineText(post: any) {
 }
 
 export function postScanner(teamsAndKeywords: TeamAndKeywords) {
-  const keywordMapping = new Map() as Map<string, string[]>;
+  const keywordMapping = new Map() as Map<string, string>;
+  const caseSensitiveMapping = new Map() as Map<string, string>;
   const keywords = new Set();
 
   for (const teamId of Object.keys(teamsAndKeywords)) {
     for (const keyword of teamsAndKeywords[teamId]) {
-      keywords.add(keyword);
+      const lower = keyword.toLowerCase();
+      keywords.add(lower);
 
-      let teams = keywordMapping.get(keyword);
+      // TODO: store whether the keyword is case sensitive in redis.
+      const isCaseSensitive = false;
+      const mapping = isCaseSensitive ? caseSensitiveMapping : keywordMapping;
+      let teams = mapping.get(lower);
       if (teams === undefined) {
         teams = [];
-        keywordMapping.set(keyword, teams);
+        mapping.set(lower, teams);
       }
       teams.push(teamId);
     }
@@ -50,14 +55,24 @@ export function postScanner(teamsAndKeywords: TeamAndKeywords) {
     text.replace(scanner, (_, ...terms) => {
       for (let i = 0; i < keywordArray.length; i++) {
         if (terms[i] !== undefined) {
+          const matched = keywordArray[i];
           // if the keyword is found in the text
+          // using ! here because we know teamsSubscribedToThisKeyword is always defined
           const teamsSubscribedToThisKeyword = keywordMapping.get(
-            keywordArray[i]
+            matched.toLowerCase()
           );
-          teamsSubscribedToThisKeyword!.forEach((teamId) => {
-            // using ! here because we know teamsSubscribedToThisKeyword is always defined
-            teamsInterestedInThisPost.add(teamId); // add team ID to set of teams that are interested in this post (if not already in set)
-          });
+          if (teamsSubscribedToThisKeyword) {
+            teamsSubscribedToThisKeyword.forEach((teamId) => {
+              teamsInterestedInThisPost.add(teamId); // add team ID to set of teams that are interested in this post (if not already in set)
+            });
+          }
+
+          const caseSensitiveTeams = caseSensitiveMapping.get(matched);
+          if (caseSensitiveTeams) {
+            caseSensitiveTeams.forEach((teamId) => {
+              teamsInterestedInThisPost.add(teamId); // add team ID to set of teams that are interested in this post (if not already in set)
+            });
+          }
           break;
         }
       }

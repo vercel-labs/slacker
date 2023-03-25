@@ -61,7 +61,6 @@ export default async function handler(
     }
 
     const keyword = rawKeyword
-      .toLowerCase()
       .trim()
       .replace(/[‘’“”'"]+/g, "");
 
