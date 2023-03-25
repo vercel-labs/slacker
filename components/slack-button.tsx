@@ -38,6 +38,7 @@ export default function SlackButton({
         }}
         className="group-hover:hidden block"
         viewBox="0 0 122.8 122.8"
+        aria-hidden="true"
       >
         <path
           d="M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9v12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V77.6z"

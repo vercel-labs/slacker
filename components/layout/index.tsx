@@ -35,7 +35,7 @@ export default function Layout({
             target="_blank"
             rel="noopener noreferrer"
             // here we are using the `isolate` property to create a new stacking context: https://github.com/tailwindlabs/tailwindcss/discussions/5675#discussioncomment-1987063
-            className="relative isolate overflow-hidden rounded-full w-32 px-10 py-4 focus:outline-none focus:ring-0"
+            className="relative isolate overflow-hidden rounded-full w-32 px-10 py-4"
           >
             <span className="absolute inset-px z-10 grid place-items-center rounded-full bg-black bg-gradient-to-t from-neutral-800 text-neutral-400 text-sm">
               View the code
