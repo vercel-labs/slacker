@@ -32,13 +32,13 @@ export default function Home() {
       <div className="relative my-10">
         <button
           onClick={() => setShowVideoModal(true)}
-          className="group flex justify-center items-center absolute z-10 w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] rounded-full hover:backdrop-blur-sm hover:bg-black/20 focus:outline-none focus:ring-0 transition-all overflow-hidden"
+          className="group flex justify-center items-center absolute z-10 w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] rounded-full hover:backdrop-blur-sm hover:bg-black/20 transition-all overflow-hidden"
         >
           <div className="flex justify-center items-center w-14 h-14 rounded-full bg-white shadow-lg">
-            <Play size={20} fill="#27272A" />
+            <Play size={20} fill="#27272A" aria-hidden="true" />
           </div>
           <p className="font-mono text-white absolute -bottom-10 group-hover:bottom-5 transition-all ease-in-out duration-300">
-            1:03
+            <span className="sr-only">Play Video. Length of Video is</span> 1:03
           </p>
         </button>
         <video
@@ -47,6 +47,8 @@ export default function Home() {
           muted
           src="/assets/demo-preview.mp4"
           className="w-[350px] h-[350px] sm:w-[500px] sm:h-[500px] rounded-full object-cover"
+          tabIndex={-1}
+          aria-label="Looping video preview"
         />
       </div>
       <div className="flex flex-col text-center space-y-2">
