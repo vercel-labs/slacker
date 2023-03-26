@@ -47,22 +47,22 @@ export function postScanner(teamsAndKeywords: TeamAndKeywords) {
     const text = combineText(post); // combine text from post's title, text, and url
     const teamsInterestedInThisPost = new Set() as Set<string>; // set of team IDs that are interested in this post
 
-    text.replace(scanner, (_, ...terms) => {
+    let match;
+    while ((match = scanner.exec(text))) {
       for (let i = 0; i < keywordArray.length; i++) {
-        if (terms[i] !== undefined) {
+        if (match[i + 1] !== undefined) {
           // if the keyword is found in the text
           const teamsSubscribedToThisKeyword = keywordMapping.get(
             keywordArray[i]
           );
-          teamsSubscribedToThisKeyword!.forEach((teamId) => {
-            // using ! here because we know teamsSubscribedToThisKeyword is always defined
+          // using ! here because we know teamsSubscribedToThisKeyword is always defined
+          for (const teamId of teamsSubscribedToThisKeyword!) {
             teamsInterestedInThisPost.add(teamId); // add team ID to set of teams that are interested in this post (if not already in set)
-          });
+          }
           break;
         }
       }
-      return ""; // replace all instances of keywords with empty string (just for the replace function, we're not actually interested in the text here)
-    });
+    }
 
     return teamsInterestedInThisPost; // return set of team IDs that are interested in this post
   };
@@ -95,23 +95,21 @@ export function regexOperations(post: any, keywords: string[]) {
     ? mrkdwn(decode(post?.text || "")).text
     : "";
 
-  // We use String.replace here so that we can know which capture group is
-  // actually matched, so that we can extract the appropriate keyword.
-  combineText(post).replace(termsRegex, (_, ...terms: string[]) => {
+  const combined = combineText(post);
+
+  let match;
+  while ((match = termsRegex.exec(combined))) {
     // In order to preserve the case-sensitivity of the keywords, we do a bit of meta-programming.
     // We generated N regex capture groups, and we want to see if any of them matched. The index
     // of the capture group matches the index of the keyword, so we can then decorate the actual
     // text in the post, and know which keyword matched.
     for (let i = 0; i < keywords.length; i++) {
-      if (terms[i] !== undefined) {
+      if (match[i + 1] !== undefined) {
         mentionedTerms.add(keywords[i]);
+        break;
       }
     }
-
-    // We don't actually care about the replaced text, we're just using this
-    // for the side-effects.
-    return "";
-  });
+  }
 
   // This regex searches for our keywords, while also matching a few extra
   // patterns that we want to prevent a keyword match during.  Eg, "Vercel" may
